@@ -32,4 +32,12 @@ function create_token($token_len){   //生成随机token
     return $randstr;
 }
 
+function md6($password){
+    $key = "yesyouare";
+    $password = md5(md5($password).md5($key));
+    return $password;    
+    exit;    
+}    //密码加密
+
+
 

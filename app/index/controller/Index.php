@@ -71,12 +71,14 @@ class Index
     }
 
 
-    public function Card_pay(){
+    public function card_recharge(){    //使用充值卡充值
         if(Request::instance()->isGet()){
+            $card_no = input('param.card_no');
+            $password = input('password');
             if(card_is_real("11012017100900010005067")){
                 return "对的";
             }else{
-                return "错的";
+                return json('error','该充值卡不存在，请检查卡号');
             }
         }
     }
