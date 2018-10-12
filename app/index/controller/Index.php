@@ -2,7 +2,7 @@
 namespace app\index\controller;
 use PHPExcel;
 use PHPExcel_IOFactory;
-use app\common\Card;
+use app\common\Cards;
 use \think\Request;
 use \think\Db;
 use \think\Session;
@@ -26,7 +26,7 @@ class Index
                 return json('error','接口验证错误,请重试！');
             }
             $PHPExcel = new PHPExcel();
-            $card = new Card($company_code);
+            $card = new Cards($company_code);
             $path = $_SERVER['DOCUMENT_ROOT']."/download";
             $PHPSheet = $PHPExcel->getActiveSheet();
             $PHPSheet->setTitle('demo');
@@ -39,9 +39,9 @@ class Index
                 $card_data[] = [$c_no[$i],$c_psw[$i]]; 
             }
             $res = model("Card")->insertAll($card_data);//将卡号密码存入数据库
-            if(json_decode($res).status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
+            if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
                 $re = model("Card")->insertAll(json_decode($res).data);
-                if(json_decode($re).status == "error"){
+                if(json_decode($re)->status == "error"){
                     card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
                 }
             }
@@ -84,6 +84,7 @@ class Index
 
 
     public function card_recharge(){    //使用充值卡充值
+        Session::set('id','1');
         if(Request::instance()->isGet()){
             $card_no = input('param.card_no');
             $password = input('password');
@@ -91,14 +92,19 @@ class Index
                 return json('error','该充值卡不存在，请检查卡号');
             }
             if(card_is_real($card_no)){
-                
+                $c = model('Card','service')->check_passwd($card_no,$password);
+                if($c){
+                    model('Card','service')->recharge($c);
+                }else{
+                    return json('error','充值卡密码错误');
+                }
             }else{
                 return json('error','该充值卡不存在，请检查卡号');
             }
         }
     }
     public function test(){
-        card_error_log([['card_no'=>"123456489784548","password"=>"545fd54sf"]],"数据库存储出错！");
+        return md6('63yotc');
     }
 
 

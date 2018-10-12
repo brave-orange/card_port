@@ -6,7 +6,7 @@ namespace app\common;
 
 use think\Cache; 
 
-class Card{
+class Cards{
     public function __construct($company_code){
         $this->company_code = $company_code;
         $this->coefficient = [7,9,12,5,3,25,4]; 

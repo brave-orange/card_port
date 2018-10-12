@@ -31,4 +31,8 @@ class Card extends Model{
             return json("success","存储成功!");
         }
     }
+
+    public function getcard($card_no){   //获取卡号和密码
+        return $this->where(['card_no'=>$card_no])->field('password')->find();
+    }
 }
