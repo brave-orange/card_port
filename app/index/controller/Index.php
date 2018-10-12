@@ -34,6 +34,17 @@ class Index
             $PHPSheet->setCellValue('B1','密码');
             $c_no = $card->create_card_no($num,$fvalue);//生成卡号
             $c_psw = $card->create_password($num,6);//生成密码
+            $card_data = array();
+            for($i = 0; $i < count($c_no) ; $i ++){    
+                $card_data[] = [$c_no[$i],$c_psw[$i]]; 
+            }
+            $res = model("Card")->insertAll($card_data);//将卡号密码存入数据库
+            if(json_decode($res).status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
+                $re = model("Card")->insertAll(json_decode($res).data);
+                if(json_decode($re).status == "error"){
+                    card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
+                }
+            }
             foreach ($c_no as $key => $value) {
                 $s = 'A'.($key+2);
                 $PHPSheet->setCellValue($s,$value);
@@ -45,6 +56,7 @@ class Index
             $path = $path.'/'.$filename;
             $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
             $PHPWriter->save($path); 
+
             Session::set('token','');
             return $_SERVER['SERVER_NAME'].'/download/'.$filename;
         }
@@ -75,14 +87,19 @@ class Index
         if(Request::instance()->isGet()){
             $card_no = input('param.card_no');
             $password = input('password');
-            if(card_is_real("11012017100900010005067")){
-                return "对的";
+            if(strlen($card_no) != 23){
+                return json('error','该充值卡不存在，请检查卡号');
+            }
+            if(card_is_real($card_no)){
+                
             }else{
                 return json('error','该充值卡不存在，请检查卡号');
             }
         }
     }
-
+    public function test(){
+        card_error_log([['card_no'=>"123456489784548","password"=>"545fd54sf"]],"数据库存储出错！");
+    }
 
 
 }

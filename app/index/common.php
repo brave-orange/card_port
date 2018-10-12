@@ -27,3 +27,16 @@ function card_is_real($card_no){ //验证卡号是否可用
         }
     }
 }
+
+
+function card_error_log($card_no,$msg = null){
+        //$msg = [2018-04-11 09:22:56]文件名：wxpay，第29行，[info]：日志信息 
+    $masg = "";
+    for($i = 0 ; $i < count($card_no) ; $i++){
+        $masg = '['.date("Y-m-d H:i:s").']'.'卡号：'.json_encode($card_no[$i]).$msg;
+
+    }
+            // 日志文件名：日期.txt
+    $path = RUNTIME_PATH.DS.'cardNo_log'. DS .date("Ymd").'.txt';
+    file_put_contents($path, $masg.PHP_EOL,FILE_APPEND);
+}
