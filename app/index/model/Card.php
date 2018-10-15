@@ -6,10 +6,7 @@ use think\Db;
 class Card extends Model{
 
     protected $table="card";
-    function __construct()
-    {
-        
-    }
+
     private function insert($data){
         $c = new Card();
         foreach($data as $key => $value){
@@ -31,8 +28,11 @@ class Card extends Model{
             return json("success","存储成功!");
         }
     }
-
+    public function delete_card($card_no){
+        return $this->where(['card_no'=>$card_no])->delete();
+    }
     public function getcard($card_no){   //获取卡号和密码
-        return $this->where(['card_no'=>$card_no])->field('password')->find();
+        $res = $this->where(array('card_no'=>$card_no))->find();
+        return $res;
     }
 }

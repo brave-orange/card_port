@@ -87,22 +87,31 @@ class Index
         Session::set('id','1');
         if(Request::instance()->isGet()){
             $card_no = input('param.card_no');
-            $password = input('password');
+            $password = input('param.password');
             if(strlen($card_no) != 23){
                 return json('error','该充值卡不存在，请检查卡号');
             }
             if(card_is_real($card_no)){
                 $c = model('Card','service')->check_passwd($card_no,$password);
                 if($c){
-                    model('Card','service')->recharge($c);
+                    if(model('Card','service')->recharge($c['card_no'])){
+                        return json('success','充值成功!');
+                    }else{
+                        return json('error','卡号异常，请检查后重试，如重复出现此情况请联系客服。');
+                    }
                 }else{
+                    if(model("CardUsed")->where(['card_no'=>$card_no])->find()){
+                        return json('error','该充值卡已使用过！');
+                    }
                     return json('error','充值卡密码错误');
                 }
             }else{
-                return json('error','该充值卡不存在，请检查卡号');
+                return json('error','该充值卡不存在或已过期，请检查卡号');
             }
         }
     }
+
+    
     public function test(){
         return md6('63yotc');
     }
