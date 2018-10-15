@@ -11,16 +11,17 @@ class Cards{
         $this->company_code = $company_code;
         $this->coefficient = [7,9,12,5,3,25,4]; 
         $date = date("Y-m-d 23:59:59");
+        $time = strtotime($date) - time();
         if(Cache::get("num") == null){
 
             $data = array();
             $data[''.$company_code] = 0;
-            Cache::set('num',$data,$date);
+            Cache::set('num',$data,$time);
         }else if(!isset(Cache::get("num")[$company_code])){
             
             $data = Cache::get("num");
             $data[$company_code] = 0;
-            Cache::set('num',$data,$date);
+            Cache::set('num',$data,$time);
         }
     }
     public function create_card_no($card_num,$money){      //生成连续的卡号
