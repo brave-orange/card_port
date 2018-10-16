@@ -15,7 +15,7 @@ class Cards{
         if(Cache::get("num") == null){
 
             $data = array();
-            $data[''.$company_code] = 0;
+            $data[$company_code] = 0;
             Cache::set('num',$data,$time);
         }else if(!isset(Cache::get("num")[$company_code])){
             
@@ -47,7 +47,9 @@ class Cards{
             $card_no[] = $no;
         }
         $card_cache[$this->company_code] = $num+$card_num;
-        $num = Cache::set('num',$card_cache);
+        $date = date("Y-m-d 23:59:59");
+        $time = strtotime($date) - time();
+        $num = Cache::set('num',$card_cache,$time);
         return $card_no;
     }
     public function create_password($card_num,$psw_len){   //生成随机密码
