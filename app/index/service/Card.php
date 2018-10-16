@@ -16,7 +16,7 @@ class Card extends Model{
     }
 
     public function recharge($card){    //充值操作  
-        $user = model('user')->findPerson(Session::get('id'));
+        $user = model('user')->findPerson(Session::get('userid'));
         $num = (int)substr($card,18,3);
         if(card_is_real($card)){
             $user['yu_e'] += $num;
@@ -26,7 +26,7 @@ class Card extends Model{
                 $data[$key] = $value;
             }
             if(model("CardUsed")->insert($data)){
-                $use_card->delete();
+                $use_card->delete();        //在未使用卡的表里删除记录
             }
             return $user->save();
         }else{

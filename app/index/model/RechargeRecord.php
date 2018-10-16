@@ -1,9 +1,10 @@
 <?php
-
-class ConsumeRecord{
-    protected $table = "consume_record";
+namespace app\index\model;
+use think\Model;
+class RechargeRecord extends Model{
+    protected $table = "recharge_record";
     public function insert($data){
-        $c = new ConsumeRecord();
+        $c = new RechargeRecord();
         foreach($data as $key => $value){
             $c[$key] = $value;
         }

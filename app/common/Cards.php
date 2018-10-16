@@ -11,7 +11,7 @@ class Cards{
         $this->company_code = $company_code;
         $this->coefficient = [7,9,12,5,3,25,4]; 
         $date = date("Y-m-d 23:59:59");
-        $time = strtotime($date) - time();
+        $time = strtotime($date) - time();  //有效期为当天
         if(Cache::get("num") == null){
 
             $data = array();
@@ -33,7 +33,7 @@ class Cards{
             $date = date("Ymd");
             $money = sprintf("%03d",$money);
             $no = $this->company_code.$date.$pici.$money;
-            $sum = 0;                                                                                                                                   
+            $sum = 0;
             foreach(str_split($no,3) as $key=>$value){
                 if($key == 6)
                 {

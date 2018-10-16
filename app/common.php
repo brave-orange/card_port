@@ -21,8 +21,8 @@ function json($status,$msg="",$data=array()){
   exit;
 }       //json格式化输出方法
 function create_token($token_len){   //生成随机token
-    $str='abc7r1lmosvwxyfghtuijkq45zden6023p89';   //密码种子
-    $str = str_shuffle($str);
+    $str='yc7r1avwxzdelmbnosjkq45fghtui6023p89';   //密码种子
+    $str = str_shuffle($str);    //打乱字符串
     $len=strlen($str)-1;
     $randstr='';
     for($i=0;$i<$token_len;$i++){

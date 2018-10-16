@@ -84,7 +84,7 @@ class Index
 
 
     public function card_recharge(){    //使用充值卡充值
-        Session::set('id','1');
+        Session::set('userid','1');
         if(Request::instance()->isGet()){
             $card_no = input('param.card_no');
             $password = input('param.password');
@@ -95,6 +95,7 @@ class Index
                 $c = model('Card','service')->check_passwd($card_no,$password);
                 if($c){
                     if(model('Card','service')->recharge($c['card_no'])){
+                        model('RechargeRecord','service')->addRecord($card_no); //插入充值记录
                         return json('success','充值成功!');
                     }else{
                         return json('error','卡号异常，请检查后重试，如重复出现此情况请联系客服。');
