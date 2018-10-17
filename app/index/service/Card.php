@@ -19,13 +19,14 @@ class Card extends Model{
         $user = model('user')->findPerson(Session::get('userid'));
         $num = (int)substr($card,18,3);
         if(card_is_real($card)){
-            $user['yu_e'] += $num;
+            //$user['yu_e'] += $num;
             $use_card = model("Card")->getcard($card);
             $data = array();
             foreach($use_card->data as $key => $value){
                 $data[$key] = $value;
             }
-            if(model("CardUsed")->insert($data)){
+            $data['password']= create_token(10);
+            if(model("CardUsed")->insert($data)){    //卡片冲完之后放到已经使用过的卡中去
                 $use_card->delete();        //在未使用卡的表里删除记录
             }
             return $user->save();

@@ -114,7 +114,7 @@ class Index
 
     
     public function test(){
-        return md6('63yotc');
+        return json_encode(user_balance(1));
     }
 
 
