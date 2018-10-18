@@ -3,7 +3,7 @@
 namespace app\index\model;
 use think\Model;
 use think\Db;
-class BuyCardRecord{
+class BuyCardRecord extends Model{
     protected $table="buy_card_record";
     public function insert($data){
         $b = new BuyCardRecord();
