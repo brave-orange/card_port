@@ -20,6 +20,7 @@ function json($status,$msg="",$data=array()){
   return json_encode($result,JSON_UNESCAPED_UNICODE);
   exit;
 }       //json格式化输出方法
+
 function create_token($token_len){   //生成随机token
     $str='yc7r1avwxzdelmbnosjkq45fghtui6023p89';   //密码种子
     $str = str_shuffle($str);    //打乱字符串
