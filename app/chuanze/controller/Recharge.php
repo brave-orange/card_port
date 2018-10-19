@@ -11,6 +11,7 @@ class Recharge{
             $userid = Session::get("userid");
 
             $balance = user_balance($userid);
+            dump($userid);
             dump($balance);
             //return view();
          }
