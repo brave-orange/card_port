@@ -131,8 +131,8 @@ class Index
         $path = $path.'/'.$filename;
         
         $PHPWriter->save($path); 
-        exec("zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path);
-        return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
+        exec("zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path,$out,$status);
+        return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.".$out.$status;
 
     }
 
