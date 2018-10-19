@@ -39,7 +39,7 @@ function card_error_log($card_no,$msg = null){   //卡号存储错误计入日�
     $path = RUNTIME_PATH.DS.'cardNo_log'. DS .date("Ymd").'.txt';
     file_put_contents($path, $masg.PHP_EOL,FILE_APPEND);
 }
-
+/*
 function user_balance($userid){    //通过充值和消费计算用户余额
     $balance = array();
     $res = model("Card")->group('type')->field('type')->select();
@@ -59,4 +59,4 @@ function user_balance($userid){    //通过充值和消费计算用户余额
     }                  //减去使用掉的钱
     return $balance;   
 
-}
+}*/
