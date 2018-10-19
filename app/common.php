@@ -67,7 +67,7 @@ function user_balance($userid){    //通过充值和消费计算用户余额
     }                                  //充值的钱
     unset($res);
     $res = model("OrderRecord")->where(['userid'=>$userid])->group('order_type')->field('order_type,sum(money) as money')->select();
-    dump($res);
+
     foreach($res as $key=>$value){
         $balance[$value['order_type']] -= (int)$value['money'];
     }                  //减去使用掉的钱
