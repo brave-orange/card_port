@@ -14,3 +14,6 @@ class Recharge{
             $balance = user_balance($userid);
             return $this->assign(array("balance"=>$balance))->fetch();
             //return view();
+        }
+    }
+}
