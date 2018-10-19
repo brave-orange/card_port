@@ -62,10 +62,6 @@ class Index
             exec("cd download && zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
             exec("rm -rf  ".$path);
             model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man);    //保存购卡记录
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$filename.'"');
-            header('Content-Transfer-Encoding: binary');
-            readfile($filename);
             Session::set('token','');
 
             return $_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
