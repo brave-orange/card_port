@@ -31,7 +31,7 @@ class Index
             $card = new Cards($company_code);
             $path = $_SERVER['DOCUMENT_ROOT']."/download";
             $PHPSheet = $PHPExcel->getActiveSheet();
-            $PHPSheet->setTitle('demo');
+            $PHPSheet->setTitle('卡号密码');
             $PHPSheet->setCellValue('A1','卡号');
             $PHPSheet->setCellValue('B1','密码');
             $c_no = $card->create_card_no($num,$fvalue);//生成卡号
@@ -53,18 +53,6 @@ class Index
                 $s = 'B'.($key+2);
                 $PHPSheet->setCellValue($s,$c_psw[$key]); 
             }
-
-            //Set document security 设置文档安全
-            $PHPExcel->getSecurity()->setLockWindows(true);
-            $PHPExcel->getSecurity()->setLockStructure(true);
-            $PHPExcel->getSecurity()->setWorkbookPassword("PHPExcel");
-
-            //Set sheet security 设置工作表安全
-            $PHPExcel->getActiveSheet()->getProtection()->setPassword('PHPExcel');
-            $PHPExcel->getActiveSheet()->getProtection()->setSheet(true);// This should be enabled in order to enable any of the following!
-            $PHPExcel->getActiveSheet()->getProtection()->setSort(true);
-            $PHPExcel->getActiveSheet()->getProtection()->setInsertRows(true);
-            $PHPExcel->getActiveSheet()->getProtection()->setFormatCells(true);
 
             $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
             $filename = $company_code.date('_YmdHis_').$fvalue.'面值'.$num.'张.xlsx';
@@ -144,7 +132,7 @@ class Index
         
         $PHPWriter->save($path); 
         exec("zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path);
-        return "zip -P whatthefuck ".$path." ".str_replace('.xlsx', '.zip', $path).'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
+        return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
 
     }
 
