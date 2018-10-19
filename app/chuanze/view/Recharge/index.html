@@ -60,17 +60,17 @@
             <div class="oil_con">
                 <div >
                     <p>话费积分余额：<span>800分</span></p>
-                    <p>话费积分兑换：
+                    <p id="hf">话费积分兑换：
                         <input type="text" class="card_num"  placeholder="卡号">
                         <i class="fa fa-exclamation" aria-hidden="true"></i> 
-                        <button type="button" class="sure" onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                        <button type="button"  class="sure" onclick="nube($(this))" style="margin-left: 50px">兑换</button>
                     </p>
 
                     <p>油卡积分余额：<span>1000分</span></p>
-                    <p>油卡积分兑换：
+                    <p id="yk">油卡积分兑换：
                         <input type="text" class="card_num" placeholder="卡号">
                         <i class="fa fa-exclamation" aria-hidden="true"></i>
-                        <button type="button" class="sure"  onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                        <button type="button"  class="sure"  onclick="nube($(this))" style="margin-left: 50px">兑换</button>
                     </p>
 
 
@@ -108,17 +108,18 @@
     })
     // 提交
 
-    function sure(key,val){
+    function sure(key,val,type){
         $.ajax({
-            url:"",
+            url:"{:url('index/index/card_recharge')}",
             type:"POST",
-            data:{card_no:key,password:val},
+            data:{card_no:key,password:val,type:type},
             success:function(res){
                 var oRes = JSON.parse(res);
                 if(oRes.status == "success"){
                     layer.alert("恭喜充值成功！")
                 }else{
-                    layer.alert("充值失败，请联系客服！");
+
+                    layer.alert(oRes.msg);
                 }
             }
         })
@@ -134,7 +135,8 @@ var  num = /^[1-9]\d*$/;
 function nube(obj){
     var oBj = obj.siblings(".card_num");
     var number = oBj.val();
-    console.log(number.length == 23);
+    var type = obj.parent().attr("id");
+
     if(!(num.test(number) && number.length== 23)){
         // obj.val("");
         oBj.siblings(".fa-exclamation").show();
@@ -142,18 +144,28 @@ function nube(obj){
         return false;
     }else{
         oBj.siblings(".fa-exclamation").hide();
-        $.POST("url",{data},function(res){
-            var oRes = JSON.parse(res);
-            if(res.status == "success"){
-                layer.prompt({  //密码
-                    value: '',
-                    title: '请输入密码',
-                    }, function(value, index, elem){
-                    sure(number,value);
-                    layer.close(index);
-                });
+        $.ajax({
+            url:"{:url('index/index/cardcheck')}",
+            type:"post",
+            data:{card_no:number},
+             success:function(res){
+                res = JSON.parse(res);
+                if(res.status == "success"){
+                    layer.prompt({  //密码
+                        value: '',
+                        title: '请输入密码',
+                        }, function(value, index, elem){
+                        sure(number,value,type);
+                        layer.close(index);
+                    });
+                }else{
+                    layer.msg(res.msg);
+                    return false;
+                }
             }
         })
+        
+        
     }
 }
     // 手机号码

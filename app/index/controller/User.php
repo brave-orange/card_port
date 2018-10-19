@@ -1,9 +1,9 @@
 <?php
 namespace app\index;
 
-use think/Request;
-use think/controller;
-class User extends controller
+use think\Request;
+use think\Controller;
+class User extends Controller
 {   
         //登录
     public function login(){
@@ -52,5 +52,6 @@ class User extends controller
             return model('user','service')->selectname();
         }
     }
+
 } 
 ?>

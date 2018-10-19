@@ -51,3 +51,27 @@ function SendMessage($tel,$message){
     }
 }
 
+
+function user_balance($userid){    //通过充值和消费计算用户余额
+    $balance = array();
+    $res = model("Card")->group('type')->field('type')->select();
+    
+    $type = array();
+    foreach($res as $k=>$v){
+        $type[] = $v; 
+    }                   //取出各种类型
+
+    unset($res);
+    $res = model("RechargeRecord")->where(['userid'=>$userid])->group('type')->field('type,sum(money) as money')->select();
+    foreach($res as $key=>$value){
+        $balance[$value['type']] = (int)$value['money'];
+    }                                  //充值的钱
+    unset($res);
+    $res = model("OrderRecord")->where(['userid'=>$userid])->group('order_type')->field('order_type,sum(money) as money')->select();
+    foreach($res as $key=>$value){
+        $balance[$value['order_type']] -= (int)$value['money'];
+    }                  //减去使用掉的钱
+    return $balance;   
+
+}
+
