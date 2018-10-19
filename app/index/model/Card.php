@@ -7,18 +7,19 @@ class Card extends Model{
 
     protected $table="card";
 
-    private function insert($data){
+    private function insert($data,$type){
         $c = new Card();
         foreach($data as $key => $value){
             $c[$key] = $value;
         }
+        $c['type'] = $type;
         return $c->save();
     }
-    public function insertAll($data){
+    public function insertAll($data,$type){
         $error = array();
         foreach ($data as $value) {
             $c = array("card_no"=>$value[0],"password"=>md6($value[1]));
-            if(!$this->insert($c)){
+            if(!$this->insert($c,$type)){
                 $error[] = $c;
             }
         }

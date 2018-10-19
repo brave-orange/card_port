@@ -40,7 +40,7 @@ class Index
             for($i = 0; $i < count($c_no) ; $i ++){    
                 $card_data[] = [$c_no[$i],$c_psw[$i]]; 
             }
-            $res = model("Card")->insertAll($card_data);//将卡号密码存入数据库
+            $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
             if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
                 $re = model("Card")->insertAll(json_decode($res).data);
                 if(json_decode($re)->status == "error"){
@@ -55,7 +55,7 @@ class Index
             }
 
             $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-            $filename = $company_code.date('_YmdHis_').$fvalue.'面值'.$num.'张.xlsx';
+            $filename = $company_code.date('_YmdHis_').$fvalue.'面值'.$num.'张--'.$card_type.'.xlsx';
             $path = $path.'/'.$filename;
             $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
             $PHPWriter->save($path); 
