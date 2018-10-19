@@ -1,8 +1,8 @@
 <?php
 namespace app\user;
 
-use think/Request;
-use think/controller;
+use \think\Request;
+use \think\controller;
 class Login extends controller
 {
    	//登录

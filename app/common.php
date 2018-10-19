@@ -41,5 +41,13 @@ function md6($password){
     exit;    
 }    //密码加密
 
-
+function SendMessage($tel,$message){
+    $SmsDemo = new SmsDemo();
+    $response = $SmsDemo->SendSmsRequest($tel,$message);
+    if($response==0){
+      return 0;
+    }else{
+      return $response;
+    }
+}
 

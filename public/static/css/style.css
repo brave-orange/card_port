@@ -1,0 +1,146 @@
+@charset "utf-8";
+
+/* Reset */
+html{ -webkit-tap-highlight-color:rgba(0,0,0,0);}
+body{ font-family:'Nanum Gothic',/*'Nanum Gothic','Malgun Gothic','맑은 고딕','돋움','dotum',*/'AppleGothic','sans-serif'; font-size:14px; font-weight:400; color:#555555; line-height:1.5;}
+a{ color:#555555; text-decoration:none;}
+*,*:before,*:after{ -webkit-box-sizing:border-box; box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:none;}
+h1,h2,h3,h4,h5,h6,input,select,textarea,button{ font-size:inherit;}
+input,select,textarea,button{ font-family:inherit; vertical-align:middle;}
+img,form,iframe,fieldset,table,table th,table td{ border:0 none;}
+a,input,select,textarea,button{ outline:none;}
+img{ max-width:100%; vertical-align:middle; -ms-interpolation-mode:bicubic;}
+ul,ol{ list-style:none;}
+i,em,address{ font-style:normal;}
+h1,h2,h3,h4,h5,h6,th,strong,b{ font-weight:700;}
+iframe{ display:block;}
+sub,sup{ position:relative; vertical-align:baseline; font-size:75%; line-height:0;}
+sub{ bottom:-5px;}
+sup{ top:-5px;}
+map area{outline: none}
+header,footer{margin: 0;padding: 0}
+/*table{ table-layout:fixed; width:100%; border-collapse:collapse; border-spacing:0;}*/
+legend,[hidden],template,caption{ display:none;}
+textarea{ resize:none;}
+label,button,input[type="button"],input[type="reset"],input[type="submit"],input[type="image"]{ cursor:pointer;}
+button[disabled],html input[disabled]{ cursor:default;}
+button,select,textarea,input[type="text"],input[type="password"],input[type="tel"],input[type="email"],input[type="button"],input[type="reset"],input[type="submit"]{ border-radius:0; -webkit-appearance:none; -moz-appearance:none;}
+a:hover{text-decoration: none;outline: none}
+html{font-size: 20px;}
+
+/* 主色调 #01AAEF */
+/* 注册 */
+.con_body{
+    width: 300px;
+    height: 100%;
+    background: #fff;
+    margin:100px auto;
+    font-size: 20px;
+    color: #1AA8E3;
+    box-shadow:0 5px 5px #999;
+    border-radius: 5px; 
+    padding: 10px
+}
+.register_btn{
+    width: 100%;
+    color: #fff;
+    padding: 4px;
+    text-align: center;
+    border-radius: 5px;
+    background: rgba(69,190,240,300);
+}
+/* 登录 */
+.forgot a{
+    margin-top:20px; 
+    font-size: 14px;
+    color: skyblue;
+}
+.login_btn{
+    width: 100%;
+    color: #fff;
+    padding: 4px;
+    text-align: center;
+    border-radius: 5px;
+    background: rgba(69,190,240,300);
+}
+/* 积分 */
+/* dcdcdc */
+.top_login{background: #01AAEF}
+.top_login p{width: 90%;text-align: right; color: #fff}
+.top_login a{color: #fff}
+.line_col{padding: 0 10px}
+header{position: relative;left: 0;bottom: 0;border-bottom: 1px solid #ccc;padding: 5px }
+header>span{position: relative;bottom: 0}
+header>h3{display: inline-block;font-size: 18px;color: #666}
+.body_layout{overflow: hidden;width: 80%;min-height: 400px;margin: 0 auto;background: #fff}
+
+.oMenu{width: 135px;margin-top:10px;font-weight: 600 }
+.oMenu>span{display: inline-block;width: 100%; ;padding:5px 20px;font-size:16px;color: #fff;background:#01AAEF;text-align: center }
+.oMenu>ul{border: 1px solid #dcdcdc}
+.oMenu li{border-top: 1px solid #dcdcdc}
+.oMenu li>a{width: 100%;display: inline-block}
+.oMenu li{width:100%;text-align: center;line-height: 34px }
+.first_menu>li{background: #EBEBEB}
+.second_menu>li{background: #fff;font-weight: normal}
+
+.body_content{width:80%;min-height: 500px;margin:10px 20px 0;background: #E7F8FF;position: relative;}
+.menu_son{width: 100%;background: #01AAEF;height: 3px;}
+.jifen_title{margin-left: 30px;margin-bottom: -2px}
+.jifen_title>div{display: inline-block}
+.con_title{height: 40px;padding: 10px 30px;background: #E7F8FF;font-size: 16px;border-radius: 3px 3px 0 0;color: #1AA8E3 }
+.titleActive{background: #fff;border: 1px solid #71CEF5;border-bottom:none;color: #333 }
+
+.oil_con{width: 98%;padding:30px 50px ;min-height: 440px;background: #fff;margin-left:1% ;}
+.oil_con>div>p{margin-bottom: 20px}
+.oil_con>div>p>input[type="text"],input[type='password']{width: 200px;height: 30px;border: 1px solid #ccc}
+.oil_con>div>.pa_left{padding-left:150px}
+.oil_con>div p button{padding: 3px 20px;border:none;background: #00AAEF;border-radius: 3px;color: #fff;letter-spacing: 5px;
+    -moz-box-shadow: 5px 5px 5px #1694C7 inset; /* 老的 Firefox */
+    box-shadow: 5px 5px 5px #1694C7 inset;}
+.oil_con>div>p button:first-child{margin-right: 100px}
+
+/* 油卡充值 */
+.jin_e>label{margin-right: 30px;}
+/* 个人中心 */
+.ZH_set{padding: 4px 20px;background: #ccc;}
+/* 通用类名 */
+.formCtrl{    display: inline-block;
+    width:300px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+.form_num{color: #4C96D4;font-size: 16px;margin-top: 20px}
+.borderTop{width: 100%;border-top: 1px dashed #dcdcdc;margin-top: 20px}
+.the_p{display: inline-block;padding: 5px 8px;border: 1px solid #999;border-radius: 5px;color: #999 }
+.pActive{background: #1AA8E3;color: #fff;border-color: #1AA8E3}
+
+@media(max-width:1200px)
+{
+
+
+}
+@media(max-width: 704px)
+{
+
+    
+}
+@media(max-width:619px){  
+
+}
+@media(max-width:500px)
+{   
+
+
+}
+@media(max-width: 409px)
+{
+
+
+}
+
+

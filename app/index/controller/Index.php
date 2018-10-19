@@ -59,7 +59,8 @@ class Index
             $path = $path.'/'.$filename;
             $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
             $PHPWriter->save($path); 
-            exec("cd download && zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
+            $ya_password = create_token(8);   //压缩文件密码
+            exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
             exec("rm -rf  ".$path);
             model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man);    //保存购卡记录
             Session::set('token','');

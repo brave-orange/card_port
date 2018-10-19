@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>兑换积分</title>
+    <!-- <link rel="stylesheet" href="css/reset.css"> -->
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/animate.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+
+    <style>
+        .qq_ser{position: fixed;top: 100px;right: 90px}
+        .fa-exclamation{color: #f00;display: none}
+    </style>
+</head>
+<body>
+    <div class="top_login">
+        <p>
+        <span><a href="">登录</a> </span>/
+        <span><a href="">注册</a> </span>
+        <span class="line_col">|</span>
+        <span><a href="">使用说明</a> </span>
+        </p>
+    </div>
+    <div class="body_layout">
+        <header>
+            <a href="">
+            <img src="__STATIC__/images/logo.png" alt="">
+            </a>
+        </header>
+    <div class="flex-box flex-2">
+        <div class="oMenu">
+            <span>功能选择</span>
+            <ul class="first_menu">
+                <li><a href="exchange.html">兑入积分</a></li>
+                <li class="angle_down">商品充值<i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <ul  class="second_menu">
+                        <li><a href="paycheck.html"><img src="__STATIC__/images/oil.png" alt="">油&nbsp;&nbsp;卡</a></li>
+                        <li><a href="tel_pay.html"><img src="__STATIC__/images/phone.png" alt="">话&nbsp;&nbsp;费</a></li>
+                    </ul>
+                </li>
+                <li><a href="userCenter.html">个人中心</a></li>
+
+            </ul>
+        </div>
+        <div class="body_content">
+            <p class="menu_son"></p>
+            <div class="jifen_title">
+                <div class="con_title titleActive">
+                    <span>积分充值</span>
+                </div>
+                <div class="con_title">
+                    <span>历史查询</span>
+                </div>
+            </div>
+            <div class="oil_con">
+                <div >
+                    <p>话费积分余额：<span>800分</span></p>
+                    <p>话费积分兑换：
+                        <input type="text" class="card_num"  placeholder="卡号">
+                        <i class="fa fa-exclamation" aria-hidden="true"></i> 
+                        <button type="button" class="sure" onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                    </p>
+
+                    <p>油卡积分余额：<span>1000分</span></p>
+                    <p>油卡积分兑换：
+                        <input type="text" class="card_num" placeholder="卡号">
+                        <i class="fa fa-exclamation" aria-hidden="true"></i>
+                        <button type="button" class="sure"  onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                    </p>
+
+
+                </div>   
+                <div class="hide">
+                    历史记录尚未开放
+                </div> 
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="text-center">
+        <span>便便平台中心版权所有</span>
+    </div>
+    <div class="qq_ser">
+        <img src="__STATIC__/images/qq_service.png" usemap="#MM" alt="客服">
+        <map id="MM" name="MM">
+            <area shape="rect" coords="0,20,100,115" href="javascript:void(0);"  alt="客服">
+            <area shape="rect" coords="80,0,100,20" href="javascript:void(0);" class="close" alt="关闭">
+        </map>
+    </div>
+</body>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<script>
+    // 菜单
+    $(".angle_down").click(function(){
+        $(".second_menu").slideToggle();
+    });
+    // 选项卡
+    $(".jifen_title>.con_title").click(function(){
+        $(this).addClass("titleActive").siblings().removeClass("titleActive");
+        var index = $(this).index();
+        $(".oil_con>div").eq(index).removeClass("hide").siblings().addClass("hide");
+    })
+    // 提交
+
+    function sure(key,val){
+        $.ajax({
+            url:"",
+            type:"POST",
+            data:{card_no:key,password:val},
+            success:function(res){
+                var oRes = JSON.parse(res);
+                if(oRes.status == "success"){
+                    layer.alert("恭喜充值成功！")
+                }else{
+                    layer.alert("充值失败，请联系客服！");
+                }
+            }
+        })
+    }
+
+
+    // 关闭客服
+    $(".close").click(function(){
+        $(".qq_ser").hide();
+    })
+// <!-- 卡号和密码验证及提交 -->
+var  num = /^[1-9]\d*$/;
+function nube(obj){
+    var oBj = obj.siblings(".card_num");
+    var number = oBj.val();
+    console.log(number.length == 23);
+    if(!(num.test(number) && number.length== 23)){
+        // obj.val("");
+        oBj.siblings(".fa-exclamation").show();
+        layer.msg("请输入正确的卡号！");
+        return false;
+    }else{
+        oBj.siblings(".fa-exclamation").hide();
+        $.POST("url",{data},function(res){
+            var oRes = JSON.parse(res);
+            if(res.status == "success"){
+                layer.prompt({  //密码
+                    value: '',
+                    title: '请输入密码',
+                    }, function(value, index, elem){
+                    sure(number,value);
+                    layer.close(index);
+                });
+            }
+        })
+    }
+}
+    // 手机号码
+    // var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    // function tels(obj){
+    //     var tel = obj.val();
+    //     if(!mobile.test(tel)){
+    //         alert("手机号输入有误");
+    //         obj.val("");
+    //         return false;
+    //     }
+    // }
+</script>
+</html>
