@@ -120,7 +120,7 @@ class Index
     
     public function test(){
         //return json_encode(user_balance(1));
-        $PHPExcel = new PHPExcel();
+/*        $PHPExcel = new PHPExcel();
         $PHPSheet = $PHPExcel->getActiveSheet();
         $PHPSheet->setTitle('demo');
         $PHPSheet->setCellValue('A1','卡号');
@@ -135,10 +135,12 @@ class Index
         dump($out);
         dump($status);
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
-         
+         */
+        
     }
     public function test1(){
-        dump($_SESSION);
+        Session::set("aaa",123);
+        dump(Session::get("aaa"));
     }
 
 
