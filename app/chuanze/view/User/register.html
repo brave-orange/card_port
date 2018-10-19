@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册</title>
+    <link rel="stylesheet" href="__USER__/css/reset.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="__PUBLIC__/static/user/css/ssbase.css">
+    <link rel="stylesheet" href="../../../public/static/css/user/animate.min.css">
+    <link rel="stylesheet" href="../../public/static/bootstrap.min.css">
+    <link rel="stylesheet" href="__USER__/css/font-awesome.min.css">
+    <style>
+        body,html{background: #f5f5f5}
+        .input-group{margin-top: 20px}
+        .login_reg>h4>span{font-size: 12px;color: #666}
+        .login_reg a{color: #1AA8E3}
+        .send_parent{margin: 0;padding: 0;}
+        .send_info{padding: 3px 5px;border: none;background: #eee}
+    </style>
+</head>
+<body>
+    <div class="con_body">
+        <div class="flex-box flex-b flex-col-c login_reg">
+            <img src="images/logo.png" width="50%" alt="">
+            <h4><span>已有账号？去</span><a href="login.html">登录</a></h4>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+            </span>
+            <input type="text" class="form-control" name="tel" onchange="tels()" placeholder="请输入手机号">
+        </div>
+        
+        <div class="input-group">
+            <input type="text" class="form-control" name="yzm" onchange="printyzm()" placeholder="验证码">
+            <span class="input-group-addon send_parent">
+                <button type="button" class="send_info">发送短信</button>   
+            </span>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+            <input type="password" name="password1" onchange="passw()" class="form-control" placeholder="请输入密码">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+            <input type="password" name="password2" onchange="psw()" class="form-control" placeholder="请输入密码">
+        </div>
+        <div class="input-group register_btn">
+            注&nbsp;&nbsp;&nbsp;&nbsp;册
+        </div>
+    </div>
+</body>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script>
+    $(function(){
+        $(".register_btn").click(function(){
+            // 手机号                               密码                                      确认密码                                  验证码
+            var tel = $("input[name='tel']").val(),psw1 = $("input[name='password1']").val(),psw2 = $("input[name='password2']").val(),yzm = $("input[name='yzm']").val();
+            if(printyzm()){
+                if(tel && psw1 && psw2 && yzm != ""){
+                    $.ajax({
+                        url:"",
+                        type:"POST",
+                        data:{},
+                        success:function(res){
+                            
+                        }
+                    })
+                }
+            }
+        })
+    })
+    // 手机号码
+    var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    function tels(){
+        var tel = $("input[name='tel']").val();
+        if(!mobile.test(tel)){
+            alert("手机号输入有误");
+            $("input[name='tel']").val("");
+            return false;
+        }
+    }
+    // 密码验证
+    var pswreg = /^(?:\d+|[a-zA-Z]+|[!@#$%^&*]+).{7,16}$/ ;
+    function passw(){
+        var mima = $("input[name='password1']");
+        var psw1 = mima.val();
+        if(!pswreg.test(psw1)){
+          alert("密码不合法，请重新输入！");
+          mima.val("");
+          return false;
+        }
+    }
+    // 确认密码
+    function psw(){
+      var psw1 = $("input[name='password1']").val().trim();
+      var psw2 = $("input[name='password2']").val().trim();  
+
+      if(psw1 != psw2){
+        alert("密码输入不一致");
+        return false;
+      }else if(psw1 == "" || psw2 == ""){
+        alert("密码不能为空");
+        return false;
+      }
+    }
+    //验证码倒计时
+    var count = 6;
+ 
+    $(".send_info").on("click",function(){
+        var tel = $("input[name='tel']").val();
+        $.GET("url"+tel,function(){
+            // ...
+        })
+        $(this).prop("disabled",true).html("剩余时间"+count+"s");
+        clearInterval(timer);
+        var that = $(this);
+        var timer = setInterval(function(){
+            if(count == 0){
+                clearInterval(timer);
+                that.prop("disabled",false).html("重新发送");
+                count = 6;
+            }else{
+                count--;
+                that.prop("disabled",true).html("剩余时间"+count+"s");
+            }
+        },1000)
+    });
+    // 验证码
+    function printyzm(){
+        var yzm = $("input[name='yzm']").val();
+        var url = URL+yzm;
+        $.ajax({
+            url:url,
+            type:"GET",
+            success:function(res){
+                 // 验证码输入不符：
+            if(res == 0){
+                alert("验证码输入有误");
+                $("input[name='yzm']").val("");
+                return false;          
+            }
+          }
+        })
+      }
+</script>
+</html>
