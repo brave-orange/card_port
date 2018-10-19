@@ -55,8 +55,6 @@ function SendMessage($tel,$message){
 function user_balance($userid){    //通过充值和消费计算用户余额
     $balance = array();
     $res = model("Card")->group('type')->field('type')->select();
-
-    dump(model("Card")->getLastSql());
     $type = array();
     foreach($res as $k=>$v){
         $type[] = $v; 
