@@ -137,6 +137,9 @@ class Index
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
          
     }
+    public function test1(){
+        dump($_SESSION);
+    }
 
 
 
