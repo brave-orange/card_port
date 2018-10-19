@@ -140,7 +140,7 @@ class Index
     }
     public function test1(){
         Session::set("aaa",123);
-        dump(Session::get("aaa"));
+        dump(Session::get("token"));
     }
 
 
