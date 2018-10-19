@@ -58,7 +58,7 @@ function user_balance($userid){    //通过充值和消费计算用户余额
     //$type = array();
     foreach($res->data as $k=>$v){
         //$type[] = $v;
-        //dump($v);
+        dump($v);
         $balance[$v] = 0;
     }                   //取出各种类型
 
