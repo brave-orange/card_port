@@ -42,7 +42,8 @@ class Index
             }
             $ya_password = create_token(8);   //压缩文件密码
             $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
-            $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type,$ya_password);
+            $check_num = create_token(2);//文件区分校验码
+            $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
             if(1 == $msg_status){         //发送的号码后期更改
                 $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
                 if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
@@ -59,7 +60,7 @@ class Index
                 }
 
                 $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-                $filename = $company_code.date('_YmdHis_').$fvalue.'元'.$num.'张--'.$card_type.'.xlsx';
+                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num.'.xlsx';
                 $path = $path.'/'.$filename;
                 $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
                 $PHPWriter->save($path); 
