@@ -47,7 +47,7 @@ class Card extends Model{
         
     }
 
-    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man){        //写入购卡记录
-        model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$_SERVER["REMOTE_ADDR"],'operat_man'=>$opera_man]);
+    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man,$fielname){        //写入购卡记录
+        model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$_SERVER["REMOTE_ADDR"],'operat_man'=>$opera_man,'zip_file_name'=>$fielname]);
     }
 }

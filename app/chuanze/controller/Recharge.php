@@ -13,8 +13,6 @@ class Recharge extends CommonController{
 
             $balance = user_balance($userid);
             return $this->assign(array("balance"=>$balance))->fetch("index");
-
-            //return view();
         }
     }
 }

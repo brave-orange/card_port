@@ -20,6 +20,7 @@ return [
     'test'        => 'index/index/test',
     'recharge'    => 'chuanze/recharge/index',
     'tel_recharge'=> 'chuanze/shopping/tel_recharge',
-    'oil_recharge'=> 'chuanze/shopping/oil_recharge'
+    'oil_recharge'=> 'chuanze/shopping/oil_recharge',
+    'givemefile'    => 'chuanze/download/download'
 
 ];

@@ -34,6 +34,7 @@ class Index
             $PHPSheet->setTitle('卡号密码');
             $PHPSheet->setCellValue('A1','卡号');
             $PHPSheet->setCellValue('B1','密码');
+            $PHPSheet->setCellValue('D1',date('Y-m-d H:i:s'));
             $c_no = $card->create_card_no($num,$fvalue);//生成卡号
             $c_psw = $card->create_password($num,6);//生成密码
             $card_data = array();
@@ -42,7 +43,7 @@ class Index
             }
             $ya_password = create_token(8);   //压缩文件密码
             $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
-            $check_num = create_token(2);//文件区分校验码
+            $check_num = create_token(2);//文件区分校验位
             $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
             if(1 == $msg_status){         //发送的号码后期更改
                 $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
@@ -60,13 +61,13 @@ class Index
                 }
 
                 $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num.'.xlsx';
+                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date('md').'.xlsx';
                 $path = $path.'/'.$filename;
                 $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
                 $PHPWriter->save($path); 
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
-                model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man);    //保存购卡记录
+                model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
                 Session::set('token','');
 
                 return $_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
