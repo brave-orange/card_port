@@ -10,6 +10,8 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+// 
+use lib\api_demo\sendFilePsw;
 function json($status,$msg="",$data=array()){
   $result=array(
    'status'=>$status,
@@ -41,14 +43,11 @@ function md6($password){
     exit;    
 }    //密码加密
 
-function SendMessage($tel,$message){
-    $SmsDemo = new SmsDemo();
-    $response = $SmsDemo->SendSmsRequest($tel,$message);
-    if($response==0){
-      return 0;
-    }else{
-      return $response;
-    }
+function SendMessage($tel,$filename,$message){
+    $SmsDemo = new sendFilePsw();
+    $response = $SmsDemo->sendPasswd($tel,$filename,$message);
+    return $response;
+
 }
 
 
