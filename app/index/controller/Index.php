@@ -40,32 +40,39 @@ class Index
             for($i = 0; $i < count($c_no) ; $i ++){    
                 $card_data[] = [$c_no[$i],$c_psw[$i]]; 
             }
-            $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
-            if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
-                $re = model("Card")->insertAll(json_decode($res).data);
-                if(json_decode($re)->status == "error"){
-                    card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
-                }
-            }
-            foreach ($c_no as $key => $value) {
-                $s = 'A'.($key+2);
-                $PHPSheet->setCellValue($s,$value);
-                $s = 'B'.($key+2);
-                $PHPSheet->setCellValue($s,$c_psw[$key]); 
-            }
-
-            $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-            $filename = $company_code.date('_YmdHis_').$fvalue.'面值'.$num.'张--'.$card_type.'.xlsx';
-            $path = $path.'/'.$filename;
-            $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
-            $PHPWriter->save($path); 
             $ya_password = create_token(8);   //压缩文件密码
-            exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
-            exec("rm -rf  ".$path);
-            model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man);    //保存购卡记录
-            Session::set('token','');
+            $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
+            $check_num = create_token(2);//文件区分校验码
+            $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
+            if(1 == $msg_status){         //发送的号码后期更改
+                $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
+                if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
+                    $re = model("Card")->insertAll(json_decode($res).data);
+                    if(json_decode($re)->status == "error"){
+                        card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
+                    }
+                }
+                foreach ($c_no as $key => $value) {
+                    $s = 'A'.($key+2);
+                    $PHPSheet->setCellValue($s,$value);
+                    $s = 'B'.($key+2);
+                    $PHPSheet->setCellValue($s,$c_psw[$key]); 
+                }
 
-            return $_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
+                $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
+                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num.'.xlsx';
+                $path = $path.'/'.$filename;
+                $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
+                $PHPWriter->save($path); 
+                exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
+                exec("rm -rf  ".$path);
+                model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man);    //保存购卡记录
+                Session::set('token','');
+
+                return $_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
+            }
+            return json('error','系统出错，请联系管理人员！',$msg_status);
+            
         }
     }
 
@@ -152,6 +159,7 @@ class Index
         dump($status);
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
          */
+        return SendMessage('18012776312','ss','wefdsgrf');
         
     }
     public function test1(){
