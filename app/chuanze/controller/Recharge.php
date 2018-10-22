@@ -2,11 +2,10 @@
 
 namespace app\chuanze\controller;
 use \think\Request;
-use \think\Db;
 use \think\Session;
 use \think\Controller;
-
-class Recharge extends Controller{
+use \app\common\controller\CommonController;
+class Recharge extends CommonController{
     public function index(){
          if(Request::instance()->isGet()){
             Session::set("userid",1); //测试用，记得删除！

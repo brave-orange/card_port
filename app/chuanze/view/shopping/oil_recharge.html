@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>兑换积分</title>
+    <title>油卡充值</title>
     <!-- <link rel="stylesheet" href="css/reset.css"> -->
     <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
     <link rel="stylesheet" href="__STATIC__/css/animate.min.css">
@@ -16,6 +16,7 @@
     <style>
         .qq_ser{position: fixed;top: 100px;right: 90px}
         .fa-exclamation{color: #f00;display: none}
+
     </style>
 </head>
 <body>
@@ -38,7 +39,8 @@
             <span>功能选择</span>
             <ul class="first_menu">
                 <li><a href="recharge">兑入积分</a></li>
-                <li><a href="javascript:void(0)" style="width: 100%" class="angle_down">
+                    <li>
+                    <a href="javascript:void(0)" style="width: 100%" class="angle_down">
                     商品充值
                     <i class="fa fa-angle-down" aria-hidden="true"></i>
                     </a> 
@@ -55,29 +57,26 @@
             <p class="menu_son"></p>
             <div class="jifen_title">
                 <div class="con_title titleActive">
-                    <span>积分充值</span>
+                    <span>油卡充值</span>
                 </div>
                 <div class="con_title">
-                    <span>历史查询</span>
+                    <span>充值记录</span>
                 </div>
             </div>
             <div class="oil_con">
                 <div >
-                    <p>话费积分余额：<span>{$balance.hf}分</span></p>
-                    <p id="hf">话费积分兑换：
-                        <input type="text" class="card_num"  placeholder="卡号">
-                        <i class="fa fa-exclamation" aria-hidden="true"></i> 
-                        <button type="button"  class="sure" onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                    <p>账户余额：<span>{$balance}分</span></p>
+                    <p style="margin-left: -12px">充值油卡号：<input type="text" name="cardnum" onchange="nube($(this))"><i class="fa fa-exclamation"></i></p>
+                    <p class="flex-box flex-col-c jin_e">充值金额：
+                        <label class="flex-box flex-col-c"><input type="radio" value="100" name="jine" checked><span>100元</span></label>   
+                        <label class="flex-box flex-col-c"><input type="radio" value="200" name="jine"><span>200元</span></label>   
+                        <label class="flex-box flex-col-c"><input type="radio" value="500" name="jine"><span>500元</span></label>   
+
                     </p>
-
-                    <p>油卡积分余额：<span>{$balance.yk}分</span></p>
-                    <p id="yk">油卡积分兑换：
-                        <input type="text" class="card_num" placeholder="卡号">
-                        <i class="fa fa-exclamation" aria-hidden="true"></i>
-                        <button type="button"  class="sure"  onclick="nube($(this))" style="margin-left: 50px">兑换</button>
+                    <p class="pa_left">
+                        <button type="button" class="sure">确认充值</button>
+                        <button type="button">取消</button>
                     </p>
-
-
                 </div>   
                 <div class="hide">
                     <div>起止日期：</div>
@@ -91,7 +90,9 @@
                             <button type="button" class="addOn"></button>
                         </div>
                     </div>
-
+                    <div class="form_num">
+                        充值号码：<br/><input type="text" name="telnumber" onchange="tels($(this))" class="formCtrl" placeholder="请输入电话号码">
+                    </div>
                     <button type="button" class="real_pay" style="margin-top:30px;padding:7px 20px;background: skyblue; color: #FFF">查询</button>
                     <p class="borderTop"></p>
 
@@ -114,78 +115,62 @@
         </map>
     </div>
 </body>
-
-
-
 <script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
 <script src="__STATIC__/layer/layer.js"></script>
 <script src="__STATIC__/js/moment.js"></script>
 <script src="__STATIC__/js/bootstrap-datetimepicker.js"></script>
 <script src="__STATIC__/js/common.js"></script>
 <script>
-    // 提交
+$(function(){
+     $(".sure").click(function(){
+        var cardNum = $("input[name='cardnum']").val();
+        if(cardNum != ""){
+            $("input[name='cardnum']").siblings(".fa-exclamation").hide();
+            $.ajax({
+                url:"",
+                type:"POST",
+                data:{},
+                beforeSend:function(){
+                    layer.msg("正在充值...请稍候")
+                },
+                success:function(res){
 
-    function sure(key,val,type){
-        $.ajax({
-            url:"{:url('index/index/card_recharge')}",
-            type:"POST",
-            data:{card_no:key,password:val,type:type},
-            success:function(res){
-                var oRes = JSON.parse(res);
-                if(oRes.status == "success"){
-                    layer.alert("恭喜充值成功！")
-                }else{
-
-                    layer.alert(oRes.msg);
                 }
-            }
-        })
+            })
+        }else{
+            $("input[name='cardnum']").siblings(".fa-exclamation").show();
+        }
+    })
+})
+
+
+// <!-- 起止时间 -->
+if($(".iDate.date").length>0){
+        $(".iDate.date").datetimepicker({
+            locale:"zh-cn",
+            format:"YYYY-MM-DD",
+            dayViewHeaderFormat:"YYYY年 MMMM"
+        });
     }
-
-
     // 关闭客服
+
     $(".close").click(function(){
         $(".qq_ser").hide();
     })
-// <!-- 卡号和密码验证及提交 -->
+
+    // <!-- 正整数验证 -->
 var  num = /^[1-9]\d*$/;
 function nube(obj){
-    var oBj = obj.siblings(".card_num");
-    var number = oBj.val();
-    var type = obj.parent().attr("id");
-
-    if(!(num.test(number) && number.length== 23)){
-        // obj.val("");
-        oBj.siblings(".fa-exclamation").show();
-        layer.msg("请输入正确的卡号！");
+    var number = obj.val();
+    if(!num.test(number)){
+        obj.val("");
+        obj.siblings(".fa-exclamation").show();
         return false;
+       
     }else{
-        oBj.siblings(".fa-exclamation").hide();
-        $.ajax({
-            url:"{:url('index/index/cardcheck')}",
-            type:"post",
-            data:{card_no:number},
-             success:function(res){
-                res = JSON.parse(res);
-                if(res.status == "success"){
-                    layer.prompt({  //密码
-                        value: '',
-                        title: '请输入密码',
-                        }, function(value, index, elem){
-                        sure(number,value,type);
-                        layer.close(index);
-                    });
-                }else{
-                    layer.msg(res.msg);
-                    return false;
-                }
-            }
-        })
-        
-        
+        obj.siblings(".fa-exclamation").hide();
     }
 }
-
     // 手机号码
     // var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
     // function tels(obj){
