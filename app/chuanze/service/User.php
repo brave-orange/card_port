@@ -1,22 +1,22 @@
 <?php
-namespace app\user\service;
-use think\Model;
+namespace app\chuanze\service;
+// use think\Model;
 use lib\api_demo\SmsDemo;
-use app\user\model\User as UserModel;
-class User
-{	
+use app\chuanze\model\User as UserModel;
+class User extends UserModel{	
 	//注册
 	public function	register(){
-		if(input("param.phone") && input("param.password")){
-			$phone=input("param.phone");
+		
+		if(input("param.tel") && input("param.password")){
+			$phone=input("param.tel");
 			$password=md6(input("param.password"));
-			$user=new UserModel();
+			$user=new User();
 			if(!$user->selname($phone)){
 				if($user->adduser($phone,$password)){
-					return "注册成功";
+				 return 1;
 				}
 			}else{
-				return "电话号码以重复";
+				 return 0;
 			}
 		}
 	}

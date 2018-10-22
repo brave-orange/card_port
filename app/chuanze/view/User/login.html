@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
-    <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="__USER__/css/style.css">
-    <link rel="stylesheet" href="__USER__/css/ssbase.css">
-    <link rel="stylesheet" href="__USER__/css/animate.min.css">
-    <link rel="stylesheet" href="__USER__/css/bootstrap.min.css">
-    <link rel="stylesheet" href="__USER__/css/font-awesome.min.css">
+   <!--  <link rel="stylesheet" href="__STATIC__/css/reset.css"> -->
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/animate.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/font-awesome.min.css">
     <style>
         body,html{background: #f5f5f5}
         .input-group{margin-top: 20px}
@@ -20,7 +20,7 @@
 <body>
     <div class="con_body">
         <div class="flex-box flex-b flex-col-c ">
-            <img src="images/logo.png" style="width:70% " alt="">
+            <img src="__STATIC__/images/logo.png" style="width:70% " alt="">
         </div>
         <div class="input-group">
             <span class="input-group-addon">
@@ -43,7 +43,8 @@
         </div>
     </div>
 </body>
-<script src="js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
 <script>
 $(function(){
     $(".login_btn").click(function(){
@@ -52,11 +53,21 @@ $(function(){
         tels(tel);
         if(telnumber && psw != ""){
             $.ajax({
-                url:"",
+                url:"{:url('user/dologin')}",
                 type:"POST",
-                data:{},
-                success:function(){
-                    // do...
+                data:{phone:telnumber,password:psw},
+                success:function(res){
+                    if(res){
+                        res=JSON.parse(res);
+                        layer.alert(res.msg,function(index){
+                            layer.close(index);
+                        })
+                    }else{
+                        layer.alert(res.msg,function(index){
+                            layer.close(index);
+                            window.location.href="";
+                        })
+                    }
                 }
             })
         }
@@ -70,6 +81,8 @@ $(function(){
             alert("手机号输入有误");
             obj.val("");
             return false;
+        }else{
+            return true;
         }
     }
     // 
