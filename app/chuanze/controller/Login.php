@@ -13,6 +13,7 @@ class Login extends controller
  			$user=model('user','model')->seluser($phone,$password);
  			if($user){
  				Session::set('phone',$user['phone']);
+                Session::set('userid',$user['userid']);
  			}
  		}
  	}

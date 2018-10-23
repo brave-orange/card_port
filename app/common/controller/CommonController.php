@@ -10,10 +10,10 @@ class CommonController extends Controller
 {
     public function _initialize()
     {
-       /* if (Request::instance()->isGet()){
-           / if(NULL == Session::get('userid')) {
+        if (Request::instance()->isGet()){
+            if(NULL == Session::get('userid')) {
                 
-                $this->redirect('chuanze/Login/index');
+                $this->redirect('login');
                 //没登陆，跳转到登陆页
             }
         }else if (Request::instance()->isPost()){
@@ -21,7 +21,7 @@ class CommonController extends Controller
                 $this->error(["code"=>0,"msg"=>"未登录状态无法调用！"]);
 
             }
-        }*/
+        }
 
     }
 }

@@ -32,7 +32,7 @@ class User
  			$user=model('user','model')->seluser($phone,$password);
  			if($user){
  				  Session::set('phone',$user['phone']);
-                  Session::set('id',$user['id']);
+                  Session::set('userid',$user['id']);
                   return json($status="success",$msg="登录成功！");
  			}else{
                   return json($status="error",$msg="账号或密码错误！");

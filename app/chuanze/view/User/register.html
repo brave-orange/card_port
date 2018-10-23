@@ -24,7 +24,7 @@
     <div class="con_body">
         <div class="flex-box flex-b flex-col-c login_reg">
             <img src="__STATIC__/images/logo.png" width="50%" alt="">
-            <h4><span>已有账号？去</span><a href="{:url('User/login')}">登录</a></h4>
+            <h4><span>已有账号？去</span><a href="login">登录</a></h4>
         </div>
         <div class="input-group">
             <span class="input-group-addon">
@@ -51,14 +51,16 @@
             </span>
             <input type="password" name="password2" onchange="psw()" class="form-control" placeholder="请输入密码">
         </div>
-        <div class="input-group register_btn">
-            注&nbsp;&nbsp;&nbsp;&nbsp;册
-        </div>
+        <a href="javascript:void(0)">
+            <div class="input-group register_btn" >
+                注&nbsp;&nbsp;&nbsp;&nbsp;册
+            </div>
+        </a>
     </div>
     <input type="hidden" name="hiyzm">
 </body>
 <script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
-<script scr="__STATIC__/layer/layer.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
 <script>
      var newyzm="0";
      // 验证码
@@ -116,7 +118,7 @@
       return true;
     }
     //验证码倒计时
-    var count = 6;
+    var count = 60;
  
     $(".send_info").on("click",function(){
         var tel = $("input[name='tel']").val();
@@ -165,7 +167,7 @@
                             if(res){
                         layer.msg("注册成功,请登录");
                             setTimeout(function(){
-                             window.location.href = "{:url('User/login')}";
+                             window.location.href = "login";
                                 },1000)
                             }else{
                         layer.msg("账号以重复！");

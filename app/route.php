@@ -21,6 +21,11 @@ return [
     'recharge'    => 'chuanze/recharge/index',
     'tel_recharge'=> 'chuanze/shopping/tel_recharge',
     'oil_recharge'=> 'chuanze/shopping/oil_recharge',
-    'givemefile'    => 'chuanze/download/download'
+    'myself'      =>  '',        //个人中心
+    'givemefile'  => 'chuanze/download/download',    //下载文件路由
+    'login'       => 'chuanze/user/login',
+    'register'    => 'chuanze/user/register',
+    'forgetPsw'   => 'chuanze/user/forgetPsw'
+
 
 ];

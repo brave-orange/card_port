@@ -1,6 +1,6 @@
 <?php
 
-namespace app\user\model;
+namespace app\chuanze\model;
 use think\Model;
 use think\Db;
 class DownloadRecord extends Model{
@@ -14,6 +14,9 @@ class DownloadRecord extends Model{
     }
     public function getDownload_num($filename){     //下载次数
         return $this->where(['file_name'=>$filename])->count();
+    }
+    public function getDownloadIP_num($filename){     //下载ip数
+        return $this->where(['file_name'=>$filename])->group('ip')->count();
     }
 
     

@@ -59,6 +59,8 @@ function user_balance($userid){    //通过充值和消费计算用户余额
         //$type[] = $v;
         $balance[$v['type']] = 0;
     }                   //取出各种类型
+    $balance['hf'] = 0;
+    $balance['yk'] = 0;
     unset($res);
     $res = model("RechargeRecord")->where(['userid'=>$userid])->group('type')->field('type,sum(money) as money')->select();
     foreach($res as $key=>$value){

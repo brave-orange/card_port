@@ -32,13 +32,15 @@
             <span class="input-group-addon">
                 <i class="fa fa-lock" aria-hidden="true"></i>
             </span>
-            <input type="password" name="psw" class="form-control" placeholder="请输入密码">
+            <input type="password" name="psw" id="pwd" class="form-control" placeholder="请输入密码">
         </div>
         <div class="input-group login_btn">
             登&nbsp;&nbsp;&nbsp;&nbsp;录
         </div>
+
         <div class="forgot flex-box flex-b">
             <span>&nbsp;</span>
+            <a href="register" style="padding: 0 0 0 15rem">注册</a><span style="color: black;padding: 1.6rem 0 0rem 0.5rem">/</span>
             <a href="#">忘记密码？</a>
         </div>
     </div>
@@ -57,15 +59,15 @@ $(function(){
                 type:"POST",
                 data:{phone:telnumber,password:psw},
                 success:function(res){
-                    if(res){
-                        res=JSON.parse(res);
-                        layer.alert(res.msg,function(index){
-                            layer.close(index);
-                        })
+                    res=JSON.parse(res);
+                    if(res.status == "success"){
+                        layer.msg(res.msg)
+                        window.location.href="recharge";
+                        
                     }else{
                         layer.alert(res.msg,function(index){
                             layer.close(index);
-                            window.location.href="";
+                            $('#id').val("");
                         })
                     }
                 }

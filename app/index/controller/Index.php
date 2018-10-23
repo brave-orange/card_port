@@ -70,7 +70,7 @@ class Index
                 model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
                 Session::set('token','');
 
-                return $_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename);
+                return $_SERVER['SERVER_NAME'].'/givemefile/'.str_replace('.xlsx', '.zip', $filename);
             }
             return json('error','系统出错，请联系管理人员！',$msg_status);
             
@@ -99,11 +99,14 @@ class Index
 
 
     public function card_recharge(){    //使用充值卡充值
-        Session::set('userid','1');      //测试用，登录功能完成后删除
+        //Session::set('userid','1');      //测试用，登录功能完成后删除
         if(Request::instance()->isPost()){
             $card_no = input('param.card_no');
             $password = input('param.password');
             $type = input('param.type');
+            if("" == Session::get('userid')){
+                return json('error','当前为未登录状态！');
+            }
             if(strlen($card_no) != 23){
                 return json('error','该充值卡不存在，请检查卡号');
             }
@@ -140,7 +143,18 @@ class Index
             }
         }
     }
+    public function recharge_log(){
+        if(Request::instance()->isPost()){
+            $userid = Session::get("userid");
+            $log = model('RechargeRecord','service')->getLog($userid);
+            if($log){
+                return json('success','查询成功！',$log);
+            }else{
+                return json('error','无记录！',$log);
+            }
 
+        }
+    }
     
     public function test(){
         //return json_encode(user_balance(1));
