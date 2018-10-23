@@ -6,7 +6,8 @@ namespace app\chuanze\controller;
 use \think\Request;
 use \think\Session;
 use \think\Controller;
-use \app\common\controller\BusineseController;
+
+//use \app\common\controller\BusineseController;
 class Download{
     public function download(){
         if(Request::instance()->isGet()){
