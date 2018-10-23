@@ -14,6 +14,7 @@ class Download{
             $filename = input('param.dfile');
             $ip = $_SERVER["REMOTE_ADDR"];
             //$businese_man = Session::get("businese_man");
+            $businese_man = input('param.man');
             $time = date("Y-m-d H:i:s");
             if($filename == ""){
                 return json('error','文件名为空');
@@ -25,7 +26,8 @@ class Download{
                 if(model('Download','service')->download($filename)){
                     // 打开文件
                     $file1 = fopen($file_dir, "r");
-                    if(file1){
+                    if($file1){
+                        model('DownloadRecord')->insert(['file_name'=>$filename,'businese_man'=>$businese_man,'ip'=>$ip,'time'=>$time]);
                         Header("Content-type: application/octet-stream");
                         Header("Accept-Ranges: bytes");
                         Header("Accept-Length:".filesize($file_dir));
@@ -35,7 +37,7 @@ class Download{
                         
                         echo fread($file1, filesize($file_dir));
                         fclose($file1);
-                        model('DownloadRecord')->insert(['file_name'=>$filename,'businese_man'=>$businese_man,'ip'=>$ip,'time'=>$time]);
+                        
                         return json('success','下载完成。');
                     }else{
                         return json('error','系统出错！');

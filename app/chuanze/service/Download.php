@@ -1,5 +1,5 @@
 <?php
-namespace app\chuanze\model;
+namespace app\chuanze\service;
 use think\Model;
 use think\Db;
 class Download extends Model{
