@@ -18,7 +18,7 @@ class Shopping extends CommonController{
             return $this->assign(array('balance'=>$balance['hf']))->fetch();
         }
     }
-    public function oil_recharge(){    //充话费
+    public function oil_recharge(){    //充油卡
         if(Request::instance()->isGet()){
             $userid = Session::get("userid");
             $balance = user_balance($userid);
