@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+   <!--  <link rel="stylesheet" href="__STATIC__/css/reset.css"> -->
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/animate.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/font-awesome.min.css">
+    <style>
+        body,html{background: #f5f5f5}
+        .input-group{margin-top: 20px}
+        
+    </style>
+</head>
+<body>
+    <div class="con_body">
+        <div class="flex-box flex-b flex-col-c ">
+            <img src="__STATIC__/images/logo.png" style="width:70% " alt="">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+            </span>
+            <input type="text" class="form-control" name="tel" onchange="tels($(this))" placeholder="请输入手机号">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+            <input type="password" name="psw" id="pwd" class="form-control" placeholder="请输入密码">
+        </div>
+        <div class="input-group login_btn">
+            登&nbsp;&nbsp;&nbsp;&nbsp;录
+        </div>
+
+        <div class="forgot flex-box flex-b">
+            <span>&nbsp;</span>
+            <a href="register" style="padding: 0 0 0 15rem">注册</a><span style="color: black;padding: 1.6rem 0 0rem 0.5rem">/</span>
+            <a href="#">忘记密码？</a>
+        </div>
+    </div>
+</body>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<script>
+$(function(){
+    $(".login_btn").click(function(){
+        var tel = $("input[name='tel']"),psw = $("input[name='psw']").val();
+        var telnumber = tel.val();
+        tels(tel);
+        if(telnumber && psw != ""){
+            $.ajax({
+                url:"{:url('user/dologin')}",
+                type:"POST",
+                data:{phone:telnumber,password:psw},
+                success:function(res){
+                    res=JSON.parse(res);
+                    if(res.status == "success"){
+                        layer.msg(res.msg)
+                        window.location.href="recharge";
+                        
+                    }else{
+                        layer.alert(res.msg,function(index){
+                            layer.close(index);
+                            $('#id').val("");
+                        })
+                    }
+                }
+            })
+        }
+    })
+})
+    // 手机号码
+    var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    function tels(obj){
+        var tel = obj.val();
+        if(!mobile.test(tel)){
+            alert("手机号输入有误");
+            obj.val("");
+            return false;
+        }else{
+            return true;
+        }
+    }
+    // 
+</script>
+</html>
