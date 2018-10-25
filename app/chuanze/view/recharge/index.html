@@ -172,6 +172,9 @@
                         })
                         
                        
+                    }else if (res.status == "error"){
+                        $(".serach_data").find("li").remove();
+                        layer.msg(res.msg);
                     }
                 }
 
