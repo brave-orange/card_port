@@ -42,7 +42,6 @@ class Download{
                     }else{
                         return json('error','系统出错！');
                     }
-                    
                 }else{
                     return json('error','下载次数超过限制，请联系管理员。');
                 }

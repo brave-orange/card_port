@@ -6,6 +6,7 @@ use app\common\Cards;
 use \think\Request;
 use \think\Db;
 use \think\Session;
+use think\Cache; 
 class Index
 {
     public function index()
@@ -45,7 +46,7 @@ class Index
             $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
             $check_num = create_token(2);//文件区分校验位
             $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
-            if(1 == $msg_status){         //发送的号码后期更改
+            if(1 == $msg_status){         
                 $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
                 if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
                     $re = model("Card")->insertAll(json_decode($res).data);
@@ -61,7 +62,7 @@ class Index
                 }
 
                 $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date('md').'.xlsx';
+                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".'.xlsx';
                 $path = $path.'/'.$filename;
                 $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
                 $PHPWriter->save($path); 
@@ -77,7 +78,7 @@ class Index
         }
     }
 
-    public function api_token(){           //动态token验证
+    public function api_token(){           //动态token验证 //加入运营人员登陆后改为cache存储token
         if(Request::instance()->isGet()){
             $comp_id = input('param.comp_id');
             $key = input('param.key');
@@ -174,7 +175,7 @@ class Index
         dump($status);
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
          */
-        return SendMessage('18012776312','ss','wefdsgrf');
+        //return SendMessage('18012776312','ss','wefdsgrf');
         
     }
     public function test1(){
