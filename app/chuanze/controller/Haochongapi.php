@@ -1,7 +1,8 @@
 <?php
 namespace app\chuanze\controller;
 use app\common\HaoChong as HC;
-class HaoChong{
+use \think\Request;
+class Haochongapi{
     public function index(){
         if(Request::instance()->isPost()){
             $userid = input('param.userid');
@@ -17,6 +18,8 @@ class HaoChong{
                 //存入数据库
             }
 
+        }else{
+            return HC::$key;
         }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace app\user;
+namespace app\chauzne\controller;
 
 use \think\Request;
 use \think\controller;
