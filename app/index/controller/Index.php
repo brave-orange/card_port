@@ -2,7 +2,9 @@
 namespace app\index\controller;
 use PHPExcel;
 use PHPExcel_IOFactory;
+use SimpleXMLElement;
 use app\common\Cards;
+use app\common\HaoChong;
 use \think\Request;
 use \think\Db;
 use \think\Session;
@@ -90,7 +92,6 @@ class Index
                 $token = create_token(8);
                 Session::set('token',$token);
                 return $token;
-
             }else{
                 return json('error','参数错误！');
             }
@@ -115,7 +116,7 @@ class Index
                 $c = model('Card','service')->check_passwd($card_no,$password);
                 if($c){
                     if(!model('Card','service')->check_type($card_no,$type)){
-                        return json('error','次充值卡并非此用途，请查正后在进行充值!');
+                        return json('error','此充值卡并非此用途，请查正后在进行充值!');
                     }
                     if( model('RechargeRecord','service')->addRecord($card_no,$type)){//插入充值记录
                         model('Card','service')->recharge($card_no);
@@ -176,7 +177,12 @@ class Index
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
          */
         //return SendMessage('18012776312','ss','wefdsgrf');
-        
+        $hc = new HaoChong();
+        //$res = $hc->recharge("18012776312",100,"00000000001");
+        $res = $hc->getBalance();
+        $xml_res = new SimpleXMLElement($res);
+        //dump($xml_res->resultno);
+        dump(config('haochong_status')[''.$xml_res->resultno]);
     }
     public function test1(){
         Session::set("aaa",123);
@@ -185,4 +191,3 @@ class Index
 
 
 }
-

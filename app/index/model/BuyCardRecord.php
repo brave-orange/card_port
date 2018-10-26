@@ -12,4 +12,10 @@ class BuyCardRecord extends Model{
         }
         return $b->save();
     }
+    public function getRecords($o_man){   //获取运营人员所生成的积分卡数据
+        return $this->where(['opeart_man'=>$o_man])->select();
+    }
+    public function getRecordsBytime($o_man,$start,$end){
+        return $this->where(['opeart_man'=>$o_man,'time'=>['between'=>[$start,$end]]])->select();
+    }
 }
