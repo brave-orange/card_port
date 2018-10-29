@@ -177,12 +177,13 @@ class Index
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
          */
         //return SendMessage('18012776312','ss','wefdsgrf');
-        $hc = new HaoChong();
+        //$hc = new HaoChong();
         //$res = $hc->recharge("18012776312",100,"00000000001");
-        $res = $hc->getBalance();
-        $xml_res = new SimpleXMLElement($res);
-        dump($xml_res->resultno);
-        dump(config('haochong_status')[''.$xml_res->resultno]);
+        //$res = $hc->getBalance();
+        //$xml_res = new SimpleXMLElement($res);
+        //dump($xml_res->resultno);
+        //dump(config('haochong_status')['0']);
+        
     }
     public function test1(){
         Session::set("aaa",123);

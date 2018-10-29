@@ -49,6 +49,12 @@ function SendMessage($tel,$filename,$message){
     return $response;
 
 }
+function SendWarring($tel,$time,$phone,$money){
+    $SmsDemo = new sendFilePsw();
+    $response = $SmsDemo->sendPasswd($tel,$filename,$message);
+    return $response;
+
+}
 
 
 function user_balance($userid){    //通过充值和消费计算用户余额
