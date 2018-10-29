@@ -6,7 +6,7 @@ use \think\Session;
 use SimpleXMLElement;
 class Haochongapi{
     public function backapi(){      //提供给好充的回调接口
-        if(Request::instance()->isGet()){
+        if(Request::instance()->isPost()){
             $userid = input('param.userid');    
             $orderid = input('param.orderid');    
             $sporderid = input('param.sporderid');    
