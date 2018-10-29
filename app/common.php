@@ -12,6 +12,7 @@
 // 应用公共文件
 // 
 use lib\api_demo\sendFilePsw;
+use lib\api_demo\sendFail;
 function json($status,$msg="",$data=array()){
   $result=array(
    'status'=>$status,
@@ -49,6 +50,12 @@ function SendMessage($tel,$filename,$message){
     return $response;
 
 }
+function SendWarring($tel,$time,$phone,$money){
+    $SmsDemo = new sendFail();
+    $response = $SmsDemo->sendWarring($tel,$time,$phone,$money);
+    return $response;
+
+}
 
 
 function user_balance($userid){    //通过充值和消费计算用户余额
@@ -67,7 +74,7 @@ function user_balance($userid){    //通过充值和消费计算用户余额
         $balance[$value['type']] = (int)$value['money'];
     }                                  //充值的钱
     unset($res);
-    $res = model("OrderRecord")->where(['userid'=>$userid])->group('order_type')->field('order_type,sum(money) as money')->select();
+    $res = model("OrderRecord")->where(['userid'=>$userid,'status'=>'1'])->group('order_type')->field('order_type,sum(money) as money')->select();
 
     foreach($res as $key=>$value){
         $balance[$value['order_type']] -= (int)$value['money'];

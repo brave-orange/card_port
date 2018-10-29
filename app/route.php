@@ -26,7 +26,9 @@ return [
     'login'       => 'chuanze/user/login',
     'register'    => 'chuanze/user/register',
     'forgetPsw'   => 'chuanze/user/forgetPsw',
-    'telpay'      => 'chuanze/Haochongapi/tel_pay'
+    'telpay'      => 'chuanze/Haochongapi/tel_pay',
+    'backapi'     => 'chuanze/Haochongapi/backapi',
+    'haochongbalance' => 'chuanze/Haochongapi/HaochongBalance'
 
 
 ];
