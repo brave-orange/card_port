@@ -82,7 +82,7 @@ class Haochongapi{
     public function HaochongBalance(){
         $hc = new HC();
         $res = $hc->getBalance();
-        //$xml_res = new SimpleXMLElement($res);
+        $xml_res = new SimpleXMLElement($res);
         dump($res);
     }  
     public function test(){
