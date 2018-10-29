@@ -83,7 +83,8 @@ class Haochongapi{
         $hc = new HC();
         $res = $hc->getBalance();
         $xml_res = new SimpleXMLElement($res);
-        dump($res);
+        dump($xml_res);
+        return json('success',"",array('balance'=>$xml_res['balance']));
     }  
     public function test(){
             $hco = model("HaochongOrder")->where(['orderid'=>"EC18102900002932"])->find();
