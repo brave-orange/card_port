@@ -6,7 +6,7 @@ use \think\Session;
 use SimpleXMLElement;
 class Haochongapi{
     public function backapi(){      //提供给好充的回调接口
-        if(Request::instance()->isPost()){
+        if(Request::instance()->isGet()){
             $userid = input('param.userid');    
             $orderid = input('param.orderid');    
             $sporderid = input('param.sporderid');    
@@ -19,13 +19,16 @@ class Haochongapi{
             if($sign == $token ){
                 if((int)$resultno != 1){
                     $order = model('OrderRecord')->where(['id'=>$sporderid])->find();
-                    $user = model('user')->where(['userid'=>$order['userid']])->find();
+                    $user = model('user')->where(['id'=>$order['userid']])->find();
                     $user_phone = $user['phone'];
                     unset($user);
                     $hco = model("HaochongOrder")->where(['orderid'=>$orderid])->find();
                     $hco['result'] = config('haochong_status')[''.$resultno];
                     $hco['merchantsubmittime'] = $merchantsubmittime;
+
                     SendWarring($user_phone,$order['time'],$hco['mobile'],$order['money']);
+                    $order['status'] = 0;
+                    $order->save();
                     $hco->save();
                       //发信息
                 }else{
@@ -40,8 +43,6 @@ class Haochongapi{
                 return "data is broken!";
             }
 
-        }else{
-            return HC::$key;
         }
     }
     public function tel_pay(){    //充话费接口
@@ -67,7 +68,7 @@ class Haochongapi{
             model('HaochongOrder')->insert(['orderid'=>$xml_res->orderid,'sporderid'=>$xml_res->sporderid,'ordercash'=>$xml_res->ordercash,'productname'=>$xml_res->productname,'mobile'=>$xml_res->mobile,'merchantsubmittime'=>$xml_res->merchantsubmittime,'result'=>config('haochong_status')[''.$xml_res->resultno]]);
             dump($xml_res);
             if($status <= 2){
-                model("OrderRecord")->insert(['id'=>$orderid,'goodid'=>' ','userid'=>$userid,'order_type'=>'hf','time'=>date("Y-m-d H:i:s"),'money'=>$money]);
+                model("OrderRecord")->insert(['id'=>$orderid,'goodid'=>' ','userid'=>$userid,'order_type'=>'hf','time'=>date("Y-m-d H:i:s"),'money'=>$money,'status'=>1]);
                 return json('success','充值成功请等待通知！');
             }else{
                 

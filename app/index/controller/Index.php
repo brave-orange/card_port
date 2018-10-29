@@ -185,6 +185,7 @@ class Index
         //$xml_res = new SimpleXMLElement($res);
         //dump($xml_res->resultno);
         //dump(config('haochong_status')['0']);
+        SendWarring("18012776312","hfudsighu","18012776312","123");
         
     }
     public function test1(){
