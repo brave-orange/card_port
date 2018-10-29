@@ -7,7 +7,7 @@ use SimpleXMLElement;
 class Haochongapi{
     public function backapi(){      //提供给好充的回调接口
         if(Request::instance()->isPost()){
-            SendWarring('18012776312','241414','463786','4134214');
+
             $userid = input('param.userid');    
             $orderid = input('param.orderid');    
             $sporderid = input('param.sporderid');    
@@ -18,6 +18,7 @@ class Haochongapi{
             $fundbalance = input('param.fundbalance');
             $token = md5("userid=".$userid."&orderid=".$orderid."&sporderid=".$sporderid."&merchantsubmittime=".$merchantsubmittime."&resultno=".$resultno."&key=".HC::$key);
             if($sign == $token ){
+                SendWarring('18012776312','241414','463786','4134214');
                 if((int)$resultno != 1){
                     $order = model('OrderRecord')->where(['id'=>$sporderid])->find();
                     $user = model('user')->where(['id'=>$order['userid']])->find();
@@ -41,6 +42,7 @@ class Haochongapi{
                 }
                 
             }else{
+                SendWarring('18012776312','这他妈','错了','吗');
                 return "data is broken!";
             }
 
