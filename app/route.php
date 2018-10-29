@@ -25,7 +25,8 @@ return [
     'givemefile'  => 'chuanze/download/download',    //下载文件路由
     'login'       => 'chuanze/user/login',
     'register'    => 'chuanze/user/register',
-    'forgetPsw'   => 'chuanze/user/forgetPsw'
+    'forgetPsw'   => 'chuanze/user/forgetPsw',
+    'telpay'      => 'chuanze/Haochongapi/tel_pay'
 
 
 ];

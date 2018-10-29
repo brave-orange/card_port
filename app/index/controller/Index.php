@@ -73,7 +73,7 @@ class Index
                 model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
                 Session::set('token','');
 
-                return $_SERVER['SERVER_NAME'].'/givemefile/'.str_replace('.xlsx', '.zip', $filename);
+                return $_SERVER['SERVER_NAME'].'/givemefile？dfile='.str_replace('.xlsx', '.zip', $filename);
             }
             return json('error','系统出错，请联系管理人员！',$msg_status);
             
@@ -181,7 +181,7 @@ class Index
         //$res = $hc->recharge("18012776312",100,"00000000001");
         $res = $hc->getBalance();
         $xml_res = new SimpleXMLElement($res);
-        //dump($xml_res->resultno);
+        dump($xml_res->resultno);
         dump(config('haochong_status')[''.$xml_res->resultno]);
     }
     public function test1(){

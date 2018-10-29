@@ -14,7 +14,13 @@ class HaoChong{
         $this->spordertime=date("Y-m-d H:i:s");
         
     }
-    public function recharge($phone,$value,$sporderid){
+      /**
+     * 充话费
+     * @param  string  $phone 手机号
+     * @param  int     $value 充值金额
+     * @return array   $sporderid   商家订单号
+     */
+    public function recharge($phone,$value,$sporderid){   
         $this->price = $value;
         $this->mobile = $phone;
         $this->sporderid = $sporderid;

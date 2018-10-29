@@ -11,8 +11,13 @@ class OrderRecord extends Model{
         return $c->save();
     }
 
-    public function GetRecordByUser($uid){
-        return $this->where(['userid'=>$uid])->select();
+    public function GetRecordByUser($uid,$type=''){
+        if($type == ''){
+            return $this->where(['userid'=>$uid])->select();
+        }else{
+            return $this->where(['userid'=>$uid,'order_type'=>$type])->select();
+        }
+        
     }
         public function GetRecordById($id){
         return $this->where(['id'=>$id])->find();
