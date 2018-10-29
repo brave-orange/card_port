@@ -42,7 +42,7 @@ class Haochongapi{
                 }
                 
             }else{
-                SendWarring('18012776312','这他妈','错了','吗');
+                SendWarring('18012776312','ceshi','ceshi','ceshi');
                 return "data is broken!";
             }
 
