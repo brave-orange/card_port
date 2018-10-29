@@ -20,7 +20,7 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            return 123;
+            var_dump(Session::get('token'));
             if(Session::get('token') == ""){
                 return json('error','请先获取token!');
             }
@@ -93,7 +93,13 @@ class Index
             if($t->where(['comp_id'=>$comp_id,'key'=>md5($key)])->find()){
                 $token = create_token(8);
                 Session::set('token',$token);
-                return $token;
+                $has=Seesion::has('token');
+                if($has){
+                    return $token;
+                }else{
+                    return $has;
+                }
+                // return $token;
             }else{
                 return json('error','参数错误！');
             }
