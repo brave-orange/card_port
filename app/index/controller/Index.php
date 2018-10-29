@@ -20,6 +20,7 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
+            var_dump(Session::get());
             if(Session::get('token') == ""){
                 return json('error','请先获取token!');
             }
