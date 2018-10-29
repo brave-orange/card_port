@@ -20,6 +20,7 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
+
             if(Session::get('token') == ""){
                 return json('error','请先获取token!');
             }
@@ -27,6 +28,7 @@ class Index
             if($company_code == '' || $num == '' || $fvalue == '' || $fvalue == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
+            return 123;
             if($key != $token){
                 return json('error','接口验证错误,请重试！');
             }
