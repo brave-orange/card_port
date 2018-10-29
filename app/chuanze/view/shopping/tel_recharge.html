@@ -66,7 +66,7 @@
             <div class="oil_con">
                 <div >
                     <p>账户余额：<span>{$balance}分</span></p>
-                    <p style="margin-left: -12px">充值手机号：<input type="text" name="telnumber" onchange="nube($(this))"><i class="fa fa-exclamation"></i></p>
+                    <p style="margin-left: -12px">充值手机号：<input type="text" name="cardnum" onchange="nube($(this))"><i class="fa fa-exclamation"></i></p>
                     <p class="flex-box flex-col-c jin_e">充值金额：
                         <label class="flex-box flex-col-c"><input type="radio" value="100" name="jine" checked><span>100元</span></label>   
                         <label class="flex-box flex-col-c"><input type="radio" value="200" name="jine"><span>200元</span></label>   
@@ -123,16 +123,27 @@
 $(function(){
      $(".sure").click(function(){
         var cardNum = $("input[name='cardnum']").val();
+        var money = $("input[name='jine']").val();
+        console.log(cardNum);
         if(cardNum != ""){
             $("input[name='cardnum']").siblings(".fa-exclamation").hide();
             $.ajax({
-                url:"",
+                url:"telpay",
                 type:"POST",
-                data:{},
+                data:{phone:cardNum,value:money},
                 beforeSend:function(){
-                    layer.msg("正在充值...请稍候")
+                    layer.msg("正在充值...请稍候",{time:1000})
                 },
                 success:function(res){
+                    var res = JSON.parse(res);
+                    if(res.status == "success"){
+                        layer.alert(res.msg,function(){
+                            window.location.reload()
+                        })
+                        
+                    }else{
+                        layer.alert(res.msg)
+                    }
 
                 }
             })
