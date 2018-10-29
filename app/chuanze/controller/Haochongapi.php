@@ -7,6 +7,7 @@ use SimpleXMLElement;
 class Haochongapi{
     public function backapi(){      //提供给好充的回调接口
         if(Request::instance()->isPost()){
+            SendWarring('18012776312','241414','463786','4134214');
             $userid = input('param.userid');    
             $orderid = input('param.orderid');    
             $sporderid = input('param.sporderid');    
@@ -26,11 +27,11 @@ class Haochongapi{
                     $hco['result'] = config('haochong_status')[''.$resultno];
                     $hco['merchantsubmittime'] = $merchantsubmittime;
 
-                    SendWarring($user_phone,$order['time'],$hco['mobile'],$order['money']);
+                    SendWarring($user_phone,$order['time'],$hco['mobile'],$order['money']);//发信息
                     $order['status'] = 0;
                     $order->save();
                     $hco->save();
-                      //发信息
+                      
                 }else{
                     $hco = model("HaochongOrder")->where(['orderid'=>$orderid])->find();
                     $hco['result'] = config('haochong_status')[''.$resultno];
