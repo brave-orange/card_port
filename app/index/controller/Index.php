@@ -20,6 +20,7 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
+            echo "456";
             var_dump(Cache::get('token'));
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
@@ -105,6 +106,7 @@ class Index
                 // ];
                 // Cache::connect($options);
                 if(Cache::set('token',$token,3600)){
+                    echo "123";
                     return $token;
                 }
                 
