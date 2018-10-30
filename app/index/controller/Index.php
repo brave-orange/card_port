@@ -23,15 +23,8 @@ class Index
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
-            var_dump(Cache::get('token'));
-            echo '--';
             var_dump($token);
             echo '--';
-            var_dump($company_code);
-            echo '--';
-            var_dump($num);
-            echo '--';
-            var_dump($fvalue);
             $key = md5($company_code.$num.$fvalue.Cache::get('token'));
             var_dump($key);
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
