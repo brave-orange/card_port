@@ -26,7 +26,9 @@ class Index
             var_dump(Cache::get('token'));
             echo '--';
             var_dump($token);
+            echo '--';
             $key = md5($company_code.$num.$fvalue.Cache::get('token'));
+            var_dump($key);
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
