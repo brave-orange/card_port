@@ -88,23 +88,11 @@ class Index
             $comp_id = input('param.comp_id');
             $key = input('param.key');
             if($key == '' || $comp_id == ''){
-                return json('error','参数错误！');
+                return json('error','未传参数错误！');
             }
             $t = Db::table('company_code');
-            if($t->where(['comp_id'=>$comp_id,'key'=>md5($key)])->find()){
+            if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token = create_token(8);
-                //Cache
-                // $options = [
-                //     // 缓存类型为File
-                //     'type'  =>  'File', 
-                //     // 缓存有效期为永久有效
-                //     'expire'=>  0, 
-                //     //缓存前缀
-                //     'prefix'=>  'think',
-                //      // 指定缓存目录
-                //     'path'  =>  APP_PATH.'runtime/cache/',
-                // ];
-                // Cache::connect($options);
                 if(Cache::set('token',$token,3600)){
                     echo "123";
                     return $token;
