@@ -23,13 +23,7 @@ class Index
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
-        
-            var_dump($token);
-            echo '--';
-            $str=$company_code.$num.$fvalue.Cache::get('token');
-            var_dump($str);
             $key = md5($company_code.$num.$fvalue.Cache::get('token'));
-            var_dump($key);
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
@@ -96,7 +90,7 @@ class Index
             }
             $t = Db::table('company_code');
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
-                $token = create_token(8);
+                $token =create_token(8);
                 Cache::rm('token'); 
                 if(Cache::set('token',$token,3600)){
                     return $token;
