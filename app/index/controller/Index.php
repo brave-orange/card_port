@@ -20,12 +20,13 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            echo "456";
-            var_dump(Cache::get('token'));
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
-            $key = md5($company_code.$num.$fvalue.Session::get('token'));
+            var_dump(Cache::get('token'));
+            echo '--';
+            var_dump($token);
+            $key = md5($company_code.$num.$fvalue.Cache::get('token'));
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
@@ -93,19 +94,10 @@ class Index
             $t = Db::table('company_code');
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token = create_token(8);
+                Cache::rm('token'); 
                 if(Cache::set('token',$token,3600)){
-                    echo "123";
                     return $token;
                 }
-                
-                // Session::set('token',$token);
-                // $has=Seesion::has('token');
-                // if($has){
-                //     return $token;
-                // }else{
-                //     return $has;
-                // }
-                // return $token;
             }else{
                 return json('error','参数错误！');
             }
