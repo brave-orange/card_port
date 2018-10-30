@@ -20,8 +20,8 @@ class Index
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            var_dump(Session::get('token'));
-            if(Session::get('token') == ""){
+            var_dump(Cache::get('token'));
+            if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
             $key = md5($company_code.$num.$fvalue.Session::get('token'));
@@ -73,7 +73,7 @@ class Index
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
                 model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
-                Session::set('token','');
+                Cache::rm('token');
 
                 return $_SERVER['SERVER_NAME'].'/givemefile？dfile='.str_replace('.xlsx', '.zip', $filename);
             }
@@ -92,13 +92,29 @@ class Index
             $t = Db::table('company_code');
             if($t->where(['comp_id'=>$comp_id,'key'=>md5($key)])->find()){
                 $token = create_token(8);
-                Session::set('token',$token);
-                $has=Seesion::has('token');
-                if($has){
+                //Cache
+                $options = [
+                    // 缓存类型为File
+                    'type'  =>  'File', 
+                    // 缓存有效期为永久有效
+                    'expire'=>  0, 
+                    //缓存前缀
+                    'prefix'=>  'think',
+                     // 指定缓存目录
+                    'path'  =>  APP_PATH.'runtime/cache/',
+                ];
+                Cache::connect($options);
+                if(Cache::set('token',$token,3600)){
                     return $token;
-                }else{
-                    return $has;
                 }
+                
+                // Session::set('token',$token);
+                // $has=Seesion::has('token');
+                // if($has){
+                //     return $token;
+                // }else{
+                //     return $has;
+                // }
                 // return $token;
             }else{
                 return json('error','参数错误！');
