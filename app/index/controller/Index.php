@@ -23,6 +23,7 @@ class Index
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
+            var_dump(Cache::get('token'));
             var_dump($token);
             echo '--';
             $key = md5($company_code.$num.$fvalue.Cache::get('token'));
