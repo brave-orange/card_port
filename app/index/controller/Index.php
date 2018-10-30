@@ -93,17 +93,17 @@ class Index
             if($t->where(['comp_id'=>$comp_id,'key'=>md5($key)])->find()){
                 $token = create_token(8);
                 //Cache
-                $options = [
-                    // 缓存类型为File
-                    'type'  =>  'File', 
-                    // 缓存有效期为永久有效
-                    'expire'=>  0, 
-                    //缓存前缀
-                    'prefix'=>  'think',
-                     // 指定缓存目录
-                    'path'  =>  APP_PATH.'runtime/cache/',
-                ];
-                Cache::connect($options);
+                // $options = [
+                //     // 缓存类型为File
+                //     'type'  =>  'File', 
+                //     // 缓存有效期为永久有效
+                //     'expire'=>  0, 
+                //     //缓存前缀
+                //     'prefix'=>  'think',
+                //      // 指定缓存目录
+                //     'path'  =>  APP_PATH.'runtime/cache/',
+                // ];
+                // Cache::connect($options);
                 if(Cache::set('token',$token,3600)){
                     return $token;
                 }
