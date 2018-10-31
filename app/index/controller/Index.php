@@ -74,7 +74,7 @@ class Index
                 model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
                 Cache::rm('token');
 
-                return $_SERVER['SERVER_NAME'].'/givemefile？dfile='.str_replace('.xlsx', '.zip', $filename);
+                return $_SERVER['SERVER_NAME'].'/givemefile?dfile='.str_replace('.xlsx', '.zip', $filename);
             }
             return json('error','系统出错，请联系管理人员！',$msg_status);
             
