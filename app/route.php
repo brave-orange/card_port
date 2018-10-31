@@ -28,7 +28,7 @@ return [
     'forgetPsw'   => 'chuanze/user/forgetPsw',
     'telpay'      => 'chuanze/Haochongapi/tel_pay',
     'backapi'     => 'chuanze/Haochongapi/backapi',
-    'haochongbalance' => 'chuanze/Haochongapi/HaochongBalance'
-
+    'haochongbalance' => 'chuanze/Haochongapi/HaochongBalance',
+    'zipapi'=>'index/index/zipapi'
 
 ];

@@ -11,9 +11,9 @@ use \think\Session;
 use think\Cache; 
 class Index
 {
-    public function index()
+    public function zipapi()
     {
-        if(Request::instance()->isGet()){
+        if(Request::instance()->isPost()){
             $company_code = input('param.code');
             $num = input('param.num');
             $fvalue = input('param.face_value');
