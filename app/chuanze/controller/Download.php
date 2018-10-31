@@ -11,6 +11,7 @@ use \think\Controller;
 class Download{
     public function download(){
         if(Request::instance()->isGet()){
+            set_time_limit(0);
             $filename = input('param.dfile');
             $ip = $_SERVER["REMOTE_ADDR"];
             //$businese_man = Session::get("businese_man");
@@ -30,14 +31,26 @@ class Download{
                         model('DownloadRecord')->insert(['file_name'=>$filename,'businese_man'=>$businese_man,'ip'=>$ip,'time'=>$time]);
                         Header("Content-type: application/octet-stream");
                         Header("Accept-Ranges: bytes");
-                        Header("Accept-Length:".filesize($file_dir));
+                        $filesize = filesize($file_dir);
+
+                        Header("Accept-Length:".$filesize);
                         Header("Content-Disposition: attachment;filename=" . $filename);
                         ob_clean();     // 重点！！！
                         flush();        // 重点！！！！可以清除文件中多余的路径名以及解决乱码的问题：
-                        
-                        echo fread($file1, filesize($file_dir));
+                        //echo fread($file1, filesize($file_dir));
+                        //fclose($file1);
+                        $read_buffer = 4096;
+                        //总的缓冲的字节数
+                        $sum_buffer=0;
+
+                        //只要没到文件尾，就一直读取
+                        while(!feof($file1) && $sum_buffer<$filesize) {           
+                            echo fread($file1,$read_buffer);
+                            $sum_buffer+=$read_buffer;
+                        }
+
+                        //关闭句柄
                         fclose($file1);
-                        
                         return json('success','下载完成。');
                     }else{
                         return json('error','系统出错！');

@@ -25,12 +25,10 @@ class Haochongapi{
                     $hco = model("HaochongOrder")->where(['orderid'=>$orderid])->find();
                     $hco['result'] = config('haochong_status')[''.$resultno];
                     $hco['merchantsubmittime'] = $merchantsubmittime;
-
                     SendWarring($user_phone,$order['time'],$hco['mobile'],$order['money']);//发信息
                     $order['status'] = 0;
                     $order->save();
                     $hco->save();
-                      
                 }else{
                     $hco = model("HaochongOrder")->where(['orderid'=>$orderid])->find();
                     $hco['result'] = config('haochong_status')[''.$resultno];
