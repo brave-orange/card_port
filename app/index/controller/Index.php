@@ -26,7 +26,7 @@ class Index
             if(Cache::get('token','') == ""){
                 return json('error','请先获取token!');
             }
-            $key = md5($company_code.$num.$fvalue.Cache::get('token'));
+            $key = md5($company_code.$num.$fvalue.Cache::get('token')[''.$operat_man]);
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
@@ -75,7 +75,9 @@ class Index
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
                 model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
-                Cache::rm('token');
+                $t = Cache::get('token');
+                $t[''.$operat_man] = "";
+                Cache::set('token',$t);
 
                 return $_SERVER['SERVER_NAME'].'/givemefile?dfile='.str_replace('.xlsx', '.zip', $filename);
             }
@@ -88,14 +90,20 @@ class Index
         if(Request::instance()->isPost()){
             $comp_id = input('param.comp_id');
             $key = input('param.key');
-            if($key == '' || $comp_id == ''){
+            $operat_man=input("param.operat_man");
+            if($key == '' || $comp_id == '' || $operat_man==''){
                 return json('error','未传参数错误！');
             }
             $t = Db::table('company_code');
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token =create_token(8);
-                Cache::rm('token'); 
-                if(Cache::set('token',$token,3600)){
+                $token_arr = Cache::get('token'); 
+                if(isset($token_arr)){
+                    $token[''.$operat_man] = $token;
+                }else{
+                    $token_arr = array(''.$operat_man => $token);
+                }
+                if(Cache::set('token',$token_arr,3600)){
                     return $token;
                 }
             }else{
