@@ -13,7 +13,7 @@ class CommonController extends Controller
         if (Request::instance()->isGet()){
             if(NULL == Session::get('userid')) {
                 
-                $this->redirect('login');
+                $this->redirect('/login');
                 //没登陆，跳转到登陆页
             }
         }else if (Request::instance()->isPost()){

@@ -11,6 +11,9 @@ use \think\Session;
 use think\Cache; 
 class Index
 {
+    public function index(){
+        $this->redirect('/recharge');
+    }
     public function zipapi()
     {
         if(Request::instance()->isPost()){
@@ -82,7 +85,7 @@ class Index
     }
 
     public function api_token(){           //动态token验证 //加入运营人员登陆后改为cache存储token
-        if(Request::instance()->isGet()){
+        if(Request::instance()->isPost()){
             $comp_id = input('param.comp_id');
             $key = input('param.key');
             if($key == '' || $comp_id == ''){
