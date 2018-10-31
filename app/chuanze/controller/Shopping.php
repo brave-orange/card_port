@@ -24,4 +24,13 @@ class Shopping extends CommonController{
             return $this->assign(array('balance'=>$balance['yk']))->fetch();
         }
     }
+    public function user_center(){    //个人中心
+        if(Request::instance()->isGet()){
+            //$userid = Session::get("userid");
+           // $balance = user_balance($userid);
+            //return $this->assign(array('balance'=>$balance['yk']))->fetch();
+            return view();
+        }
+    }
+
 }

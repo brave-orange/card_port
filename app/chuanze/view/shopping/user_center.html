@@ -57,24 +57,25 @@
             <p class="menu_son"></p>
             <div class="jifen_title">
                 <div class="con_title titleActive">
-                    <span>话费充值</span>
+                    <span>账号管理</span>
                 </div>
                 <div class="con_title">
-                    <span>充值记录</span>
+                    <span>月度记录</span>
+                </div>
+                <div class="con_title">
+                    <span>新产品预告</span>
                 </div>
             </div>
             <div class="oil_con">
                 <div >
-                    <p>账户余额：<span>{$balance}分</span></p>
-                    <p style="margin-left: -12px">充值手机号：<input type="text" name="cardnum" onchange="nube($(this))"><i class="fa fa-exclamation"></i></p>
-                    <p class="flex-box flex-col-c jin_e">充值金额：
-                        <label class="flex-box flex-col-c"><input type="radio" value="100" name="jine" checked><span>100元</span></label>   
-                        <label class="flex-box flex-col-c"><input type="radio" value="200" name="jine"><span>200元</span></label>   
-                        <label class="flex-box flex-col-c"><input type="radio" value="500" name="jine"><span>500元</span></label>   
+                    <p>个人账号：<input type="text" name="Number" value="122126814798" style="position: absolute;left: 150px;"></p>
+                    <p>有效期:<span style="position: absolute;left: 150px;">2019-12-31</span></p>
+                    <p>
+                        <span class="ZH_set">分帐户设置</span>
                     </p>
-                    <p class="pa_left">
-                        <button type="button" class="sure">确认充值</button>
-                        <button type="button">取消</button>
+                    <p class="pa_left" style="margin-top: 100px">
+                        <button type="button">退出</button>
+                        <button type="button">账户注销</button>
                     </p>
                 </div>   
                 <div class="hide">
@@ -92,13 +93,16 @@
                     <div class="form_num">
                         充值号码：<br/><input type="text" name="telnumber" onchange="tels($(this))" class="formCtrl" placeholder="请输入电话号码">
                     </div>
-                    <button type="button" class="real_pay" style="margin-top:30px;padding:7px 20px;background: skyblue; color: #FFF">查询</button>
+                    <button type="button" class="real_pay">查询</button>
                     <p class="borderTop"></p>
 
                     <div class="serach_data">
                         -- 暂无数据 -- 
                     </div>
                 </div> 
+                <div class="hide">
+                    暂未开放
+                </div>
             </div>
         </div>
     </div>
@@ -118,43 +122,23 @@
 <script src="__STATIC__/layer/layer.js"></script>
 <script src="__STATIC__/js/moment.js"></script>
 <script src="__STATIC__/js/bootstrap-datetimepicker.js"></script>
-<script src="__STATIC__/js/common.js"></script>
+
 <script>
 $(function(){
-     $(".sure").click(function(){
-        var cardNum = $("input[name='cardnum']").val();
-        var money = $("input[name='jine']:checked").val();
-        console.log(cardNum);
-        if(cardNum != ""){
-            $("input[name='cardnum']").siblings(".fa-exclamation").hide();
-            $.ajax({
-                url:"telpay",
-                type:"POST",
-                data:{phone:cardNum,value:money},
-                beforeSend:function(){
-                    layer.msg("正在充值...请稍候",{time:1000})
-                },
-                success:function(res){
-                    var res = JSON.parse(res);
-                    if(res.status == "success"){
-                        layer.alert(res.msg,function(){
-                            window.location.reload()
-                        })
-                        
-                    }else{
-                        layer.alert(res.msg)
-                    }
+    // 菜单
+    $(".angle_down").click(function(){
+        $(".second_menu").slideToggle();
+    });
+    // 选项卡
+        $(".jifen_title>.con_title").click(function(){
+            $(this).addClass("titleActive").siblings().removeClass("titleActive");
+            var index = $(this).index();
+            $(".oil_con>div").eq(index).removeClass("hide").siblings().addClass("hide");
+        })
 
-                }
-            })
-        }else{
-            $("input[name='cardnum']").siblings(".fa-exclamation").show();
-        }
-    })
-})
-   
+    });
 // <!-- 起止时间 -->
-if($(".iDate.date").length>0){
+    if($(".iDate.date").length>0){
         $(".iDate.date").datetimepicker({
             locale:"zh-cn",
             format:"YYYY-MM-DD",
@@ -166,19 +150,20 @@ if($(".iDate.date").length>0){
     $(".close").click(function(){
         $(".qq_ser").hide();
     })
-        // <!-- 正整数验证 -->
-var  num = /^[1-9]\d*$/;
-function nube(obj){
-    var number = obj.val();
-    if(!num.test(number)){
-        obj.val("");
-        obj.siblings(".fa-exclamation").show();
-        return false;
-       
-    }else{
-        obj.siblings(".fa-exclamation").hide();
-    }
-}
+
+    // 分账户设置
+    $(".ZH_set").click(function(){
+        var info = $("input[name='Number']").val();
+        // $.ajax({
+        //     url:"",
+        //     type:"POST",
+        //     data:{},
+        //     success:function(res){
+        //         layer.alert("此"+info+"账号：\n"+"油卡积分余额为：800分\n"+"话费积分余额为：1000分")
+        //     }
+        // })
+        layer.alert("此"+info+"账号：<br/>"+"油卡积分余额为：800分<br/>"+"话费积分余额为：1000分",{title:"账号余额"})
+    })
     // 手机号码
     // var mobile = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
     // function tels(obj){
