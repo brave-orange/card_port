@@ -62,7 +62,7 @@ class HaoChong{
         return $xml_res;
     }
     private function getsign(){
-        return md5("userid=".self::$userid."&productid=".self::$productid."&price=".$this->price."&num=".self::$num."&mobile=".$this->mobile."&spordertime".$this->spordertime."&sporderid=".$this->sporderid."&key=".self::$key);
+        return strtoupper(md5("userid=".self::$userid."&productid=".self::$productid."&price=".$this->price."&num=".self::$num."&mobile=".$this->mobile."&spordertime".$this->spordertime."&sporderid=".$this->sporderid."&key=".self::$key));
     }
 
 }
