@@ -127,7 +127,8 @@ $(function(){
         console.log(cardNum);
         if(cardNum != ""){
             $("input[name='cardnum']").siblings(".fa-exclamation").hide();
-            $.ajax({
+            layer.alert("确定为"+cardNum+"号码充值"+money+"元吗?",function(){
+                $.ajax({
                 url:"telpay",
                 type:"POST",
                 data:{phone:cardNum,value:money},
@@ -146,7 +147,9 @@ $(function(){
                     }
 
                 }
+                })
             })
+            
         }else{
             $("input[name='cardnum']").siblings(".fa-exclamation").show();
         }
