@@ -69,7 +69,7 @@ class Haochongapi{
                 return json('success','充值成功请等待通知！');
             }else{
                 
-                return json('error','系统出错无法充值，请联系客服！');
+                return json('error','系统出错无法充值，请联系客服！',array('status'=>$status));
             }
             
         }
