@@ -82,6 +82,6 @@ class Haochongapi{
         $res = $hc->getBalance();
         $xml_res = new SimpleXMLElement($res);
         dump($xml_res);
-        return json('success',"",array('balance'=>$xml_res->balance));
+        return json('success',"",array('balance'=>$xml_res->balance["0"]));
     }  
 }
