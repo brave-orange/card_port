@@ -94,6 +94,7 @@ class Index
             if($key == '' || $comp_id == '' || $operat_man==''){
                 return json('error','未传参数错误！');
             }
+            $key=md5($key);
             $t = Db::table('company_code');
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token =create_token(8);
