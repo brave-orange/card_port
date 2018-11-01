@@ -9,7 +9,8 @@ use \think\Request;
 use \think\Db;
 use \think\Session;
 use think\Cache; 
-class Index
+use think\Controller;
+class Index extends Controller
 {
     public function index(){
         $this->redirect('/recharge');
