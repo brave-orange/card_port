@@ -63,9 +63,10 @@ class Haochongapi{
             $res = $hc->recharge($phone,$money,$orderid);
             $xml_res = new SimpleXMLElement($res);
             $status = (int)$xml_res->resultno;
-            model('HaochongOrder')->insert(['orderid'=>$xml_res->orderid,'sporderid'=>$xml_res->sporderid,'ordercash'=>$xml_res->ordercash,'productname'=>$xml_res->productname,'mobile'=>$xml_res->mobile,'merchantsubmittime'=>$xml_res->merchantsubmittime,'result'=>config('haochong_status')[''.$xml_res->resultno]]);
+            
             if($status <= 2){
                 model("OrderRecord")->insert(['id'=>$orderid,'goodid'=>' ','userid'=>$userid,'order_type'=>'hf','time'=>date("Y-m-d H:i:s"),'money'=>$money,'status'=>1]);
+                model('HaochongOrder')->insert(['orderid'=>$xml_res->orderid,'sporderid'=>$xml_res->sporderid,'ordercash'=>$xml_res->ordercash,'productname'=>$xml_res->productname,'mobile'=>$xml_res->mobile,'merchantsubmittime'=>$xml_res->merchantsubmittime,'result'=>config('haochong_status')[''.$xml_res->resultno]]);
                 return json('success','充值成功请等待通知！');
             }else{
                 
@@ -81,6 +82,6 @@ class Haochongapi{
         $res = $hc->getBalance();
         $xml_res = new SimpleXMLElement($res);
         dump($xml_res);
-        return json('success',"",array('balance'=>$xml_res['balance']));
+        return json('success',"",array('balance'=>$xml_res->balance));
     }  
 }
