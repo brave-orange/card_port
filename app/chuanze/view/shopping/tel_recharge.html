@@ -139,7 +139,10 @@ $(function(){
                     var res = JSON.parse(res);
                     if(res.status == "success"){
                         layer.alert(res.msg,function(){
-                            window.location.reload()
+                            setTimeout(function(){
+                                window.location.reload()
+                            },1500);
+                            
                         })
                         
                     }else{
