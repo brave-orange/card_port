@@ -17,7 +17,7 @@ class Index extends Controller
     }
     public function zipapi()
     {
-        if(Request::instance()->isPost()){
+        if(Request::instance()->isGet()){
             $company_code = input('param.code');
             $num = input('param.num');
             $fvalue = input('param.face_value');
