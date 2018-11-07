@@ -8,7 +8,7 @@ class Card extends Model{
         if(!$c){
             return false;
         }
-        if($c['password'] == md6($password)){
+        if($c['password'] == md6($password) && $c['is_used'] == 0){
             return $c;
         }else{
             return false;
@@ -36,8 +36,12 @@ class Card extends Model{
                 $data[$key] = $value;
             }
             $data['password']= create_token(10);
-            if(model("CardUsed")->insert($data)){    //卡片冲完之后放到已经使用过的卡中去
-                $use_card->delete();        //在未使用卡的表里删除记录
+            unset($data['is_used']);
+            if(model("CardUsed")->insert($data)){    //卡片充完之后放到已经使用过的卡中去
+                //$use_card->delete();        //在未使用卡的表里删除记录
+                $use_card['is_used'] = 1;
+                $use_card['password'] = create_token(10);
+                $use_card->save();
             }
             return true;
             //return $user->save();
@@ -47,7 +51,7 @@ class Card extends Model{
         
     }
 
-    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man,$fielname){        //写入购卡记录
-        model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$_SERVER["REMOTE_ADDR"],'operat_man'=>$opera_man,'zip_file_name'=>$fielname]);
+    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man,$fielname,$start_no,$end_no){        //写入购卡记录
+        return model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$_SERVER["REMOTE_ADDR"],'operat_man'=>$opera_man,'zip_file_name'=>$fielname,'start_no'=>$start_no,'end_no'=>$end_no]);
     }
 }

@@ -81,22 +81,22 @@
                     <div>起止日期：</div>
                     <div>
                         <div class="iDate date">
-                            <input type="text" name="start_time">
+                            <input type="text" id="start" name="start_time">
                             <button type="button" class="addOn"></button>
                         </div>
                         <div class="iDate date">
-                            <input type="text" name="end_time">
+                            <input type="text" id="end" name="end_time">
                             <button type="button" class="addOn"></button>
                         </div>
                     </div>
                     <div class="form_num">
-                        充值号码：<br/><input type="text" name="telnumber" onchange="tels($(this))" class="formCtrl" placeholder="请输入电话号码">
+                        充值号码：<br/><input type="text" id="phone_l" name="telnumber" onchange="tels($(this))" class="formCtrl" placeholder="请输入电话号码">
                     </div>
-                    <button type="button" class="real_pay" style="margin-top:30px;padding:7px 20px;background: skyblue; color: #FFF">查询</button>
+                    <button type="button" class="real_pay" id="search_his" style="margin-top:30px;padding:7px 20px;background: skyblue; color: #FFF">查询</button>
                     <p class="borderTop"></p>
 
                     <div class="serach_data">
-                        -- 暂无数据 -- 
+                       <span> -- 暂无数据 -- </span> 
                     </div>
                 </div> 
             </div>
@@ -158,6 +158,45 @@ $(function(){
         }
     })
 })
+
+    $('#search_his').click(function(){    //查询历史记录
+        var start_date = $('#start').val();
+        var end_date = $('#end').val();
+        var phone = $('#phone_l').val();
+        if(end_date < start_date){
+            layer.msg("日期区间不对！");
+            return false;
+        }else{
+            $.ajax({
+                url:"{:url('chuanze/Haochongapi/getLog')}",
+                type:"post",
+                data:{start:start_date,end:end_date,phone:phone},
+                success:function(res){
+                    res = JSON.parse(res);
+                    if(res.status == "success"){
+                       $(".serach_data").find("span").remove();
+                       $(".serach_data").find("li").remove();
+                        res.data.forEach(function(e,index){
+                            console.log(e);
+                            
+                            var oUl = "<ul>";
+                            oUl += "<li>充值面额"+e.money+'&nbsp;&nbsp;'+"充值手机号:"+e.mobile+'&nbsp;&nbsp;'+"充值时间:"+e.time+'&nbsp;&nbsp;</li>';
+                            oUl += "</ul>";
+
+                            $(".serach_data").append(oUl);
+                             
+                        })
+                        
+                       
+                    }else if (res.status == "error"){
+                        $(".serach_data").find("li").remove();
+                        layer.msg(res.msg);
+                    }
+                }
+
+            })
+        }
+    })
    
 // <!-- 起止时间 -->
 if($(".iDate.date").length>0){

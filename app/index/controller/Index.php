@@ -54,13 +54,7 @@ class Index extends Controller
             $check_num = create_token(2);//文件区分校验位
             $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
             if(1 == $msg_status){         
-                $res = model("Card")->insertAll($card_data,$card_type);//将卡号密码存入数据库
-                if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
-                    $re = model("Card")->insertAll(json_decode($res).data);
-                    if(json_decode($re)->status == "error"){
-                        card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
-                    }
-                }
+                
                 foreach ($c_no as $key => $value) {
                     $s = 'A'.($key+2);
                     $PHPSheet->setCellValue($s,$value);
@@ -69,13 +63,21 @@ class Index extends Controller
                 }
 
                 $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".'.xlsx';
+                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
                 $path = $path.'/'.$filename;
                 $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
                 $PHPWriter->save($path); 
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
-                model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename));    //保存购卡记录
+                $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),$c_no[0],$c_no[$num-1]);    //保存购卡记录
+                
+                $res = model("Card")->insertAll($card_data,$card_type,$comp_id,$buy_id);//将卡号密码存入数据库
+                if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
+                    $re = model("Card")->insertAll(json_decode($res).data);
+                    if(json_decode($re)->status == "error"){
+                        card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
+                    }
+                }
                 $t = Cache::get('token');
                 $t[''.$operat_man] = "";
                 Cache::set('token',$t);
