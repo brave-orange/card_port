@@ -103,6 +103,7 @@ class Index extends Controller
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token =create_token(8);
                 $token_arr = Cache::get('token'); 
+                dump($token_arr);
                 if(isset($token_arr)){
                     $token[''.$operat_man] = $token;
                 }else{
