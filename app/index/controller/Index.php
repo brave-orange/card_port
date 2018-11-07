@@ -73,7 +73,7 @@ class Index extends Controller
                 
                 $res = model("Card")->insertAll($card_data,$card_type,$company_code,$buy_id);//将卡号密码存入数据库
                 if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
-                    $re = model("Card")->insertAll(json_decode($res).data);
+                    $re = model("Card")->insertAll(json_decode($res).data,$card_type,$company_code,$buy_id);
                     if(json_decode($re)->status == "error"){
                         card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
                     }

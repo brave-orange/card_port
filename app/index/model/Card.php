@@ -22,7 +22,7 @@ class Card extends Model{
         $error = array();
         foreach ($data as $value) {
             $c = array("card_no"=>$value[0],"password"=>md6($value[1]));
-            if(!$this->insert($c,$type)){
+            if(!$this->insert($c,$type,$comp_id,$buy_id)){
                 $error[] = $c;
             }
         }
