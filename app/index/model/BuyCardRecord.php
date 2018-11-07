@@ -10,7 +10,8 @@ class BuyCardRecord extends Model{
         foreach($data as $key => $value){
             $b[$key] = $value;
         }
-        return $b->save();
+        $b->save();
+        return $b->id;
     }
     public function getRecords($o_man){   //获取运营人员所生成的积分卡数据
         return $this->where(['opeart_man'=>$o_man])->select();
