@@ -24,7 +24,8 @@ class Index extends Controller
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            return Cache::get('token');
+            var_dump(Cache::get('token'));
+            return 123;
             if(Cache::get('token') == ""){
 
                 return json('error','请先获取token!');
