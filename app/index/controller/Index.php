@@ -104,8 +104,8 @@ class Index extends Controller
                 $token =create_token(8);
                 $token_arr = Cache::get('token'); 
                 dump($token_arr);
-                if(isset($token_arr)){
-                    $token[''.$operat_man] = $token;
+                if(is_array($token_arr) && isset($token_arr[$operat_man])){
+                    $token_arr[''.$operat_man] = $token;
                 }else{
                     $token_arr = array(''.$operat_man => $token);
                 }
