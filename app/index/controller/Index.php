@@ -17,17 +17,14 @@ class Index extends Controller
     }
     public function zipapi()
     {
-        if(Request::instance()->isGet()){
+        if(Request::instance()->isPost()){
             $company_code = input('param.code');
             $num = input('param.num');
             $fvalue = input('param.face_value');
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            var_dump(Cache::get('token'));
-            return 123;
             if(Cache::get('token') == ""){
-
                 return json('error','请先获取token!');
             }
             $key = md5($company_code.$num.$fvalue.Cache::get('token')[''.$operat_man]);
@@ -103,7 +100,6 @@ class Index extends Controller
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token =create_token(8);
                 $token_arr = Cache::get('token'); 
-                dump($token_arr);
                 if(is_array($token_arr) && isset($token_arr[$operat_man])){
                     $token_arr[''.$operat_man] = $token;
                 }else{
