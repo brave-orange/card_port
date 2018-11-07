@@ -24,7 +24,7 @@ class Index extends Controller
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
-            if(Cache::get('token','') == ""){
+            if(Cache::get('token') == ""){
                 return json('error','请先获取token!');
             }
             $key = md5($company_code.$num.$fvalue.Cache::get('token')[''.$operat_man]);
@@ -102,8 +102,8 @@ class Index extends Controller
             if($t->where(['comp_id'=>$comp_id,'key'=>$key])->find()){
                 $token =create_token(8);
                 $token_arr = Cache::get('token'); 
-                if(isset($token_arr)){
-                    $token[''.$operat_man] = $token;
+                if(is_array($token_arr) && isset($token_arr[$operat_man])){
+                    $token_arr[''.$operat_man] = $token;
                 }else{
                     $token_arr = array(''.$operat_man => $token);
                 }
