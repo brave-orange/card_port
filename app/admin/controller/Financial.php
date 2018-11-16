@@ -4,6 +4,7 @@ use PHPExcel;
 use PHPExcel_IOFactory;
 use SimpleXMLElement;
 use app\common\Cards;
+use think\Db;
 
 class Financial{    //财务控制器
     public function index(){
