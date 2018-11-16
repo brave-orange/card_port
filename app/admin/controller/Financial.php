@@ -16,6 +16,7 @@ class Financial{    //财务控制器
             $num = $rec['num'];$fvalue = $rec['card_val'];
             $filename = $rec['zip_file_name'];
             $company_code = $rec['company_code'];
+            $operat_man = $rec['operat_man'];
             $PHPExcel = new PHPExcel();
             $card = new Cards($company_code);
             $path = $_SERVER['DOCUMENT_ROOT']."/download";
