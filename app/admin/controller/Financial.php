@@ -13,10 +13,11 @@ class Financial{    //财务控制器
         $id = input("param.apply_id");
         $rec = model("BuyCardRecord")->where(['id'=>$id])->find();
         if(2 == $rec['is_pass']){
-            $num = $rec['num'];$fvalue = $rec['card_val'];
+            $num = $rec['number'];$fvalue = $rec['card_val'];
             $filename = $rec['zip_file_name'];
             $company_code = $rec['company_code'];
             $operat_man = $rec['operat_man'];
+            $card_type = $rec['card_type'];
             $PHPExcel = new PHPExcel();
             $card = new Cards($company_code);
             $path = $_SERVER['DOCUMENT_ROOT']."/download";
@@ -51,9 +52,9 @@ class Financial{    //财务控制器
                 $PHPWriter->save($path); 
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
-                $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),$c_no[0],$c_no[$num-1]);    //保存购卡记录
+                //$buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),$c_no[0],$c_no[$num-1]);    //保存购卡记录
                 
-                $res = model("Card")->insertAll($card_data,$card_type,$company_code,$buy_id);//将卡号密码存入数据库
+                $res = model("Card")->insertAll($card_data,$card_type,$company_code,$id);//将卡号密码存入数据库
                 if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
                     $re = model("Card")->insertAll(json_decode($res).data,$card_type,$company_code,$buy_id);
                     if(json_decode($re)->status == "error"){
