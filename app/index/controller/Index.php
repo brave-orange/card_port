@@ -4,7 +4,7 @@ use PHPExcel;
 use PHPExcel_IOFactory;
 use SimpleXMLElement;
 use app\common\Cards;
-use app\common\HaoChong;
+//use app\common\HaoChong;
 use \think\Request;
 use \think\Db;
 use \think\Session;
@@ -15,26 +15,12 @@ class Index extends Controller
     public function index(){
         $this->redirect('/recharge');
     }
-    public function zipapi()
-    {
-        if(Request::instance()->isPost()){
-            $company_code = input('param.code');
-            $num = input('param.num');
-            $fvalue = input('param.face_value');
-            $token = input('param.token');
-            $operat_man = input('param.operat_man');
-            $card_type = input('param.card_type');
-            if(Cache::get('token') == ""){
-                return json('error','请先获取token!');
-            }
-            $key = md5($company_code.$num.$fvalue.Cache::get('token')[''.$operat_man]);
-            if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
-                return json('error','参数不全！');
-            }
 
-            if($key != $token){
-                return json('error','接口验证错误,请重试！');
-            }
+    private function createCard($buy_id){
+            $res = model('BuyCardRecord')->where(['id'=>$buy_id])->find();
+            $num = $res['num'];$fvalue = $res['card_val'];
+            $filename = $res['zip_file_name'];
+            $company_code = $res['company_code'];
             $PHPExcel = new PHPExcel();
             $card = new Cards($company_code);
             $path = $_SERVER['DOCUMENT_ROOT']."/download";
@@ -78,16 +64,47 @@ class Index extends Controller
                         card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
                     }
                 }
-                $t = Cache::get('token');
-                $t[''.$operat_man] = "";
-                Cache::set('token',$t);
-
-                return $_SERVER['SERVER_NAME'].'/givemefile?dfile='.str_replace('.xlsx', '.zip', $filename);
-            }
-            return json('error','系统出错，请联系管理人员！',$msg_status);
-            
-        }
     }
+}
+    public function zipapi()
+    {
+        if(Request::instance()->isPost()){
+            $company_code = input('param.code');
+            $num = input('param.num');
+            $fvalue = input('param.face_value');
+            $token = input('param.token');
+            $operat_man = input('param.operat_man');
+            $card_type = input('param.card_type');
+            if(Cache::get('token') == ""){
+                return json('error','请先获取token!');
+            }
+            $key = md5($company_code.$num.$fvalue.Cache::get('token')[''.$operat_man]);
+            if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
+                return json('error','参数不全！');
+            }
+
+            if($key != $token){
+                return json('error','接口验证错误,请重试！');
+            }
+            $check_num = create_token(2);//文件区分校验位
+            $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
+            $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),"","",2);    //保存购卡记录,待审核
+            
+            $t = Cache::get('token');
+            $t[''.$operat_man] = "";
+            Cache::set('token',$t);
+
+                /*return $_SERVER['SERVER_NAME'].'/givemefile?dfile='.str_replace('.xlsx', '.zip', $filename);*/
+            if(!$buy_id){
+                return json('error','系统出错，请联系管理人员！',$msg_status);
+            }else{
+                return json('success','提交成功，请等待财务审核！');
+            }
+        }
+            
+            
+    }
+    
 
     public function api_token(){           //动态token验证 //加入运营人员登陆后改为cache存储token
         if(Request::instance()->isPost()){
@@ -115,6 +132,17 @@ class Index extends Controller
             }
         }
 
+    }
+
+    public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
+        $key = create_token(4);
+        $comp_id = input('param.comp_id');
+        if($comp_id == ""){
+            return json('error','参数不全');
+        }
+        $t = Db::table('company_code');
+        $t->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
+        return json('success',''.$key);
     }
 
 
@@ -175,6 +203,15 @@ class Index extends Controller
 
         }
     }
+
+    public function getCompCard(){
+        $comp_id = input('param.comp_id');
+        $res = model('Card','service')->getCompanyCard($comp_id);
+        if($res){
+            return json('success','',$res);
+        }
+        
+    }
     
     public function test(){
         //return json_encode(user_balance(1));
@@ -203,10 +240,6 @@ class Index extends Controller
         //dump(config('haochong_status')['0']);
         //return SendWarring("18012776312","hfudsighu","18012776312","123");
         
-    }
-    public function test1(){
-        Session::set("aaa",123);
-        dump(Session::get("token"));
     }
 
 
