@@ -12,7 +12,7 @@ class Financial{    //财务控制器
     public function pass_card_apply(){      //审核通过生成卡的申请
         $id = input("param.apply_id");
         $rec = model("BuyCardRecord")->where(['id'=>$id])->find();
-        if(2 == $rec['status']){
+        if(2 == $rec['is_pass']){
             $num = $rec['num'];$fvalue = $rec['card_val'];
             $filename = $rec['zip_file_name'];
             $company_code = $rec['company_code'];
