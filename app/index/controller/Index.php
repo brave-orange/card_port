@@ -16,56 +16,7 @@ class Index extends Controller
         $this->redirect('/recharge');
     }
 
-    private function createCard($buy_id){
-            $res = model('BuyCardRecord')->where(['id'=>$buy_id])->find();
-            $num = $res['num'];$fvalue = $res['card_val'];
-            $filename = $res['zip_file_name'];
-            $company_code = $res['company_code'];
-            $PHPExcel = new PHPExcel();
-            $card = new Cards($company_code);
-            $path = $_SERVER['DOCUMENT_ROOT']."/download";
-            $PHPSheet = $PHPExcel->getActiveSheet();
-            $PHPSheet->setTitle('卡号密码');
-            $PHPSheet->setCellValue('A1','卡号');
-            $PHPSheet->setCellValue('B1','密码');
-            $PHPSheet->setCellValue('D1',date('Y-m-d H:i:s'));
-            $c_no = $card->create_card_no($num,$fvalue);//生成卡号
-            $c_psw = $card->create_password($num,6);//生成密码
-            $card_data = array();
-            for($i = 0; $i < count($c_no) ; $i ++){    
-                $card_data[] = [$c_no[$i],$c_psw[$i]]; 
-            }
-            $ya_password = create_token(8);   //压缩文件密码
-            $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
-            $check_num = create_token(2);//文件区分校验位
-            $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
-            if(1 == $msg_status){         
-                
-                foreach ($c_no as $key => $value) {
-                    $s = 'A'.($key+2);
-                    $PHPSheet->setCellValue($s,$value);
-                    $s = 'B'.($key+2);
-                    $PHPSheet->setCellValue($s,$c_psw[$key]); 
-                }
-
-                $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel,'Excel2007');//
-                $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
-                $path = $path.'/'.$filename;
-                $path =  (strtolower(substr(PHP_OS,0,3))=='win') ? mb_convert_encoding($path,'gbk','UTF-8') : $path;   //文件名编码问题
-                $PHPWriter->save($path); 
-                exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
-                exec("rm -rf  ".$path);
-                $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),$c_no[0],$c_no[$num-1]);    //保存购卡记录
-                
-                $res = model("Card")->insertAll($card_data,$card_type,$company_code,$buy_id);//将卡号密码存入数据库
-                if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志
-                    $re = model("Card")->insertAll(json_decode($res).data,$card_type,$company_code,$buy_id);
-                    if(json_decode($re)->status == "error"){
-                        card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
-                    }
-                }
-    }
-}
+   
     public function zipapi()
     {
         if(Request::instance()->isPost()){
@@ -75,6 +26,7 @@ class Index extends Controller
             $token = input('param.token');
             $operat_man = input('param.operat_man');
             $card_type = input('param.card_type');
+            $pay_way = input('param.pay_way');
             if(Cache::get('token') == ""){
                 return json('error','请先获取token!');
             }
@@ -87,8 +39,8 @@ class Index extends Controller
                 return json('error','接口验证错误,请重试！');
             }
             $check_num = create_token(2);//文件区分校验位
-            $filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
-            $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),"","",2);    //保存购卡记录,待审核
+            //$filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
+            $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,"","","",$pay_way,2);    //保存购卡记录,待审核
             
             $t = Cache::get('token');
             $t[''.$operat_man] = "";
@@ -135,14 +87,28 @@ class Index extends Controller
     }
 
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
+        $operat_man = input('param.operat_man');
         $key = create_token(4);
         $comp_id = input('param.comp_id');
-        if($comp_id == ""){
+        $filename = input('param.filename');
+        if("" == $operat_man || "" == $filename || "" == $comp_id){
             return json('error','参数不全');
         }
+
         $t = Db::table('company_code');
-        $t->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
-        return json('success',''.$key);
+        $comp_name = $t->where(['comp_id'=>$comp_id])->field('name')->find()['name'];
+        $r = $t->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
+        if($r){
+            $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
+            if(!$phone){
+                 return json('error','获取失败，请重试！');
+            }
+            sendKey($phone,$filename,$key);
+            return json('success','请稍等短信通知。');
+        }else{
+            return json('error','获取失败，请重试！');
+        }
+        
     }
 
 

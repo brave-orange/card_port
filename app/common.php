@@ -47,6 +47,12 @@ function SendWarring($tel,$time,$phone,$money){
     return $response;
 
 }
+function SendKey($tel,$name,$key){
+    $SmsDemo = new sendFilePsw();
+    $response = $SmsDemo->sendKey($tel,$name,$key);
+    return $response;
+
+}
 
 
 function user_balance($userid){    //通过充值和消费计算用户余额

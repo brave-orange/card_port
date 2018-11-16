@@ -62,6 +62,16 @@ class Financial{    //财务控制器
                         card_error_log(json_decode($re).data,"数据库存储出错！");    //写入日志
                     }
                 }
+                $rec['is_pass'] = 1;
+                $rec['start_no'] = $c_no[0];
+                $rec['end_no'] = $c_no[$num-1];
+                $rec['filename'] = str_replace('.xlsx', '.zip', $filename);
+                if($rec->save()){
+                    return json('success','审核成功，卡号已生成并通知运营。');
+                }else{
+                    return json('success','出了一些问题，请联系管理员。');
+                }
+                
             }
         }else{
             return json('error','该单已经操作过！');
