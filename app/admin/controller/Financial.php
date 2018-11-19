@@ -8,7 +8,23 @@ use think\Db;
 
 class Financial{    //财务控制器
     public function index(){
-
+        $res = model('Financial','service')->getApply();
+        if($res){
+            return json('success','',$res);
+        }else{
+            return json('error','出错了');
+        }
+    }
+    public function not_pass_card_apply(){
+        $id = input("param.apply_id");
+        $rec = model("BuyCardRecord")->where(['id'=>$id])->find();
+        if($rec){
+            $rec['is_pass'] = 0;//修改状态为未审核
+            if($rec->save()){
+                return json('success','操作成功！');
+            }
+        } 
+        return json('error','申请已操作或不存在！');
     }
     public function pass_card_apply(){      //审核通过生成卡的申请
         $id = input("param.apply_id");
