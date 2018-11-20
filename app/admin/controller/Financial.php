@@ -15,6 +15,9 @@ class Financial{    //财务控制器
             return json('error','出错了');
         }
     }
+    public function cardUsedCount(){
+        return json('success','',model('Financial','service')->cardUsedCount());
+    }
     public function not_pass_card_apply(){
         $id = input("param.apply_id");
         $rec = model("BuyCardRecord")->where(['id'=>$id])->find();
@@ -69,7 +72,7 @@ class Financial{    //财务控制器
                 $PHPWriter->save($path); 
                 exec("cd download && zip -P ".$ya_password." ".str_replace('.xlsx', '.zip', $filename)." ".$filename);
                 exec("rm -rf  ".$path);
-                //$buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,str_replace('.xlsx', '.zip', $filename),$c_no[0],$c_no[$num-1]);    //保存购卡记录
+
                 
                 $res = model("Card")->insertAll($card_data,$card_type,$company_code,$id);//将卡号密码存入数据库
                 if(json_decode($res)->status == "error"){     //如果有出现错误的重新存储一遍，若还是存储错误的写入日志

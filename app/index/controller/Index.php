@@ -84,9 +84,7 @@ class Index extends Controller
                 return json('error','参数错误！');
             }
         }
-
     }
-
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
         $operat_man = input('param.operat_man');
         $key = create_token(4);
@@ -111,6 +109,9 @@ class Index extends Controller
         }
         
     }
+    
+
+
 
 
     public function card_recharge(){    //使用充值卡充值

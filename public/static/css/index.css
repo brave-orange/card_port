@@ -1,0 +1,65 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td,div { margin:0; padding:0; } 
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; } 
+h1, h2, h3, h4, h5, h6{ font-size:100%; } 
+address, cite, dfn, em, var { font-style:normal; } 
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; } 
+small{ font-size:12px; } 
+ul, ol { list-style:none; } 
+a { text-decoration:none; } 
+a:hover { text-decoration:underline; } 
+sup { vertical-align:text-top; } 
+sub{ vertical-align:text-bottom; } 
+legend { color:#000; } 
+fieldset, img { border:0; } 
+button, input, select, textarea { font-size:100%; } 
+table { border-collapse:collapse; border-spacing:0; }
+
+/* select */
+select{
+    appearance: none; /* 去掉默认图标 */
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    padding:0 20px 0 5px;
+    background: url("../img/down.png") no-repeat scroll right center transparent ;
+    background-size: 20%;
+    -moz-background-size:20%;
+    -o-background-size:20%;
+    height:28px;
+    line-height:28px;
+    border:1px solid #b3b3b3;
+}
+select.sel_big{width: 220px;}
+select.sel_small{width: 180px;}
+/* 头部 */
+
+body{position: relative;}
+.logo{background: #F6F6F6;width: 100%;padding-bottom: 10px;margin-bottom: 5px}
+.logo>p{width: 1000px;margin: 0 auto;}
+.logo>p>a>img{width: 30%;}
+
+.content{width: 1000px;margin: 0 auto;overflow: hidden;}
+.content>div{display: inline-block}
+.omenu{width: 140px;overflow: hidden;float: left;}
+.omenu li{width: 100%;text-align: center;background: #EBEBEB;border-bottom: 1px solid #f6f6f6}
+.omenu li>a{width: 100%;display: inline-block;line-height: 30px;color: #666;font-weight: 600}
+.omenu li:first-child{background: #00AAEF;}
+.omenu li:first-child a{color: #fff;text-decoration-line: none}
+.omenu li:hover a{background: #5FBEE5;color: #fff}
+
+.obody{margin-left:5px;width: 750px;overflow: hidden;border-top: 3px solid #00AAEF;background: #E7F8FF;padding: 3px}
+.navbar_con{padding:5px 30px 0;}
+.navbar_con>span{cursor: pointer;color:#118FCE;display: inline-block;padding: 10px 30px; margin-bottom: -1px;}
+.navbar_con>span.active{color: #666;background: #fff;border: 1px solid #CDF0FD;border-bottom: none}
+
+.main_detail{width: 100%;border: 1px solid #CDF0FD;background: #fff;padding: 30px 40px;}
+.main_child{width: 50%;}
+.main_child>p{margin:20px 0;}
+.main_child>p input[type='button']{border: none;padding: 5px 30px;width: 220px;}
+.inp_big{width: 220px;height: 30px;border: 1px solid #B3B3B3;}
+.inp_small{width: 180px;height: 30px;border: 1px solid #b3b3b3}
+
+.bottom_sure>button{border: none;background: #00AAEF;color: #fff;padding: 8px 35px;border-radius: 5px; }
+
+.qq_kefu{float: right;width: 85px;height: 85px;position: relative;left: 5px;top:10px;}
+.qq_kefu>img{width: 100%;}
+.qq_kefu>span.close_qq{position: absolute;top: 0;right: 10px;border: 1px solid #b3b3b3;line-height: 10px;cursor: pointer;}
