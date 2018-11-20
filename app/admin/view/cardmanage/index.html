@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>传则内部管控后台</title>
+
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/index.css">
+</head>
+<body>
+    <!-- 顶部 -->
+
+    <div class="logo">
+        <p>
+            <a href="">
+            <img src="__STATIC__/img/logo.png" alt="">
+            </a>
+        </p>
+    </div>
+
+    <!-- 菜单和主体 -->
+    <div class="content">
+        <!-- 菜单 -->
+        <div class="omenu">
+            <ul>
+                <li><a href="">功能选择</a></li>
+                <li><a href="">卡组管理</a></li>
+                <li><a href="">财务管理</a></li>
+                <li><a href="">客服管理</a></li>
+            </ul>
+        </div>
+        <!-- 主体 -->
+        <div class="obody">
+            <div class="navbar_con">
+                <span class="active">卡号生成</span>
+                <span>生成记录</span>
+            </div>
+            <div class="main_detail">
+                <div class="tab_1 show">
+                    <div class=" flex-box flex-a">
+                        <div class="main_child">
+                        <p>
+                            <span>公司名称：</span>
+                            <select name="" id="" class="sel_big">
+                                <option value="0"></option>
+                                <option value="1">上海大则网络科技有限公司</option>
+                                <option value="2">上海大则网络科技有限公司</option>
+                            </select>
+                        </p>
+                        <p>
+                            <span>发卡密钥：</span>
+                            <input type="button" name="miyao" value="点击获取">
+                        </p>
+                        <p>
+                            <span>面<span style="visibility:hidden">空格</span>值：</span>
+                            <input type="text" class="inp_big">
+                        </p>
+                        <p>
+                            <span>数<span style="visibility:hidden">空格</span>量：</span>
+                            <input type="text" class="inp_big">
+                        </p>
+                        </div>
+                        <div class="main_child">
+                        <p>
+                            <span>卡组适用积分类型：</span>
+                            <select name="" id="" class="sel_small">
+                                <option value="0"></option>
+                                <option value="1"></option>
+                                <option value="2"></option>
+                            </select>
+                        </p>
+                        <p>
+                            <span><span style="visibility:hidden">四个空格</span>付款类型：</span>
+                            <input type="text" class="inp_small">
+                        </p>
+                        <p>
+                            <span><span style="visibility:hidden">空格</span>实际打款金额：</span>
+                            <span>13000</span>
+                        </p>
+                        </div>
+                    </div>
+                    <div class="flex-box flex-a bottom_sure">
+                        <button type="button">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+                        <button type="button">取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消</button>
+                    </div>
+                </div>
+                <div class="tab_2 hide">
+                    -- 暂无数据 --
+                </div>
+            </div>
+        </div>
+        <!-- qq客服 -->
+        <div class="qq_kefu">
+            <img src="__STATIC__/img/qq.png" alt="">
+            <span class="close_qq">×</span>
+        </div>
+    </div>
+
+    
+</body>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script>
+    $(function(){
+        $("input[name='miyao']").click(function(){
+            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
+        });
+        
+        $(".navbar_con>span").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var index = $(this).index();
+            $(".main_detail>div").eq(index).removeClass("hide").addClass("show").siblings().removeClass("show").addClass("hide");
+        });
+        
+        $(".close_qq").click(function(){
+            $(this).parent(".qq_kefu").hide();
+        })
+    })
+</script>
+</html>
