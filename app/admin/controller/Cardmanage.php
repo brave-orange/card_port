@@ -1,13 +1,24 @@
 <?php
 namespace app\admin\controller;
-use PHPExcel;
-use PHPExcel_IOFactory;
-use SimpleXMLElement;
-use app\common\Cards;
+use app\common\controller\AdminController;
 use think\Db;
+use think\Request;
 
-class Cardmanage{    //卡组控制器
+class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
-        return view();
+        $company = Db::table('company_code')->select();
+        return $this->assign(array('company'=>$company))->fetch();;
+    }
+
+    public function addCompany(){
+        if(Request::instance()->isPost()){
+            $company_name = input('param.company_name');
+            $res = Db::table('company_code')->insert(array('name'=>$company_name,'key'=>""));
+            if($res){
+                return json('success','添加成功！');
+            }else{
+                return json('success','添加失败，请重试！');
+            }
+        }
     }
 }

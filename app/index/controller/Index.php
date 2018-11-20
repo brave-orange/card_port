@@ -35,7 +35,6 @@ class Index extends Controller
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == ''){
                 return json('error','参数不全！');
             }
-
             if($key != $token){
                 return json('error','接口验证错误,请重试！');
             }
@@ -86,26 +85,27 @@ class Index extends Controller
         }
     }
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
-        $operat_man = input('param.operat_man');
-        $key = create_token(4);
-        $comp_id = input('param.comp_id');
-        $filename = input('param.filename');
-        if("" == $operat_man || "" == $filename || "" == $comp_id){
-            return json('error','参数不全');
-        }
-
-        $t = Db::table('company_code');
-        $comp_name = $t->where(['comp_id'=>$comp_id])->field('name')->find()['name'];
-        $r = $t->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
-        if($r){
-            $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
-            if(!$phone){
-                 return json('error','获取失败，请重试！');
+         if(Request::instance()->isPost()){
+            //$operat_man = input('param.operat_man');
+             Session::set('admin_phone','18012776312');
+            $phone = Session::get('admin_phone');
+            $key = create_token(4);
+            $comp_id = input('param.comp_id');
+            if("" == $comp_id){
+                return json('error','参数不全');
             }
-            sendKey($phone,$filename,$key);
-            return json('success','请稍等短信通知。');
-        }else{
-            return json('error','获取失败，请重试！');
+            $t = Db::table('company_code');
+            $comp_name = $t->where(['comp_id'=>$comp_id])->field('name')->find()['name'];
+            $r = Db::table('company_code')->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
+            if($r){
+                if(!$phone){
+                     return json('error','获取失败，请重试！');
+                }
+                sendKey($phone,$comp_name,$key);
+                return json('success','请稍等短信通知。');
+            }else{
+                return json('error','获取失败，请重试！');
+            }
         }
         
     }

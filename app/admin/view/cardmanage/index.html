@@ -37,6 +37,7 @@
             <div class="navbar_con">
                 <span class="active">卡号生成</span>
                 <span>生成记录</span>
+                <span>添加新公司</span>
             </div>
             <div class="main_detail">
                 <div class="tab_1 show">
@@ -44,10 +45,11 @@
                         <div class="main_child">
                         <p>
                             <span>公司名称：</span>
-                            <select name="" id="" class="sel_big">
-                                <option value="0"></option>
-                                <option value="1">上海大则网络科技有限公司</option>
-                                <option value="2">上海大则网络科技有限公司</option>
+                            <select name="" id="company" class="sel_big">
+                                <option value="0">请选择公司</option>
+                                {volist name="company" id="vo"}
+                                <option value="{$vo.comp_id}">{$vo.name}</option>
+                                {/volist}
                             </select>
                         </p>
                         <p>
@@ -90,6 +92,16 @@
                 <div class="tab_2 hide">
                     -- 暂无数据 --
                 </div>
+                <div class="tab_3 hide">
+                    <p class="flex-box flex-c flex-col-c">
+                        <span>新公司名称：</span>
+                        <input type="text" class="inp_small" id="new_company_name" placeholder="填写新公司名称">
+                        
+                    </p>
+                    <p class="flex-box flex-c">
+                        <button id="add_new_comp"type="button" style="border: none;background: #00AAEF;color: #fff;border-radius: 5px;padding: 8px 30px;margin-top: 20px">添&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;加</button>
+                    </p>
+                </div>
             </div>
         </div>
         <!-- qq客服 -->
@@ -102,10 +114,58 @@
     
 </body>
 <script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
 <script>
     $(function(){
+        $('#add_new_comp').click(function(){
+            var comp_name = $("#new_company_name").val()
+            if("" == comp_name){
+                layer.alert("请填写公司名！")
+                return
+            }
+            layer.confirm("确定添加名为<span style='font-size:20px;font-weight:bold;color:red'>"+comp_name+"</span>的公司吗？", {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url:"{:url('admin/Cardmanage/addCompany')}",
+                    type:"post",
+                    data:{company_name:comp_name},
+                    success:function(res){
+                        var ores = JSON.parse(res)
+                        if(ores.status == 'success'){
+                            layer.close(index);
+                            layer.msg(ores.msg);
+                        }else{
+                            layer.close(index);
+                            layer.msg(ores.msg);
+                        }
+                    }
+                })
+            },function(index){
+                
+            });    
+        });
+
+
         $("input[name='miyao']").click(function(){
-            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
+            var company = $('#company').val();
+            if(company == '0'){
+                layer.msg("请选择公司");
+                return ;
+            }
+            $.ajax({
+                url:"{:url('index/index/getKey')}",
+                type:"post",
+                data:{comp_id:company},
+                success:function(res){
+                    var ores = JSON.parse(res)
+                    if(ores.status == 'success'){
+                        layer.msg(ores.msg);
+                    }else{
+                        layer.msg(ores.msg);
+                        window.location.reload()
+                    }
+                }
+            })
+            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的卡组生成秘钥");
         });
         
         $(".navbar_con>span").click(function(){

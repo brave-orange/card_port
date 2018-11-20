@@ -8,7 +8,7 @@ class AdminController extends Controller   //后台过滤器
 {
     public function _initialize()
     {
-        if (Request::instance()->isGet()){
+        /*if (Request::instance()->isGet()){
             if(NULL == Session::get('userid')) {
                 
                 $this->redirect('/login');
@@ -19,7 +19,7 @@ class AdminController extends Controller   //后台过滤器
                 $this->error(["code"=>0,"msg"=>"未登录状态无法调用！"]);
 
             }
-        }
+        }*/
 
     }
 }
