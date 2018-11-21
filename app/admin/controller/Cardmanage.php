@@ -21,4 +21,50 @@ class Cardmanage extends AdminController{    //卡组控制器
             }
         }
     }
+    public function token(){
+        if(Request::instance()->isPost()){
+            $company_code = input("param.code");
+            $num =input("param.num");
+            $fvalue =input("param.face_value");
+            $operat_man =input("param.operat_man");
+            $card_type =input("param.card_type");
+            $company_key=input("param.company_key");
+            $new_money=input("param.new_money");
+            if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == '' || $company_key == '' || $new_money == ''){
+                return json('error',$msg="参数不全！");
+            }
+            $url="card.onmycard.com.cn/index/index/api_token";
+            $data=['comp_id'=>$company_code,'key'=>$company_key,'operat_man'=>$operat_man];
+            $tokendata=http($url,$data,"POST");
+            $token=$this->is_json($tokendata);
+            if(is_array($token)){
+                $str=$token['msg'];
+                echo $str;
+                die();
+            }
+            $key = md5($company_code.$num.$fvalue.$token);
+            $str=$company_code.$num.$fvalue.$token;
+            $urls="http://card.onmycard.com.cn/zipapi";
+            $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key];
+            $retudata=http($urls,$params,"POST");
+            $ysb=$this->is_json($retudata);
+            if(is_array($ysb)){
+                $str=$ysb['msg'];
+                echo $str;
+                die();
+            }
+            echo "压缩文件路径为".$retudata;
+            exit;
+        }
+    }
+    protected function is_json($data){
+        if(json_decode($data,true)){
+            return json_decode($data,true);
+        }else{
+            $token= trim($data);
+            // $data=json_decode($data,true);
+            return $token;
+        }
+    }
+
 }
