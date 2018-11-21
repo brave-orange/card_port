@@ -45,7 +45,7 @@
                         <div class="main_child">
                         <p>
                             <span>公司名称：</span>
-                            <select name="" id="company" class="sel_big">
+                            <select name="code" id="company" class="sel_big">
                                 <option value="0">请选择公司</option>
                                 {volist name="company" id="vo"}
                                 <option value="{$vo.comp_id}">{$vo.name}</option>
@@ -54,24 +54,30 @@
                         </p>
                         <p>
                             <span>发卡密钥：</span>
-                            <input type="button" name="miyao" value="点击获取">
+                            <input type="button" name="company_key" value="点击获取">
                         </p>
                         <p>
                             <span>面<span style="visibility:hidden">空格</span>值：</span>
-                            <input type="text" class="inp_big">
+                            <select name="card_val" id="" class="sel_big">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                            </select>
+                            <!--<span>面<span style="visibility:hidden">空格</span>值：</span>-->
+                            <!--<input type="text" class="inp_big">-->
                         </p>
                         <p>
                             <span>数<span style="visibility:hidden">空格</span>量：</span>
-                            <input type="text" class="inp_big">
+                            <input type="text" name="num" class="inp_big">
                         </p>
                         </div>
                         <div class="main_child">
                         <p>
                             <span>卡组适用积分类型：</span>
-                            <select name="" id="" class="sel_small">
-                                <option value="0"></option>
-                                <option value="1"></option>
-                                <option value="2"></option>
+                            <select name="card_type" id="" class="sel_small">
+                                <option value="hf">话费</option>
+                                <option value="yk">油卡</option>
+                                <!--<option value="2"></option>-->
                             </select>
                         </p>
                         <p>
@@ -80,7 +86,7 @@
                         </p>
                         <p>
                             <span><span style="visibility:hidden">空格</span>实际打款金额：</span>
-                            <input type="text" class="inp_small">
+                            <input type="text" name="new_money" class="inp_small">
                         </p>
                         </div>
                     </div>
@@ -145,7 +151,7 @@
         });
 
 
-        $("input[name='miyao']").click(function(){
+        $("input[name='company_key']").click(function(){
             var company = $('#company').val();
             if(company == '0'){
                 layer.msg("请选择公司");
