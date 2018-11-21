@@ -90,9 +90,4 @@ class Cardmanage extends AdminController{    //卡组控制器
             return $token;
         }
     }
-
-<<<<<<< HEAD
->>>>>>> 38db907d572620d93c3be71fa2384260e2e4f64c
-=======
->>>>>>> 38db907d572620d93c3be71fa2384260e2e4f64c
 }
