@@ -21,7 +21,6 @@ class Cardmanage extends AdminController{    //卡组控制器
             }
         }
     }
-<<<<<<< HEAD
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
          if(Request::instance()->isPost()){
             //$operat_man = input('param.operat_man');
@@ -46,7 +45,6 @@ class Cardmanage extends AdminController{    //卡组控制器
             }
         }
     }
-=======
     public function token(){
         if(Request::instance()->isPost()){
             $company_code = input("param.code");
@@ -93,5 +91,8 @@ class Cardmanage extends AdminController{    //卡组控制器
         }
     }
 
+<<<<<<< HEAD
+>>>>>>> 38db907d572620d93c3be71fa2384260e2e4f64c
+=======
 >>>>>>> 38db907d572620d93c3be71fa2384260e2e4f64c
 }
