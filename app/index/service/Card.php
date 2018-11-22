@@ -51,8 +51,8 @@ class Card extends Model{
         
     }
 
-    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man,$fielname,$start_no="",$end_no="",$pay_way,$is_pass,$pay_money){        //写入购卡记录
-        return model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$_SERVER["REMOTE_ADDR"],'operat_man'=>$opera_man,'zip_file_name'=>$fielname,'start_no'=>$start_no,'end_no'=>$end_no,'pay_way'=>$pay_way,'pay_money'=>$pay_money,'is_pass'=>$is_pass]);
+    public function BuyCard($comp_id,$val,$number,$card_type,$opera_man,$fielname,$start_no="",$end_no="",$pay_way,$is_pass,$pay_money,$ip){        //写入购卡记录
+        return model('BuyCardRecord')->insert(['card_val'=>$val,'number'=>$number,'card_type'=>$card_type,'company_code'=>$comp_id,'time'=>date("Y-m-d H:i:s"),'operat_ip'=>$ip,'operat_man'=>$opera_man,'zip_file_name'=>$fielname,'start_no'=>$start_no,'end_no'=>$end_no,'pay_way'=>$pay_way,'pay_money'=>$pay_money,'is_pass'=>$is_pass]);
     }
     public function getCompanyCard($comp_id,$buy_id = null){  //获取某个公司或者某次的所有卡号
         $where = array();

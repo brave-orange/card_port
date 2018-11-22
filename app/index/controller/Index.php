@@ -28,6 +28,7 @@ class Index extends Controller
             $card_type = input('param.card_type');
             $pay_way = input('param.pay_way');
             $pay_money = input('param.pay_money');
+            $ip = input("param.ip");
             if(Cache::get('token') == ""){
                 return json('error','请先获取token!');
             }
@@ -40,7 +41,7 @@ class Index extends Controller
             }
             $check_num = create_token(2);//文件区分校验位
             //$filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
-            $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,"","","",$pay_way,2,$pay_money);    //保存购卡记录,待审核
+            $buy_id = model('Card','service')->BuyCard($company_code,$fvalue,$num,$card_type,$operat_man,"","","",$pay_way,2,$pay_money,$ip);    //保存购卡记录,待审核
             
             $t = Cache::get('token');
             $t[''.$operat_man] = "";

@@ -56,16 +56,16 @@ class Cardmanage extends AdminController{    //卡组控制器
     }
     public function token(){
         if(Request::instance()->isPost()){
-            $data=input('param.data');
-            $arr=json_decode($data,true);
-            $company_code = $arr['code'];
-            $num =$arr['num'];
-            $fvalue =$arr['card_val'];
             $operat_man =Session::get('admin_man');
-            $card_type =$arr['card_type'];
-            $company_key=$arr['company_key'];
-            $new_money=$arr['new_money'];
-            $pay_way=$arr['pay_way'];
+            $company_code = input('param.code');
+            $num = input('param.num');
+            $fvalue = input('param.face_value');
+            $token = input('param.token');
+            $operat_man = input('param.operat_man');
+            $card_type = input('param.card_type');
+            $pay_way = input('param.pay_way');
+            $new_money = input('param.new_money');
+            $ip = $_SERVER["REMOTE_ADDR"];
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == '' || $company_key == '' || $new_money == ''){
                 return json('error',$msg="参数不全！");
             }
@@ -81,7 +81,7 @@ class Cardmanage extends AdminController{    //卡组控制器
             $key = md5($company_code.$num.$fvalue.$token);
             $str=$company_code.$num.$fvalue.$token;
             $url="card.onmycard.com.cn/zipapi";
-            $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key,'pay_money'=>$new_money,'pay_way'=>$pay_way];
+            $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key,'pay_money'=>$new_money,'pay_way'=>$pay_way,'ip'=>$ip];
             $retudata=http($url,$params,"POST");
             $res = json_decode($retudata);
             return $res;
