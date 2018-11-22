@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use app\common\controller\AdminController;
 use think\Db;
+use think\Session;
 use think\Request;
 use think\Session;
 
@@ -24,6 +25,7 @@ class Cardmanage extends AdminController{    //卡组控制器
     }
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
          if(Request::instance()->isPost()){
+             return 1111;
             //$operat_man = input('param.operat_man');
              //Session::set('admin_phone','18012776312');
             $phone = Session::get('admin_phone');
@@ -56,13 +58,16 @@ class Cardmanage extends AdminController{    //卡组控制器
     }
     public function token(){
         if(Request::instance()->isPost()){
-            $company_code = input("param.code");
-            $num =input("param.num");
-            $fvalue =input("param.face_value");
-            $operat_man =input("param.operat_man");
-            $card_type =input("param.card_type");
-            $company_key=input("param.company_key");
-            $new_money=input("param.new_money");
+            $data=input('param.data');
+            $arr=json_decode($data,true);
+            $company_code = $arr['code'];
+            $num =$arr['num'];
+            $fvalue =$arr['card_val'];
+            $operat_man =Session::get('admin_man');
+            $card_type =$arr['card_type'];
+            $company_key=$arr['company_key'];
+            $new_money=$arr['new_money'];
+            $pay_way=$arr['pay_way'];
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == '' || $company_key == '' || $new_money == ''){
                 return json('error',$msg="参数不全！");
             }
@@ -86,7 +91,8 @@ class Cardmanage extends AdminController{    //卡组控制器
                 echo $str;
                 die();
             }
-            echo "压缩文件路径为".$retudata;
+            echo "卡号已成功生成!";
+//            echo "压缩文件路径为".$retudata;
             exit;
         }
     }
