@@ -82,7 +82,7 @@
                         </p>
                         <p>
                             <span><span style="visibility:hidden">四个空格</span>付款类型：</span>
-                            <input type="text" class="inp_small">
+                            <input type="text" name="pay_way" class="inp_small">
                         </p>
                         <p>
                             <span><span style="visibility:hidden">空格</span>实际打款金额：</span>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="flex-box flex-a bottom_sure">
-                        <button type="button">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+                        <button type="button" id="query">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定</button>
                         <button type="button">取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消</button>
                     </div>
                 </div>
@@ -149,7 +149,53 @@
                 
             });    
         });
+        
+        $("#query").click(function () {
+            var data = {};
+            var isok = 1;
+            $("input").each(function(){
+//                 console.log($(this).attr('name'));
+                 var key = $(this).attr('name');
+                 var value = $(this).val();
+                 if(null != key) {
+                     if ("" == value) {
+                         layer.msg("请完整填写信息！！！");
+                         isok = 0;
+                         return false;
+                     }else{
+                         data[key] = value;
+                     }
+                 }
 
+            })
+            $("select").each(function(){
+//                console.log($(this).attr('name'));
+                var key = $(this).attr('name');
+                var value = $(this).val();
+                if(null != key) {
+                    if ("" == value) {
+                        layer.msg("请完整填写信息！！！");
+                        isok = 0;
+                        return false;
+                    }else{
+                        data[key] = value;
+                    }
+                }
+            })
+            if(!isok){
+                return false;
+            }
+            data=JSON.stringify(data);
+            $.ajax({
+                type:'POST',
+                url:"{:url('Cardmanage/token')}",
+                data:{data:data},
+                success:function(res){
+                    layer.msg(res);
+                }
+            })
+            console.log(data);
+        })
 
         $("input[name='company_key']").click(function(){
             var company = $('#company').val();
