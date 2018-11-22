@@ -192,10 +192,10 @@
                 data:{data:data},
                 success:function(res){
                     var ores = JSON.parse(res);
-                    if(ores == "success"){
-                        layer.msg(res->msg);
+                    if(ores.status == "success"){
+                        layer.msg(ores.msg);
                     }else{
-                        layer.msg(res->msg);
+                        layer.msg(ores.msg);
                     }
                     
                 }
