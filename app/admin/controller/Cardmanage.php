@@ -59,13 +59,14 @@ class Cardmanage extends AdminController{    //卡组控制器
             $operat_man =Session::get('admin_man');
             $company_code = input('param.code');
             $num = input('param.num');
-            $fvalue = input('param.face_value');
+            $fvalue = input('param.card_val');
             $token = input('param.token');
-            $operat_man = input('param.operat_man');
+            $company_key = input('param.company_key');
             $card_type = input('param.card_type');
             $pay_way = input('param.pay_way');
             $new_money = input('param.new_money');
             $ip = $_SERVER["REMOTE_ADDR"];
+
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == '' || $company_key == '' || $new_money == ''){
                 return json('error',$msg="参数不全！");
             }
@@ -83,8 +84,7 @@ class Cardmanage extends AdminController{    //卡组控制器
             $url="card.onmycard.com.cn/zipapi";
             $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key,'pay_money'=>$new_money,'pay_way'=>$pay_way,'ip'=>$ip];
             $retudata=http($url,$params,"POST");
-            $res = json_decode($retudata);
-            return $res;
+            return $retudata;
             
 
         }
