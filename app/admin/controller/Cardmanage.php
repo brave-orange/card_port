@@ -73,14 +73,13 @@ class Cardmanage extends AdminController{    //卡组控制器
             $data=['comp_id'=>$company_code,'key'=>$company_key,'operat_man'=>$operat_man];
             $tokendata=http($url,$data,"POST");
 
-            $token=$tokendata;
+            $token=trim($tokendata);
             if(!$token){
                 return json('error','系统出错！');
             }
             
             $key = md5($company_code.$num.$fvalue.$token);
             $str=$company_code.$num.$fvalue.$token;
-            dump($str);
             $url="card.onmycard.com.cn/zipapi";
             $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key,'pay_money'=>$new_money,'pay_way'=>$pay_way];
             $retudata=http($url,$params,"POST");

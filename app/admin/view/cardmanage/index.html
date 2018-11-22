@@ -191,7 +191,13 @@
                 url:"{:url('Cardmanage/token')}",
                 data:{data:data},
                 success:function(res){
-                    layer.msg(res);
+                    var ores = JSON.parse(res);
+                    if(ores == "success"){
+                        layer.msg(res->msg);
+                    }else{
+                        layer.msg(res->msg);
+                    }
+                    
                 }
             })
             console.log(data);
