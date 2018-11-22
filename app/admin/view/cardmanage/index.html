@@ -163,7 +163,7 @@
                          isok = 0;
                          return false;
                      }else{
-                         data[key] = value;
+                         data[key:value];
                      }
                  }
 
@@ -213,7 +213,7 @@
                 type:"post",
                 data:{comp_id:company},
                 success:function(res){
-                    var ores = JSON.parse(res)
+                    var ores = JSON.parse(res);
                     if(ores.status == 'success'){
 
                         layer.msg(ores.msg);
