@@ -22,7 +22,6 @@ class Admin extends AdminController{    //后台人登录控制器
                 return json('success','登陆成功！');
             }
         }
-
     }
     public function into(){
         if(Request::instance()->isGet()){

@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use app\common\controller\AdminController;
 use think\Db;
 use think\Request;
+use think\Session;
 
 class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
@@ -31,6 +32,9 @@ class Cardmanage extends AdminController{    //卡组控制器
             if("" == $comp_id){
                 return json('error','参数不全');
             }
+            if("" == $phone){
+                return json('error','发送出错！');
+            }
             $t = Db::table('company_code');
             $comp_name = $t->where(['comp_id'=>$comp_id])->field('name')->find()['name'];
             $r = Db::table('company_code')->where(['comp_id'=>$comp_id])->update(['key'=>md5($key)]);
@@ -38,8 +42,13 @@ class Cardmanage extends AdminController{    //卡组控制器
                 if(!$phone){
                      return json('error','获取失败，请重试！');
                 }
-                sendKey($phone,$comp_name,$key);
-                return json('success','请稍等短信通知。');
+                if(sendKey($phone,$comp_name,$key)){
+                    return json('success','请稍等短信通知。');
+                }else{
+                    return json('error','获取失败，请重试！');
+            }
+
+                
             }else{
                 return json('error','获取失败，请重试！');
             }

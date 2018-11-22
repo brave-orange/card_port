@@ -5,20 +5,34 @@ use PHPExcel_IOFactory;
 use SimpleXMLElement;
 use app\common\Cards;
 use think\Db;
+use think\Request;
+use app\common\controller\AdminController;
 
-class Financial{    //财务控制器
+class Financial extends AdminController{    //财务控制器
     public function index(){
         $res = model('Financial','service')->getApply();
         if($res){
-            return json('success','',$res);
+            return json_encode(['code'=>0,'msg'=>'','count' => count($res),'data'=>$res],JSON_UNESCAPED_UNICODE);
         }else{
             return json('error','出错了');
         }
     }
+
+    public function tableData(){
+       // if(Request::instance()->isPost()){
+             $res = model('Financial','service')->getApply();
+            if($res){
+                return json_encode(['code'=>0,'msg'=>'','count' => count($res),'data'=>$res],JSON_UNESCAPED_UNICODE);
+            }else{
+                return json('error','出错了');
+            }
+       // }
+    }
     public function cardUsedCount(){
         return json('success','',model('Financial','service')->cardUsedCount());
     }
-    public function not_pass_card_apply(){
+
+    public function not_pass_card_apply(){      //不通过
         $id = input("param.apply_id");
         $rec = model("BuyCardRecord")->where(['id'=>$id])->find();
         if($rec){

@@ -8,18 +8,18 @@ class AdminController extends Controller   //后台过滤器
 {
     public function _initialize()
     {
-        /*if (Request::instance()->isGet()){
-            if(NULL == Session::get('userid')) {
+        if (Request::instance()->isGet()){
+            if("" == Session::get('admin_phone')) {
                 
-                $this->redirect('/login');
+                $this->redirect('admin/admin/login');
                 //没登陆，跳转到登陆页
             }
         }else if (Request::instance()->isPost()){
-            if(NULL == Session::get('userid')) {             
+            if("" == Session::get('admin_phone')) {             
                 $this->error(["code"=>0,"msg"=>"未登录状态无法调用！"]);
 
             }
-        }*/
+        }
 
     }
 }

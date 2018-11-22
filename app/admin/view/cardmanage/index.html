@@ -158,14 +158,19 @@
                 success:function(res){
                     var ores = JSON.parse(res)
                     if(ores.status == 'success'){
+
                         layer.msg(ores.msg);
+                        $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的卡组生成秘钥");
                     }else{
-                        layer.msg(ores.msg);
-                        window.location.reload()
+                        layer.msg(ores.msg,function(){
+                            window.location.reload()
+                        });
+                        
                     }
+                    
                 }
             })
-            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的卡组生成秘钥");
+            
         });
         
         $(".navbar_con>span").click(function(){
