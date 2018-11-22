@@ -4,7 +4,7 @@ use app\common\controller\AdminController;
 use think\Db;
 use think\Session;
 use think\Request;
-use think\Session;
+
 
 class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
