@@ -8,7 +8,9 @@ use think\Request;
 class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
         $company = Db::table('company_code')->select();
-        return $this->assign(array('company'=>$company))->fetch();;
+        $name = Session::get('admin_man');
+        $res = model('Cardmanage','service')->getApply($name);
+        return $this->assign(array('company'=>$company,'record'=>$res))->fetch();;
     }
 
     public function addCompany(){
@@ -98,4 +100,10 @@ class Cardmanage extends AdminController{    //卡组控制器
             return $token;
         }
     }
+
+    // public function getApply(){ //获取运营的申请情况
+    //     $name = Session::get('admin_man');
+    //     $res = model('Cardmanage','service')->getApply($name);
+    //     return json_encode($res,JSON_UNESCAPED_UNICODE);
+    // }
 }

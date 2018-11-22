@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>传则内部管控后台</title>
+
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/index.css">
+
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+    <!-- 顶部 -->
+
+    <div class="logo">
+        <p>
+            <a href="">
+            <img src="__STATIC__/img/logo.png" alt="">
+            </a>
+        </p>
+    </div>
+
+    <!-- 菜单和主体 -->
+    <div class="content">
+        <!-- 菜单 -->
+        <div class="omenu">
+            <ul>
+                <li><a href="#">功能选择</a></li>
+                <li><a href="index.html">卡组管理</a></li>
+                <li><a href="finance.html" class="focus_on">财务管理</a></li>
+                <li><a href="kefuMag.html">客服管理</a></li>
+            </ul>
+        </div>
+        <!-- 主体 -->
+        <div class="obody">
+            <div class="navbar_con">
+                <span class="active">卡组生成审核</span>
+                <span>卡组使用情况查询</span>
+            </div>
+            <div class="main_detail">
+                <div class="tab_1 show">
+                    <table class="layui-hide" id="taBle"></table>
+                    <script type="text/html" id="barDemo">
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">通过</a>
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">未通过</a>
+                    </script>
+                </div>
+                <div class="tab_2 hide">
+                    <p>
+                        时间区间：<input readonly type="text" class='inp_big' id="time_range">
+                    </p>
+                    
+                    <p  class="flex-box flex-a bottom_sure" style='margin-top: 10px'>
+                        <button type="button">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                        <button type="button">下&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;载</button>
+                    </p>
+                    <div class="datas">
+                        <!-- -- 暂无数据 -- -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- qq客服 -->
+        <div class="qq_kefu">
+            <img src="__STATIC__/img/qq.png" alt="">
+            <span class="close_qq">×</span>
+        </div>
+    </div>
+
+    
+</body>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layui/layui.js"></script>
+<script>
+    $(function(){
+        $("input[name='miyao']").click(function(){
+            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
+        });
+        
+        $(".navbar_con>span").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var index = $(this).index();
+            $(".main_detail>div").eq(index).removeClass("hide").addClass("show").siblings().removeClass("show").addClass("hide");
+        });
+        
+        $(".close_qq").click(function(){
+            $(this).parent(".qq_kefu").hide();
+        })
+    })
+
+layui.use('table', function(){
+  var table = layui.table;
+
+  table.render({
+    elem: '#taBle'
+    ,url:"{:url('admin/Financial/tableData')}"
+    // ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+    //   layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+    //   //,curr: 5 //设定初始在第 5 页
+    //   ,groups: 1 //只显示 1 个连续页码
+    //   ,first: false //不显示首页
+    //   ,last: false //不显示尾页
+      
+    // }
+    ,page:true
+    /*,cols: [[
+      {field:'apply_man', width:80, title: '申请人'}
+      ,{field:'pay_way', width:100, title: '付款方式'}
+      ,{field:'company_name', width:80, title: '公司名', sort: true,unresize:false}
+      ,{field:'pay_money', width:80, title: '打款金额'}
+      ,{field:'time', title: '申请时间', minWidth: 150}
+      ,{fixed: 'right', width: 120, title:'操作',align:'center', toolbar: '#barDemo'}
+    ]]*/
+    ,cols: [[ //表头
+      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+      ,{field: 'username', title: '用户名', width:80}
+      ,{field: 'sex', title: '性别', width:80, sort: true}
+      ,{field: 'city', title: '城市', width:80} 
+      ,{field: 'sign', title: '签名', width: 177}
+      ,{field: 'experience', title: '积分', width: 80, sort: true}
+      ,{field: 'score', title: '评分', width: 80, sort: true}
+      ,{field: 'classify', title: '职业', width: 80}
+      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+    ]]
+    
+  });
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+var date = new Date();
+var time = date.toLocaleDateString();
+ time = time.replace("-","/");
+   //日期范围
+laydate.render({
+    elem: '#time_range'
+    ,range: true
+    ,theme:"#00AAEF"
+    ,max: time  
+  });
+});
+});
+</script>
+</html>

@@ -1,6 +1,8 @@
 <?php
 namespace app\admin\service;
+
 class Financial{
+
     public function getApply(){
         return model('BuyCardRecord')->alias('a')->where(['is_pass'=>2])->join('company_code b','a.company_code = b.comp_id')->field('a.operat_man as apply_man,b.name as company_name,a.pay_money,a.time,a.pay_way')->order('a.time desc')->select();
     }

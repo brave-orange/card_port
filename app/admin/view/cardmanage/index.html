@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
     <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
     <link rel="stylesheet" href="__STATIC__/css/index.css">
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css"  media="all">
 </head>
 <body>
     <!-- 顶部 -->
@@ -27,9 +28,9 @@
         <div class="omenu">
             <ul>
                 <li><a href="">功能选择</a></li>
-                <li><a href="">卡组管理</a></li>
-                <li><a href="">财务管理</a></li>
-                <li><a href="">客服管理</a></li>
+                <li><a href="" >卡组管理</a></li>
+                <li><a href="#" onclick="none()">财务管理</a></li>
+                <li><a href="#" onclick="none()">客服管理</a></li>
             </ul>
         </div>
         <!-- 主体 -->
@@ -96,7 +97,53 @@
                     </div>
                 </div>
                 <div class="tab_2 hide">
-                    -- 暂无数据 --
+                    <div class="layui-form">
+                      <table class="layui-table">
+                        <colgroup>
+                          <col width="200">
+                          <col width="220">
+                          <col width="100">
+                          <col width="100">
+                          <col width="100">
+                          <col width="250">
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>所属公司</th>
+                            <th>申请时间</th>
+                            <th>申请数量</th>
+                            <th>积分卡面值</th>
+                            <th>公司付款金额</th>
+                            <th>申请状态</th>
+                          </tr> 
+                        </thead>
+                        <tbody>
+                            {if condition="count($record) == 0"} 
+                                <span style="margin:0 auto;"> -- 暂无数据 -- </span> 
+                            {else /}
+                            {volist name="record" id="vo"}
+                                <tr>
+                                    <th style="font-size:12px; height:18px;">{$vo.company_name}</th>
+                                    <th style="font-size:12px;height:18px;">{$vo.time}</th>
+                                    <th style="font-size:12px;height:18px;">{$vo.number}</th>
+                                    <th style="font-size:12px;height:18px;">{$vo.face_value}</th>
+                                    <th style="font-size:12px;height:18px;">{$vo.pay_money}</th>
+                                    {if condition="$vo['is_pass'] == 1"} 
+                                        <th style="font-size:12px;height:18px;"><a style="color:skyblue;font-weight:bold;" href='http://{$vo.download}'>审核成功(点击下载)...</a></th>
+                                    {elseif condition="$vo['is_pass'] == 2"}
+                                        <th style="font-size:12px;height:18px;">等待审核...</th>
+                                    {else /}
+                                        <th style="font-size:12px;height:18px;">未通过审核...</th>
+                                    {/if}
+                                </tr>
+                                {/volist}
+                            {/if}
+                            
+                        </tbody>
+                      </table>
+                    </div>
+
+                       
                 </div>
                 <div class="tab_3 hide">
                     <p class="flex-box flex-c flex-col-c">
@@ -122,6 +169,9 @@
 <script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
 <script src="__STATIC__/layer/layer.js"></script>
 <script>
+    function none(){
+        layer.alert("当前无权限！")
+    }
     $(function(){
         $('#add_new_comp').click(function(){
             var comp_name = $("#new_company_name").val()
