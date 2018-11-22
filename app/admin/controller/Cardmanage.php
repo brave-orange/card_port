@@ -24,7 +24,6 @@ class Cardmanage extends AdminController{    //卡组控制器
     }
     public function getKey(){   //随机获取一个公司的Key，更新，并发送到操作人的手机上
          if(Request::instance()->isPost()){
-             return 1111;
             //$operat_man = input('param.operat_man');
              //Session::set('admin_phone','18012776312');
             $phone = Session::get('admin_phone');
