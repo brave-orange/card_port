@@ -5,7 +5,6 @@ use think\Db;
 use think\Session;
 use think\Request;
 
-
 class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
         $company = Db::table('company_code')->select();
@@ -74,26 +73,20 @@ class Cardmanage extends AdminController{    //卡组控制器
             $url="card.onmycard.com.cn/index/index/api_token";
             $data=['comp_id'=>$company_code,'key'=>$company_key,'operat_man'=>$operat_man];
             $tokendata=http($url,$data,"POST");
+
             $token=$this->is_json($tokendata);
-            if(is_array($token)){
-                $str=$token['msg'];
-                echo $str;
-                die();
+            if(!$token){
+                return json('error','系统出错！');
             }
             $key = md5($company_code.$num.$fvalue.$token);
             $str=$company_code.$num.$fvalue.$token;
-            $urls="http://card.onmycard.com.cn/zipapi";
+            $url="card.onmycard.com.cn/zipapi";
             $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key];
-            $retudata=http($urls,$params,"POST");
-            $ysb=$this->is_json($retudata);
-            if(is_array($ysb)){
-                $str=$ysb['msg'];
-                echo $str;
-                die();
-            }
-            echo "卡号已成功生成!";
-//            echo "压缩文件路径为".$retudata;
-            exit;
+            $retudata=http($url,$params,"POST");
+            $res = json_decode($retudata);
+            return $res;
+            
+
         }
     }
     protected function is_json($data){
