@@ -212,9 +212,7 @@
                     if(ores.status == 'success'){
 
                         layer.msg(ores.msg);
-                        $("input[name='company_key']").prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的卡组生成秘钥").click(function(){
-                            
-                        });
+                        $("input[name='company_key']").prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的卡组生成秘钥").unbind();
                     }else{
                         layer.msg(ores.msg,function(){
                             window.location.reload()
