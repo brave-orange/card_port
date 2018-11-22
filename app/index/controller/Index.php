@@ -36,7 +36,7 @@ class Index extends Controller
                 return json('error','参数不全！');
             }
             if($key != $token){
-                return json('error','接口验证错误,请重试！');
+                return json('error','接口验证错误,请重试！',array('key'=>Cache::get('token')[''.$operat_man]));
             }
             $check_num = create_token(2);//文件区分校验位
             //$filename = $company_code."_".$fvalue.'元'.$num.'张_'.$card_type."_".$check_num."_".date("md").'.xlsx';
