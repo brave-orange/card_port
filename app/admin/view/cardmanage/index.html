@@ -239,8 +239,9 @@
                 type:'POST',
                 url:"{:url('Cardmanage/token')}",
                 data:data,
+                dataType:'json',
                 success:function(res){
-                    console.log(typeof res)
+//                    console.log(typeof res)
                     var ores = JSON.parse(res);
                     if(ores.status == 'success'){
                         layer.alert(ores.msg);
