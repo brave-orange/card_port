@@ -204,7 +204,6 @@
             var data = {};
             var isok = 1;
             $("input").each(function(){
-//                 console.log($(this).attr('name'));
                  var key = $(this).attr('name');
                  var value = $(this).val();
                  if(null != key) {
@@ -216,10 +215,9 @@
                          data[key] = value;
                      }
                  }
-
             })
+      
             $("select").each(function(){
-//                console.log($(this).attr('name'));
                 var key = $(this).attr('name');
                 var value = $(this).val();
                 if(null != key) {

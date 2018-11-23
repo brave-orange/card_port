@@ -3,8 +3,15 @@ namespace app\admin\service;
 
 class Financial{
 
-    public function getApply(){
-        return model('BuyCardRecord')->alias('a')->where(['is_pass'=>2])->join('company_code b','a.company_code = b.comp_id')->field('a.operat_man as apply_man,b.name as company_name,a.pay_money,a.time,a.pay_way')->order('a.time desc')->select();
+    public function getApply($start,$limit){
+        $t =  model('BuyCardRecord')
+            ->alias('a')->where(['is_pass'=>2])
+            ->join('company_code b','a.company_code = b.comp_id')
+            ->field('a.id,a.operat_man as apply_man,b.name as company_name,a.pay_money,a.time,a.pay_way')
+            ->order('a.time desc')
+            ->limit($start.','.$limit)
+            ->select();
+        return $t;
     }
 
     public function cardUsedCount($start=null,$end=null,$comp_id=null){        //获取财务需要的数据（以用/未用）卡（数量/金额）

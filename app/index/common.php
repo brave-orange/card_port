@@ -29,16 +29,7 @@ function card_is_real($card_no){ //验证卡号是否可用
 }
 
 
-function card_error_log($card_no,$msg = null){   //卡号存储错误计入日志
-    $masg = "";
-    for($i = 0 ; $i < count($card_no) ; $i++){
-        $masg = '['.date("Y-m-d H:i:s").']'.'卡号：'.json_encode($card_no[$i]).$msg;
 
-    }
-            // 日志文件名：日期.txt
-    $path = RUNTIME_PATH.DS.'cardNo_log'. DS .date("Ymd").'.txt';
-    file_put_contents($path, $masg.PHP_EOL,FILE_APPEND);
-}
 /*
 function user_balance($userid){    //通过充值和消费计算用户余额
     $balance = array();

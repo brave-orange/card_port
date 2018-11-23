@@ -32,7 +32,7 @@ class Admin extends AdminController{    //后台人登录控制器
                         $this->redirect('/Cardmanage');
                         break;
                     case 2:    //财务
-                        # code...
+                        $this->redirect('/Financial');
                         break;
                     case 3:    //客服
                         # code...
