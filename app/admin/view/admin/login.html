@@ -61,7 +61,7 @@ $(function(){
                 success:function(res){
                     res=JSON.parse(res);
                     if(res.status == "success"){
-                        layer.msg(res.msg,function(){
+                        layer.msg(res.msg,{},function(){
                             window.location.href="{:url('admin/into')}";
                         })
                         

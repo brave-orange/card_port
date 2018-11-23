@@ -12,7 +12,20 @@ class Cardmanage extends AdminController{    //卡组控制器
         $res = model('Cardmanage','service')->getApply($name);
         return $this->assign(array('company'=>$company,'record'=>$res))->fetch();;
     }
+    public function _initialize(){
+        if (Request::instance()->isGet()){
+            if(1 != Session::get('admin_type')) {
+                
+                $this->redirect('admin/admin/login');
+                //没登陆，跳转到登陆页
+            }
+        }else if (Request::instance()->isPost()){
+            if(1 != Session::get('admin_type')) {             
+                $this->error(["code"=>0,"msg"=>"未登录状态无法调用！"]);
 
+            }
+        }
+    }
     public function addCompany(){
         if(Request::instance()->isPost()){
             $company_name = input('param.company_name');

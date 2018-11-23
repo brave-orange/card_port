@@ -29,9 +29,9 @@
         <div class="omenu">
             <ul>
                 <li><a href="#">功能选择</a></li>
-                <li><a href="index.html">卡组管理</a></li>
-                <li><a href="finance.html" class="focus_on">财务管理</a></li>
-                <li><a href="kefuMag.html">客服管理</a></li>
+                <li><a href="#" onclick="none()">卡组管理</a></li>
+                <li><a href="#" class="focus_on">财务管理</a></li>
+                <li><a href="#" onclick="none()">客服管理</a></li>
             </ul>
         </div>
         <!-- 主体 -->
@@ -40,12 +40,12 @@
                 <span class="active">卡组生成审核</span>
                 <span>卡组使用情况查询</span>
             </div>
-            <div class="main_detail">
+            <div class="main_detail" style="padding:30px 5px">
                 <div class="tab_1 show">
-                    <table class="layui-hide" id="taBle"></table>
+                    <table class="layui-hide" id="taBle" lay-filter="test"></table>
                     <script type="text/html" id="barDemo">
-                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">通过</a>
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">未通过</a>
+                        <a class="layui-btn  layui-btn-xs" lay-event="pass">允许</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="notpass">驳回</a>
                     </script>
                 </div>
                 <div class="tab_2 hide">
@@ -75,6 +75,9 @@
 <script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
 <script src="__STATIC__/layui/layui.js"></script>
 <script>
+    function none(){
+        layer.alert("当前无权限！")
+    }
     $(function(){
         $("input[name='miyao']").click(function(){
             $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
@@ -106,27 +109,84 @@ layui.use('table', function(){
       
     // }
     ,page:true
-    /*,cols: [[
-      {field:'apply_man', width:80, title: '申请人'}
-      ,{field:'pay_way', width:100, title: '付款方式'}
-      ,{field:'company_name', width:80, title: '公司名', sort: true,unresize:false}
+    ,method:'post'
+    ,cols: [[
+      {field:'id', hide:true,width:1, title: ''}
+      ,{field:'apply_man', width:80, title: '申请人'}
+      ,{field:'pay_way', minWidth:100, title: '付款方式'}
+      ,{field:'company_name', minWidth:80, title: '公司名', sort: true,unresize:false}
       ,{field:'pay_money', width:80, title: '打款金额'}
-      ,{field:'time', title: '申请时间', minWidth: 150}
-      ,{fixed: 'right', width: 120, title:'操作',align:'center', toolbar: '#barDemo'}
-    ]]*/
-    ,cols: [[ //表头
-      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-      ,{field: 'username', title: '用户名', width:80}
-      ,{field: 'sex', title: '性别', width:80, sort: true}
-      ,{field: 'city', title: '城市', width:80} 
-      ,{field: 'sign', title: '签名', width: 177}
-      ,{field: 'experience', title: '积分', width: 80, sort: true}
-      ,{field: 'score', title: '评分', width: 80, sort: true}
-      ,{field: 'classify', title: '职业', width: 80}
-      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+      ,{field:'time', title: '申请时间', minWidth: 120}
+      ,{fixed: 'right', width: 130, title:'操作',align:'center', toolbar: '#barDemo'}
     ]]
+
+    ,done:function(res){
+         layer.alert("共有<span style='font-size:20px;font-weight:bold;color:red'>"+res.count+"</span>条待审核卡组生成申请。");
+    }
     
   });
+   
+
+table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+    var data = obj.data; //获得当前行数据
+    var layEvent = obj.event; 
+    var tr = obj.tr; 
+    if(layEvent === 'pass'){ //允许
+        layer.confirm("已确认<span style='font-size:20px;font-weight:bold;color:red'>"+data.company_name+"</span>的<span style='font-size:20px;font-weight:bold;color:red'>"+data.pay_money+"</span>元已到账，允许生成卡组。", {icon: 3, title:'提示'}, 
+            function(index){
+                $.ajax({
+                    url:"{:url('admin/Financial/pass_card_apply')}",
+                    type:"post",
+                    data:{apply_id:data.id},
+                    success:function(res){
+                        var ores = JSON.parse(res)
+                        if(ores.status == 'success'){
+                            layer.close(index);
+                            layer.msg(ores.msg,{},function(){
+                                tr.remove();
+                            });
+                        }else{
+                            layer.close(index);
+                            layer.msg(ores.msg);
+                        }
+
+                    }
+                })
+               
+            },function(index){
+                layer.close(index);
+            });
+    } else if(layEvent === 'notpass'){ //驳回
+        /*obj.update({
+        username: '123'
+        ,title: 'xxx'
+        });*/
+         layer.confirm("确认驳回<span style='font-size:20px;font-weight:bold;color:red'>"+data.apply_man+"</span>的<span style='font-size:20px;font-weight:bold;color:red'>"+data.company_name+"</span>的卡组生成申请吗。", {icon: 3, title:'提示'}, 
+            function(index){
+                $.ajax({
+                    url:"{:url('admin/Financial/not_pass_card_apply')}",
+                    type:"post",
+                    data:{apply_id:data.id},
+                    success:function(res){
+                        var ores = JSON.parse(res)
+                        if(ores.status == 'success'){
+                            layer.close(index);
+                            layer.msg(ores.msg,{},function(){
+                                tr.remove();
+                            });
+                        }else{
+                            layer.close(index);
+                            layer.msg(ores.msg);
+                        }
+
+                    }
+                })
+            },
+            function(){
+                layer.close(index);
+            })
+        }
+    })
 layui.use('laydate', function(){
   var laydate = layui.laydate;
 var date = new Date();
@@ -141,5 +201,6 @@ laydate.render({
   });
 });
 });
+
 </script>
 </html>

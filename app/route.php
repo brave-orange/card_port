@@ -31,6 +31,7 @@ return [
     'backapi'         => 'chuanze/Haochongapi/backapi',
     'haochongbalance' => 'chuanze/Haochongapi/HaochongBalance',
     'zipapi'          => 'index/index/zipapi',
-    'Cardmanage'      => 'admin/Cardmanage/index'
+    'Cardmanage'      => 'admin/Cardmanage/index',
+    'Financial'       => 'admin/Financial/index'
 
 ];
