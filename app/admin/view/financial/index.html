@@ -48,18 +48,21 @@
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="notpass">驳回</a>
                     </script>
                 </div>
-                <div class="tab_2 hide">
+                <div class="tab_2 hide" id="reloadTable">
                     <p>
                         时间区间：<input readonly type="text" class='inp_big' id="time_range">
+                        <span class="bottom_sure">
+                        <button  type="button" id="range_button" style="margin-right: 15px;"  data-type="reload">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                        </span>
                     </p>
                     
-                    <p  class="flex-box flex-a bottom_sure" style='margin-top: 10px'>
-                        <button type="button">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
-                        <button type="button">下&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;载</button>
-                    </p>
+                    <!-- <div  class="flex-box flex-a bottom_sure" style='margin-top: 10px'> -->
+                        
+
+                        <!-- <button type="button">下&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;载</button> -->
+                    <!-- </div> -->
                     <div class="datas">
-                        <!-- -- 暂无数据 -- -->
-                    </div>
+                        <table class="layui-hide" id="detail" lay-filter="user"></table></div>
                 </div>
             </div>
         </div>
@@ -94,9 +97,40 @@
         })
     })
 
+
 layui.use('table', function(){
   var table = layui.table;
-
+  table.render({
+    elem: '#detail'
+    ,url:"{:url('admin/Financial/cardUsedCount')}"
+    ,page:false
+    ,method:'post'
+    ,cols: [[
+      {field:'company_name', minWidth:80, title: '公司名称'}
+      ,{field:'used', width:100, title: '已用卡数量'}
+      ,{field:'not_used', minWidth:80, title: '未用卡数量'}
+      ,{field:'card_count', title: '积分卡总数', minWidth: 60}
+      ,{field:'used_money', minWidth:80, title: '已使用积分'}
+      ,{field:'not_used_money', width:120, title: '未使用积分'}
+    ]]
+    ,id: 'countreload'
+  })
+  var $ = layui.$, active = {
+    reload: function(){
+      var demoReload = $('#time_range');
+      
+      //执行重载
+      table.reload('countreload', {
+        where: {
+            date: demoReload.val()
+        }
+      });
+    }
+    }
+  $('#range_button').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
   table.render({
     elem: '#taBle'
     ,url:"{:url('admin/Financial/tableData')}"
@@ -121,8 +155,14 @@ layui.use('table', function(){
     ]]
 
     ,done:function(res){
-         layer.alert("共有<span style='font-size:20px;font-weight:bold;color:red'>"+res.count+"</span>条待审核卡组生成申请。");
-    }
+        if(res.count == 0){
+            layer.alert("当前没有卡组生成请求。");
+        }else{
+            layer.alert("共有<span style='font-size:20px;font-weight:bold;color:red'>"+res.count+"</span>条待审核卡组生成申请。");
+        }
+        
+        }
+    
     
   });
    

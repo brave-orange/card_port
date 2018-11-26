@@ -38,15 +38,25 @@ class Financial extends AdminController{    //财务控制器
             $start = ($page-1)*$limit;
             
             $res = model('Financial','service')->getApply($start,$limit);
-            if($res){
-                return json_decode(json_encode(['code'=>'0','msg'=>'','count' => count($res),'data'=>$res],JSON_UNESCAPED_UNICODE));
+            if($res['data']){
+                return json_decode(json_encode(['code'=>'0','msg'=>'','count' => $res['count'],'data'=>$res['data']],JSON_UNESCAPED_UNICODE));
             }else{
-                return json('error','出错了' );
+                return json_decode(json_encode(['code'=>'0','msg'=>'','count' => $res['count'],'data'=>[$res['data']]],JSON_UNESCAPED_UNICODE));
             }
         }
     }
+
     public function cardUsedCount(){
-        return json('success','',model('Financial','service')->cardUsedCount());
+        $da = input('param.date');
+        $start = substr($da,0,10);
+        $end = substr($da,13,10);
+        $data = model('Financial','service')->cardUsedCount($start,$end);
+        if($data){
+            return json_decode(json_encode(['code'=>'0','msg'=>'','count' => count($data),'data'=>$data],JSON_UNESCAPED_UNICODE));
+        }else{
+            return json_decode(json_encode(['code'=>'0','msg'=>'','count' => 0,'data'=>$data],JSON_UNESCAPED_UNICODE));
+        }
+        
     }
 
     public function not_pass_card_apply(){      //不通过
