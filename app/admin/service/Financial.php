@@ -15,8 +15,7 @@ class Financial{
             ->alias('a')->where(['is_pass'=>2])
             ->join('company_code b','a.company_code = b.comp_id')
             ->field('a.id,a.operat_man as apply_man,b.name as company_name,a.pay_money,a.time,a.pay_way')
-            ->order('a.time desc')
-            ->limit($start.','.$limit)
+
             ->count();
         $res = array('count'=>$c,'data'=>$t);
         return $res;

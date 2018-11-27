@@ -42,9 +42,9 @@ body{position: relative;}
 .omenu{width: 140px;overflow: hidden;float: left;}
 .omenu li{width: 100%;text-align: center;background: #EBEBEB;border-bottom: 1px solid #f6f6f6}
 .omenu li>a{width: 100%;display: inline-block;line-height: 30px;color: #666;font-weight: 600}
-.omenu li:first-child{background: #00AAEF;}
-.omenu li:first-child a{color: #fff;text-decoration-line: none}
-.omenu li:hover a{background: #5FBEE5;color: #fff}
+.omenu>ul>li:first-child{background: #00AAEF;}
+.omenu>ul>li:first-child a{color: #fff;text-decoration-line: none}
+.omenu ul>li a:hover{background: #5FBEE5;color: #fff}
 
 .obody{margin-left:5px;width: 750px;overflow: hidden;border-top: 3px solid #00AAEF;background: #E7F8FF;padding: 3px}
 .navbar_con{padding:5px 30px 0;}
@@ -63,3 +63,8 @@ body{position: relative;}
 .qq_kefu{float: right;width: 85px;height: 85px;position: relative;left: 5px;top:10px;}
 .qq_kefu>img{width: 100%;}
 .qq_kefu>span.close_qq{position: absolute;top: 0;right: 10px;border: 1px solid #b3b3b3;line-height: 10px;cursor: pointer;}
+
+.omenu>ul li>a.focus_on{background: #E68936;color: #fff}
+
+/* caiwu */
+.datas{width: 80%;margin: 10px auto;}

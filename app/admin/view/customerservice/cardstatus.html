@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>传则内部管控后台</title>
+
+    <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+    <link rel="stylesheet" href="__STATIC__/css/ssbase.css">
+    <link rel="stylesheet" href="__STATIC__/css/index.css">
+
+    <link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+</head>
+<body>
+    <!-- 顶部 -->
+
+    <div class="logo">
+        <p>
+            <a href="">
+            <img src="__STATIC__/img/logo.png" alt="">
+            </a>
+        </p>
+    </div>
+
+    <!-- 菜单和主体 -->
+    <div class="content">
+        <!-- 菜单 -->
+        <div class="omenu">
+            <ul>
+                <li><a href="#">功能选择</a></li>
+                <li><a href="#" onclick="none()">卡组管理</a></li>
+                <li><a href="#" onclick="none()">财务管理</a></li>
+                <li class="jifen_toggle"><a href="#" >客服管理</a>
+                    <ul>
+                        <li><a href="kefuMag.html" >积分激活查询</a></li>
+                        <li><a href="kefuMag_2.html" >积分消费查询</a></li>
+                        <li><a href="kefuMag_3.html" class="focus_on">积分卡状态查询</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- 主体 -->
+        <div class="obody">
+            <div class="navbar_con">
+                <span class="active">积分卡状态</span>
+            </div>
+            <div class="main_detail">
+                <div class="tab_1 show">
+                    <p>
+                        积分卡号：<input type="text" class="inp_big">
+                    </p>
+                    <p class="bottom_sure" style="margin-top:10px;">
+                        <button type="button">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                    </p>
+                    <table class="layui-hide" id="cardnumber_res"></table>
+                </div>
+
+            </div>
+        </div>
+        <!-- qq客服 -->
+        <div class="qq_kefu">
+            <img src="__STATIC__/img/qq.png" alt="">
+            <span class="close_qq">×</span>
+        </div>
+    </div>
+
+    
+</body>
+<script src="__STATIC__/js/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/layui/layui.js"></script>
+<script>
+        function none(){
+        layer.alert("当前无权限！")
+    }
+    $(function(){
+        $("input[name='miyao']").click(function(){
+            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
+        });
+        
+        $(".navbar_con>span").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+            var index = $(this).index();
+            $(".main_detail>div").eq(index).removeClass("hide").addClass("show").siblings().removeClass("show").addClass("hide");
+        });
+        
+        $(".close_qq").click(function(){
+            $(this).parent(".qq_kefu").hide();
+        })
+    })
+
+layui.use('table', function(){
+  var table = layui.table;
+
+  table.render({
+    elem: '#cardnumber_res'
+    ,url:''
+    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+      layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+      //,curr: 5 //设定初始在第 5 页
+      ,groups: 1 //只显示 1 个连续页码
+      ,first: false //不显示首页
+      ,last: false //不显示尾页
+      
+    }
+    ,cols: [[
+      {field:'peo', width:165, title: '积分卡类型'}
+      ,{field:'pay_way', width:165, title: '所属公司'}
+      ,{field:'companyname', width:165, title: '生成时间', sort: true,unresize:false}
+      ,{field:'time', title: '激活时间', width: 165}
+    ]]
+    
+  });
+})
+
+$(".jifen_toggle").click(function(){
+    $(this).find("ul").slideToggle("fast");
+})
+</script>
+</html>

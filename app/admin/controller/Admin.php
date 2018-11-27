@@ -1,10 +1,10 @@
 <?php
 namespace app\admin\controller;
-use app\common\controller\AdminController;
+use think\Controller;
 use think\Session;
 use think\Request;
 
-class Admin extends AdminController{    //后台人登录控制器
+class Admin extends Controller{    //后台人登录控制器
     public function login(){
         return view();
     }
@@ -35,7 +35,7 @@ class Admin extends AdminController{    //后台人登录控制器
                         $this->redirect('/Financial');
                         break;
                     case 3:    //客服
-                        # code...
+                        $this->redirect('/Customerservice');
                         break;
 
                 }
