@@ -35,4 +35,24 @@ class Customerservice{
             ->count();
         return array('count'=>$count,'data'=>$res);
     }
+
+    public function getCardStatus($card_no,$start,$limit){
+        $res = model('Card')->alias('a')
+            ->join('buy_card_record b','a.buy_id=b.id')
+            ->join('company_code c','a.comp_id = c.comp_id')
+            ->where(['a.card_no'=>$card_no])
+            ->field('a.type,c.name company_name,b.time,a.is_used')
+            ->limit($start.','.$limit)
+            ->find();
+        if($res['is_used'] == '0'){
+            $res['status'] = '未用';
+        }else if($res['is_used'] == '1'){
+            $res['status'] = '已用';
+        }else{
+            $res['status'] = '未知';
+        }
+        $res = array(0=>$res);
+        $count = 1;
+        return array('count'=>$count,'data'=>$res);
+    }
 }

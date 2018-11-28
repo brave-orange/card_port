@@ -33,9 +33,9 @@
                 <li><a href="#" onclick="none()">财务管理</a></li>
                 <li class="jifen_toggle"><a href="#" >客服管理</a>
                     <ul>
-                        <li><a href="kefuMag.html" >积分激活查询</a></li>
-                        <li><a href="kefuMag_2.html" >积分消费查询</a></li>
-                        <li><a href="kefuMag_3.html" class="focus_on">积分卡状态查询</a></li>
+                        <li><a href="Customerservice" >积分激活查询</a></li>
+                        <li><a href="consume">积分消费查询</a></li>
+                        <li><a href="#" class="focus_on">积分卡状态查询</a></li>
                     </ul>
                 </li>
             </ul>
@@ -48,12 +48,12 @@
             <div class="main_detail">
                 <div class="tab_1 show">
                     <p>
-                        积分卡号：<input type="text" class="inp_big">
+                        积分卡号：<input id="card_no"  type="text" class="inp_big">
                     </p>
                     <p class="bottom_sure" style="margin-top:10px;">
-                        <button type="button">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                        <button  type="button" id="search_button" style="margin-right: 15px;"  data-type="reload">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</button>
                     </p>
-                    <table class="layui-hide" id="cardnumber_res"></table>
+                    <table class="layui-hide" id="cardnumber_res"  lay-filter="cardnumber_res"></table>
                 </div>
 
             </div>
@@ -74,10 +74,6 @@
         layer.alert("当前无权限！")
     }
     $(function(){
-        $("input[name='miyao']").click(function(){
-            $(this).prop("type","text").addClass("inp_big").val("").prop("placeholder","请填写接收的短信密钥");
-        });
-        
         $(".navbar_con>span").click(function(){
             $(this).addClass("active").siblings().removeClass("active");
             var index = $(this).index();
@@ -94,23 +90,69 @@ layui.use('table', function(){
 
   table.render({
     elem: '#cardnumber_res'
-    ,url:''
-    ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-      layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-      //,curr: 5 //设定初始在第 5 页
-      ,groups: 1 //只显示 1 个连续页码
-      ,first: false //不显示首页
-      ,last: false //不显示尾页
-      
-    }
+    ,url:"{:url('admin/Customerservice/getCardStatus')}"
+    ,page: true
+    ,method:'post'
     ,cols: [[
-      {field:'peo', width:165, title: '积分卡类型'}
-      ,{field:'pay_way', width:165, title: '所属公司'}
-      ,{field:'companyname', width:165, title: '生成时间', sort: true,unresize:false}
-      ,{field:'time', title: '激活时间', width: 165}
-    ]]
+      {field:'type', width:100, title: '积分卡类型'}
+      ,{field:'company_name', width:200, title: '所属公司'}
+      ,{field:'time', width:180, title: '生成时间', sort: true,unresize:false}
+      ,{field:'status', title: '当前状态', width: 165}
+    ]],
+    id:'cardreload'
     
   });
+    var $ = layui.$, active = {
+    reload: function(){
+      var card_no = $('#card_no');
+      $.ajax({
+        url:"{:url('admin/Customerservice/checkCardNo')}",
+            type:"POST",
+            data:{card_no:card_no.val()},
+            success:function(res){
+                res = JSON.parse(res);
+                if(res.status == 'success'){
+                //执行重载
+                    table.reload('cardreload', {
+                        where: {card_no: card_no.val()}
+                    })
+                }else{
+                    layer.alert(res.msg,{icon: 5},function(index){
+                        card_no.val("")
+                        layer.close(index)
+                    })
+                }
+            }
+      })
+      
+      
+    }
+    }
+    $('#search_button').on('click',function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    })
+            //监听行双击事件
+    table.on('rowDouble(cardnumber_res)', function(obj){
+       
+        if(obj.data.is_used){
+            $.ajax({
+            url:"{:url('admin/Customerservice/getCardStatusDetail')}",
+            type:"post",
+            data:{card_no:$('#card_no').val()},
+            success:function(res){
+                ores = JSON.parse(res);
+                layer.alert(ores.msg);
+
+            }
+        })
+        }else{
+            layer.alert("卡未使用，暂无详情。",{icon: 5},function(index){
+                        layer.close(index)
+            })
+        }
+
+    });
 })
 
 $(".jifen_toggle").click(function(){
