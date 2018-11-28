@@ -1,4 +1,5 @@
 <?php
+/*
 function card_is_real($card_no){ //验证卡号是否可用
     if(config('card_out_time') != 0){     //是否设置过期时间
         $date = strtotime(substr($card_no,4,8));
@@ -26,7 +27,7 @@ function card_is_real($card_no){ //验证卡号是否可用
             }
         }
     }
-}
+}*/
 
 
 
