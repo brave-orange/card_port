@@ -179,8 +179,6 @@ class Index extends Controller
         //dump($xml_res->resultno);
         //dump(config('haochong_status')['0']);
         //return SendWarring("18012776312","hfudsighu","18012776312","123");
-        echo md6("123456");
-    }
-
+       return "";
 
 }

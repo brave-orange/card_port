@@ -47,7 +47,7 @@ class Customerservice extends AdminController{    //客服控制器
         }
     }
 
-    public function searchConsume(){     //t通过手机号找到该用户的消费记录
+    public function searchConsume(){     //通过手机号找到该用户的消费记录
         if(Request::instance()->isPost()){
             $phone = input('phone');
             $page = input('param.page');
