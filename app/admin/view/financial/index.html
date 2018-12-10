@@ -61,8 +61,8 @@
 
                         <!-- <button type="button">下&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;载</button> -->
                     <!-- </div> -->
-                    <div class="datas">
-                        <table class="layui-hide" id="detail" lay-filter="user"></table></div>
+                    <div class="datas" >
+                        <table class="layui-hide" id="detail" lay-filter="user" style="width:100%"></table></div>
                 </div>
             </div>
         </div>
@@ -106,12 +106,12 @@ layui.use('table', function(){
     ,page:false
     ,method:'post'
     ,cols: [[
-      {field:'company_name', minWidth:80, title: '公司名称'}
-      ,{field:'used', width:100, title: '已用卡数量'}
-      ,{field:'not_used', minWidth:80, title: '未用卡数量'}
+      {field:'company_name', minWidth:105, title: '公司名称'}
+      ,{field:'used', minWidth:60, title: '已用卡数量'}
+      ,{field:'not_used', minWidth:60, title: '未用卡数量'}
       ,{field:'card_count', title: '积分卡总数', minWidth: 60}
-      ,{field:'used_money', minWidth:80, title: '已使用积分'}
-      ,{field:'not_used_money', width:120, title: '未使用积分'}
+      ,{field:'used_money', minWidth:60, title: '已使用积分'}
+      ,{field:'not_used_money', minWidth:60, title: '未使用积分'}
     ]]
     ,id: 'countreload'
   })
@@ -149,7 +149,7 @@ layui.use('table', function(){
       ,{field:'apply_man', width:80, title: '申请人'}
       ,{field:'pay_way', minWidth:100, title: '付款方式'}
       ,{field:'company_name', minWidth:80, title: '公司名', sort: true,unresize:false}
-      ,{field:'pay_money', width:80, title: '打款金额'}
+      ,{field:'pay_money', minWidth:60, title: '打款金额'}
       ,{field:'time', title: '申请时间', minWidth: 120}
       ,{fixed: 'right', width: 130, title:'操作',align:'center', toolbar: '#barDemo'}
     ]]
