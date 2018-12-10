@@ -37,10 +37,13 @@ class Admin extends Controller{    //后台人登录控制器
                     case 3:    //客服
                         $this->redirect('/Customerservice');
                         break;
+                    case 4:
+                        $this->redirect('/Cardmanage');
+                        break;
 
                 }
             }else{
-                return "error";
+                $this->redirect('admin/admin/login');
             }
         }
     }

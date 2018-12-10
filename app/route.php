@@ -35,5 +35,6 @@ return [
     'Financial'       => 'admin/Financial/index',
     'Customerservice' => 'admin/Customerservice/index',
     'consume'         => 'admin/Customerservice/consume',
-    'cardstatus'      => 'admin/Customerservice/cardStatus'
+    'cardstatus'      => 'admin/Customerservice/cardStatus',
+    'adminenter'      => 'admin/admin/into'
 ];

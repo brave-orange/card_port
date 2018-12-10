@@ -17,13 +17,13 @@ class Customerservice extends AdminController{    //客服控制器
     }
     public function _initialize(){
         if (Request::instance()->isGet()){
-            if(3 != Session::get('admin_type')) {
+            if(3 != Session::get('admin_type') && 4 != Session::get('admin_type')) {
                 
                 $this->redirect('admin/admin/login');
                 //没登陆，跳转到登陆页
             }
         }else if (Request::instance()->isPost()){
-            if(3 != Session::get('admin_type')) {             
+            if(3 != Session::get('admin_type') && 4 != Session::get('admin_type')) {             
                 $this->error(["code"=>0,"msg"=>"未登录状态无法调用！"]);
 
             }
