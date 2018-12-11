@@ -70,7 +70,7 @@ class Cardmanage extends AdminController{    //卡组控制器
             }
         }
     }
-    public function token(){
+    public function token(){          //通过安全验证提交卡组生成请求
         if(Request::instance()->isPost()){
             $operat_man =Session::get('admin_man');
             $company_code = input('param.code');
@@ -86,7 +86,7 @@ class Cardmanage extends AdminController{    //卡组控制器
             if($company_code == '' || $num == '' || $fvalue == '' || $card_type == '' || $operat_man == '' || $company_key == '' || $new_money == ''){
                 return json('error',$msg="参数不全！");
             }
-            $url="card.onmycard.com.cn/index/index/api_token";
+            $url="www.shchuanze.com/index/index/api_token";
             $data=['comp_id'=>$company_code,'key'=>$company_key,'operat_man'=>$operat_man];
             $tokendata=http($url,$data,"POST");
 
@@ -97,7 +97,7 @@ class Cardmanage extends AdminController{    //卡组控制器
             
             $key = md5($company_code.$num.$fvalue.$token);
             $str=$company_code.$num.$fvalue.$token;
-            $url="card.onmycard.com.cn/zipapi";
+            $url="www.shchuanze.com/zipapi";
             $params=['code'=>$company_code,'num'=>$num,'face_value'=>$fvalue,'operat_man'=>$operat_man,'card_type'=>$card_type,'token'=>$key,'pay_money'=>$new_money,'pay_way'=>$pay_way,'ip'=>$ip];
             $retudata=http($url,$params,"POST");
             return $retudata;
