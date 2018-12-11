@@ -94,9 +94,16 @@ class Financial extends AdminController{    //财务控制器
                 $card_data[] = [$c_no[$i],$c_psw[$i]]; 
             }
             $ya_password = create_token(8);   //压缩文件密码
-            $phone = Db::table("businese_man")->where(array('name'=>$operat_man))->field('phone')->find()['phone'];
+            $phone = Db::table("businese_man")
+                ->where(array('name'=>$operat_man))
+                ->field('phone')
+                ->find()['phone'];
+            $company_name =  Db::table("company_code")
+                ->where(['id'=>$rec['company_code']])
+                ->field('name')
+                ->find()['name'];
             $check_num = create_token(2);//文件区分校验位
-            $msg_status = SendMessage($phone,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
+            $msg_status = SendMessage($phone, $rec['time'],$company_name,$company_code.'_'.$fvalue.'元'.$num.'张_'.$card_type."_".$check_num,$ya_password);
             if(1 == $msg_status){         
                 
                 foreach ($c_no as $key => $value) {

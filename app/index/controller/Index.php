@@ -179,7 +179,7 @@ class Index extends Controller
         //dump($xml_res->resultno);
         //dump(config('haochong_status')['0']);
         //return SendWarring("18012776312","hfudsighu","18012776312","123");
-       return "";
+       SendMessage("18012776312",date('Y-m-d H:i:s'),"阿里巴巴","测试文件","gas54g");
    }
 
 }

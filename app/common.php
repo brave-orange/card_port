@@ -35,9 +35,9 @@ function md6($password){
     exit;    
 }    //密码加密
 
-function SendMessage($tel,$filename,$message){
+function SendMessage($tel,$time,$name,$filename,$message){
     $SmsDemo = new sendFilePsw();
-    $response = $SmsDemo->sendPasswd($tel,$filename,$message);
+    $response = $SmsDemo->sendPasswd($tel,$time,$name,$filename,$message);
     return $response;
 
 }
