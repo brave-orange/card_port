@@ -173,7 +173,7 @@ class Index extends Controller
         dump($out);
         dump($status);
         return "zip -P whatthefuck ".str_replace('.xlsx', '.zip', $filename)." ".$path.'     '.$_SERVER['SERVER_NAME'].'/download/'.str_replace('.xlsx', '.zip', $filename)."  1.";
-         */
+         *//*
         //return SendMessage('18012776312','ss','wefdsgrf');
         //$hc = new HaoChong();
         //$res = $hc->recharge("18012776312",100,"00000000001");
@@ -183,6 +183,7 @@ class Index extends Controller
         //dump(config('haochong_status')['0']);
         //return SendWarring("18012776312","hfudsighu","18012776312","123");
        //SendMessage("18012776312",date('Y-m-d H:i:s'),"阿里巴巴","测试文件","gas54g");
-   }*/
+   }
+   */
 
 }
