@@ -101,7 +101,7 @@ class Financial extends AdminController{    //财务控制器
                 ->field('phone')
                 ->find()['phone'];
             $company_name =  Db::table("company_code")
-                ->where(['id'=>$rec['company_code']])
+                ->where(['comp_id'=>$rec['company_code']])
                 ->field('name')
                 ->find()['name'];
             $check_num = create_token(2);//文件区分校验位

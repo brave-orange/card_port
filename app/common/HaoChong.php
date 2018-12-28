@@ -47,7 +47,7 @@ class HaoChong{
         $this->url = "http://180.96.21.204:8082/searchpay.do";
         //$this->url = "http://121.40.152.174:28096/searchpay.do";
         $params['userid'] = self::$userid;
-        $params['sporderid'] = self::$orderid;
+        $params['sporderid'] = $orderid;
         $xml_res =  http($this->url,$params,"POST");
         return $xml_res;
     }
