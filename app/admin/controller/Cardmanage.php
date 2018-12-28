@@ -4,7 +4,9 @@ use app\common\controller\AdminController;
 use think\Db;
 use think\Session;
 use think\Request;
-
+/***
+这里是舒适区
+*/
 class Cardmanage extends AdminController{    //卡组控制器
     public function index(){
         $company = Db::table('company_code')->select();

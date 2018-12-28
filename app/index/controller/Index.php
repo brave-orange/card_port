@@ -10,6 +10,9 @@ use \think\Db;
 use \think\Session;
 use think\Cache; 
 use think\Controller;
+/***
+接口验证实现
+**/
 class Index extends Controller
 {
     public function index(){
@@ -153,7 +156,7 @@ class Index extends Controller
         
     }
     
-    public function test(){
+   /* public function test(){
         //return json_encode(user_balance(1));
 /*        $PHPExcel = new PHPExcel();
         $PHPSheet = $PHPExcel->getActiveSheet();
@@ -179,7 +182,7 @@ class Index extends Controller
         //dump($xml_res->resultno);
         //dump(config('haochong_status')['0']);
         //return SendWarring("18012776312","hfudsighu","18012776312","123");
-       SendMessage("18012776312",date('Y-m-d H:i:s'),"阿里巴巴","测试文件","gas54g");
-   }
+       //SendMessage("18012776312",date('Y-m-d H:i:s'),"阿里巴巴","测试文件","gas54g");
+   }*/
 
 }

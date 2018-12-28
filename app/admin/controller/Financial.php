@@ -9,7 +9,9 @@ use think\Request;
 use think\Session;
 
 use app\common\controller\AdminController;
-
+/***
+不知道在哪定义的函数请统统出门右转common.php
+**/
 class Financial extends AdminController{    //财务控制器
     public function index(){
         return view();

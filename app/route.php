@@ -17,7 +17,7 @@ return [
         ':id'         => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
         ':name'       => ['index/hello', ['method' => 'post']],
     ],
-    'test'            => 'index/index/test',
+    //'test'            => 'index/index/test',
     'recharge'        => 'chuanze/recharge/index',
     'tel_recharge'    => 'chuanze/shopping/tel_recharge',
     'oil_recharge'    => 'chuanze/shopping/oil_recharge',
